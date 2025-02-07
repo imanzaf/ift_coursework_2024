@@ -5,7 +5,7 @@
 ## Development Instructions
 *Note: Where the instructions mention the 'root directory of the project', this refers to the `team_dogwood/coursework_one` directory.*
 
-#### Managing dependencies with Poetry
+### Managing dependencies with Poetry
 Poetry is used to manage dependencies for this project. To install the dependencies, run the following command in the root directory of the project:
 ```bash
 poetry install
@@ -21,7 +21,7 @@ If you decide not to use a package anymore, remove it from the `pyproject.toml` 
 poetry remove <package-name>
 ```
 
-#### Formatting code with pre-commit hooks
+### Formatting code with pre-commit hooks
 To ensure that the code is formatted correctly and no security vulnerabilities exist, pre-commit hooks are used. Four tools have been added to the hooks: Black, Flake8, Isort, and Bandit. To install the pre-commit hooks, run the following command in the root directory of the project:
 ```bash
 pre-commit install
@@ -39,7 +39,7 @@ pre-commit run --all
 
 If the pre-commit hooks fail, you will need to fix the issues before you can commit your changes. Black and Isort automatically update your files to fix any issues, flake8 issues need to be dealt with manually.
 
-#### Running Unit Tests
+### Running Unit Tests
 To run the unit tests, run the following command in the root directory of the project:
 ```bash
 poetry run pytest
