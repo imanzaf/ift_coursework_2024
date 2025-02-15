@@ -4,6 +4,8 @@ services:
     mongo_db:
       container_name: mongo_db_cw
       image: mongo:latest
+      volumes:
+        - ./mongo-seed:/docker-entrypoint-initdb.d
       ports:
         - 27019:27017
     postgres_db:
@@ -25,21 +27,22 @@ services:
           test: ["CMD-SHELL", "pg_isready"]
           interval: 10s
           timeout: 5s
-          retries: 5          
-    postgres_seed:
-      container_name: postgres_seed_cw
-      restart: on-failure
-      environment:
-        POSTGRES_DATABASE: postgres_feeder
-        POSTGRES_HOST: postgres_feeder
-        POSTGRES_PORT: 5439
-        POSTGRES_USER: postgres_feeder
-        POSTGRES_PASSWORD: postgres_feeder
-      depends_on:
-        postgres_db:
-          condition: service_healthy
-      build: 
-        dockerfile: ./000.Database/SQL/Dockerfile
+          retries: 5
+  # postgres_seed:
+  #   container_name: postgres_seed_cw
+  #   restart: on-failure
+  #   environment:
+  #     POSTGRES_DATABASE: postgres_feeder
+  #     POSTGRES_HOST: postgres_feeder
+  #     POSTGRES_PORT: 5439
+  #     POSTGRES_USER: postgres_feeder
+  #     POSTGRES_PASSWORD: postgres_feeder
+  #   depends_on:
+  #     postgres_db:
+  #       condition: service_healthy
+  #   build:
+  #     dockerfile: ./000.Database/SQL/Dockerfile
+
     pgadmin:
       container_name: pg_admin_cw
       image: dpage/pgadmin4
@@ -81,3 +84,7 @@ services:
         mc anonymous set public minio/csreport;
         tail -f /dev/null
         "
+
+networks:
+  iceberg_net:
+    driver: bridge
