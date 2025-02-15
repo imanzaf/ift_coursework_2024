@@ -1,6 +1,5 @@
-import json
 from pymongo import MongoClient
-from src.company_data import CompanyDatabase, CompanyData
+from src.modules.mongo_db.company_data import CompanyDatabase
 
 
 def connect_to_mongo():
@@ -17,13 +16,13 @@ def connect_to_mongo():
 
 def search_by_name(company_db, name):
     """Search for companies by name."""
-    results = company_db.collection.find({"name": {"$regex": name, "$options": "i"}}, {"_id": 0})
+    results = company_db.collection.find({"security": {"$regex": name, "$options": "i"}}, {"_id": 0})
     return list(results)
 
 
 def search_by_sector(company_db, sector):
     """Search for companies by sector."""
-    results = company_db.collection.find({"sector": {"$regex": sector, "$options": "i"}}, {"_id": 0})
+    results = company_db.collection.find({"gics_sector": {"$regex": sector, "$options": "i"}}, {"_id": 0})
     return list(results)
 
 
