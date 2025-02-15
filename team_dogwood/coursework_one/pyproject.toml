@@ -15,13 +15,14 @@ isort = "^6.0.0"
 flake8 = "^7.1.1"
 bandit = "^1.8.2"
 pytest = "^8.3.4"
+pydantic-settings = "^2.7.1"
 
 [tool.isort]
 profile = "black"
 
 [tool.flake8]
 max-line-length = 120
-extend-ignore = ["E501", "W503"]
+extend-ignore = ["E501", "W503", "E402"]
 
 [build-system]
 requires = ["poetry-core"]
