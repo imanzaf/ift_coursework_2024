@@ -218,6 +218,7 @@ They are responsible to idetify and design the technical implementation of the d
 
 - Facilitate communication between technical and non-technical team members
 	- Translate business requirements into technical specifications using [issues](https://github.com/iftucl/ift_coursework_2024/issues)
+	- When creating a new issue, you will use the team label created for your team in github
 	- Assign and monitor issue progress
 	- Identify and design the technical implementation of the data product
 - Analyze business requirements and propose suitable technical solutions
