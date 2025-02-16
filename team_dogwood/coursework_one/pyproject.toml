@@ -21,10 +21,6 @@ sqlalchemy = "^2.0.38"
 [tool.isort]
 profile = "black"
 
-[tool.flake8]
-max-line-length = 120
-extend-ignore = ["E501", "W503", "E402"]
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
