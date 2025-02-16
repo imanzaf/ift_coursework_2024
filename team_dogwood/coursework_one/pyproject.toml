@@ -17,6 +17,10 @@ bandit = "^1.8.2"
 pytest = "^8.3.4"
 pydantic-settings = "^2.7.1"
 sqlalchemy = "^2.0.38"
+loguru = "^0.7.3"
+requests = "^2.32.3"
+beautifulsoup4 = "^4.13.3"
+selenium = "^4.28.1"
 
 [tool.isort]
 profile = "black"
