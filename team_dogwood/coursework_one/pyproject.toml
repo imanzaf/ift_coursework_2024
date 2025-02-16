@@ -16,6 +16,7 @@ flake8 = "^7.1.1"
 bandit = "^1.8.2"
 pytest = "^8.3.4"
 pydantic-settings = "^2.7.1"
+sqlalchemy = "^2.0.38"
 
 [tool.isort]
 profile = "black"
