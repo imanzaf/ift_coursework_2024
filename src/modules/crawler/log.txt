@@ -1,0 +1,4 @@
+[2025-02-17 14:48:13] APPLE: Searching Webpage in Bing | URL: https://www.bing.com/search?q=APPLE%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-17 14:48:13] APPLE: Searching PDF in Webpage | URL: https://www.apple.com/environment/
+[2025-02-17 14:48:17] APPLE: Found 3 PDF on webpage.
+[2025-02-17 14:48:33] APPLE: Valid PDF downloaded | URL: https://www.apple.com/environment/pdf/Apples_Carbon_Removal_Strategy_White_Paper.pdf
