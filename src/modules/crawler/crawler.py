@@ -275,9 +275,9 @@ def find_pdf_in_webpage(driver, company_name, url):
 
     # Download and check first 10 PDFs
     for pdf_url in pdf_links[:10]:
-        pdf_path = download_pdf(company_name, pdf_url)
-        if pdf_path:
-            return pdf_url,pdf_path
+        #pdf_path = download_pdf(company_name, pdf_url)
+        #if pdf_path:
+            return pdf_url
     
     write_log(f"{company_name}: No Valid PDF Found in Webpage")
     return None
@@ -287,7 +287,10 @@ def process_company(company_name):
 
     print(f"Processing {company_name}...")
     driver = init_driver()
-    
+    if not driver:
+        write_log(f"{company_name}: Failed to initialize WebDriver.")
+        return None
+    print("Driver initialized.")
     '''
     # 1. Search PDF directly
     pdf_url = search_pdf_in_bing(driver, company_name)
@@ -300,12 +303,17 @@ def process_company(company_name):
     webpage_url_list = search_webpage_in_bing(driver, company_name)
     if webpage_url_list:
         for webpage_url in webpage_url_list:
-            pdf_url,pdf_path = find_pdf_in_webpage(driver, company_name, webpage_url)
-            if pdf_path: 
+            result = find_pdf_in_webpage(driver, company_name, webpage_url)
+            if result is None:
+                write_log(f"{company_name}: No valid PDF found in webpage {webpage_url}")
+                continue  # Skip to next URL or company
+            pdf_url = result
+            if pdf_url:
                 driver.quit()
-                return webpage_url, pdf_url,pdf_path
+                return webpage_url, pdf_url
 
     driver.quit()
+
 
 
 # Initialize global variables
@@ -315,7 +323,7 @@ LOG_FILENAME = "log.txt"
 if __name__ == "__main__":
     
     # Single company
-    company_name = "APPLE"
+    company_name = "Abbott Laboratories"
     webpage_url, pdf_url, pdf_path = process_company(company_name)
     print(f"Webpage URL: {webpage_url}")
     print(f"PDF URL: {pdf_url}")

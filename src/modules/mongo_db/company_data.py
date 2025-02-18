@@ -12,6 +12,7 @@ import dotenv
 load_dotenv()
 ROOT_DIR = os.getenv("ROOT_DIR")
 
+
 class CompanyData:
     """
     A class representing a company's data.
