@@ -12,6 +12,9 @@ class AuthSettings(BaseSettings):
     MINIO_PASSWORD: str
     MINIO_PORT: str
 
+    GOOGLE_API_KEY: str
+    GOOGLE_ENGINE_ID: str
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
