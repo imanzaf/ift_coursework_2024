@@ -12,6 +12,10 @@ class AuthSettings(BaseSettings):
     MINIO_PASSWORD: str
     MINIO_PORT: str
 
+    POSTGRES_USERNAME: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_PORT: str
+
     GOOGLE_API_KEY: str
     GOOGLE_ENGINE_ID: str
 
