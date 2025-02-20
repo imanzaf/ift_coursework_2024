@@ -143,7 +143,7 @@ class SearchResult:
         )
 
         if "sec/" in self.url.lower() or "sec-filings/" in self.url.lower():
-            text_score -= 5
+            text_score -= 10
         if "10-k" or "8-k" in self.title.lower() or self.url.lower():
             text_score -= 5
         if "sustainability reports archive" in self.url.lower():
