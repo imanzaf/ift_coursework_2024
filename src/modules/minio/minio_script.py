@@ -27,33 +27,6 @@ def connect_to_minio():
         print(f"❌ Error connecting to MinIO: {e}")
         return None
 
-
-# --- Upload CSR Report to MinIO ---
-def upload_csr_report_to_minio(client, symbol, year, report_url):
-    """Upload CSR report to MinIO."""
-    try:
-        # Simulate downloading the report (in reality, you would fetch the actual file)
-        # For now, we'll just create a mock file
-        file_name = f"{symbol}_{year}_csr_report.pdf"
-
-        # Create a temporary file to simulate downloading the CSR report
-        with open(file_name, "w") as f:
-            f.write(f"This is a mock CSR report for {symbol} - {year}. URL: {report_url}")
-
-        # Upload the mock file to MinIO
-        client.fput_object("csreport", file_name, file_name)
-        print(f"✅ Uploaded CSR report for {symbol} ({year}) to MinIO.")
-
-        # Clean up the temporary file
-        os.remove(file_name)
-    except S3Error as e:
-        print(f"❌ Error uploading file to MinIO: {e}")
-
-
-import tempfile
-import os
-import requests
-
 def upload_report_to_minio(document, client):
     """
     Upload the CSR report from the given document to MinIO in the structured format.
