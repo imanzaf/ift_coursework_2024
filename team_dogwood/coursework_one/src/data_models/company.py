@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -18,3 +18,13 @@ class Company(BaseModel):
 class ESGReport(BaseModel):
     url: str = Field(..., description="The URL of the ESG report")
     date: str = Field(..., description="The date the ESG report was published")
+
+
+class SearchResult(BaseModel):
+    title: str = Field(..., description="The title of the search result")
+    metatag_title: Optional[str] = Field(
+        None, description="The metatag title of the search result"
+    )
+    author: Optional[str] = Field(None, description="The author of the page")
+    link: str = Field(..., description="The link to the search result")
+    snippet: str = Field(..., description="The snippet of the search result")

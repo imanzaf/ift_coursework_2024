@@ -1,19 +1,16 @@
 """
-TODO -
-    - Methods for searching for URLs containing ESG reports of a specific company
-        - maybe: google api, openai api, selenium + google search
-
-TODO -
-    - check what companies are included in https://github.com/trr266/srn_docs/blob/main/srn_docs_api.py
+Search class for scraping ESG reports from various sources.
 """
 
 import os
 import sys
 import time
+from datetime import datetime
 from urllib.parse import quote
 
 import requests
 from loguru import logger
+from pydantic import BaseModel, Field, PrivateAttr
 from requests.exceptions import HTTPError
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -23,24 +20,43 @@ from selenium.webdriver.support.ui import WebDriverWait
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
 from config.auth import auth_settings
-from src.data_models.company import Company
+from src.data_models.company import Company, SearchResult
 
 
-class Search:
+class Search(BaseModel):
+    """
+    This class provides methods to search for and retrieve ESG (Environmental, Social, and Governance)
+    reports for a given company using different sources:
 
-    def __init__(self, company: Company):
-        self.company = company
-        self.search_query = f"{self.company.security} latest ESG report filetype:pdf"
-        self._encoded_search_query = quote(self.search_query)
+    1. Google Custom Search API - searches for PDF ESG reports
+    2. Sustainability Reports website - scrapes reports from responsibilityreports.com
 
-        # Google API Config
-        self._google_api_url = "https://www.googleapis.com/customsearch/v1"
-        self._google_api_key = auth_settings.GOOGLE_API_KEY
-        self._google_engine_id = auth_settings.GOOGLE_ENGINE_ID
+    Args:
+        company (Company): A Company object containing the company's metadata.
+    """
 
-        # Sustainability Reports URLs
-        self._sustainability_reports_url = "https://www.responsibilityreports.com"
-        self._sustainability_reports_request_url = f"{self._sustainability_reports_url}/Companies?search={self.company.security}"
+    company: Company = Field(
+        ..., description="The company to look for ESG reports for."
+    )
+
+    # Private attributes
+    search_query: str = PrivateAttr(
+        f"{company.security} {str(datetime.now().year)} ESG report filetype:pdf"
+    )
+    _encoded_search_query: str = PrivateAttr(quote(search_query))
+
+    # Google API Config
+    _google_api_url: str = PrivateAttr("https://www.googleapis.com/customsearch/v1")
+    _google_api_key: str = PrivateAttr(auth_settings.GOOGLE_API_KEY)
+    _google_engine_id: str = PrivateAttr(auth_settings.GOOGLE_ENGINE_ID)
+
+    # Sustainability Reports URLs
+    _sustainability_reports_url: str = PrivateAttr(
+        "https://www.responsibilityreports.com"
+    )
+    _sustainability_reports_request_url: str = PrivateAttr(
+        f"{_sustainability_reports_url}/Companies?search={company.security}"
+    )
 
     def google(self):
         """
@@ -50,14 +66,17 @@ class Search:
             "q": self.search_query,
             "key": self._google_api_key,
             "cx": self._google_engine_id,
+            "num": 3,  # Only return top 3 results
+            "fields": "items(title,snippet,link,pagemap.metatags)",  # Only return required fields
         }
 
         try:
             # Make the search request
             response = requests.get(self._google_api_url, params=params)
             response.raise_for_status()
-            search_results = response.json().get("items", [])[:3]
+            search_results = response.json().get("items", [])
 
+            # return None if no search results found
             if not search_results:
                 logger.warning(
                     f"No ESG reports found for {self.company.security}. Returning None."
@@ -66,68 +85,81 @@ class Search:
 
             # format search results
             search_results = self._format_search_results(search_results)
-            logger.info(f"search results: {search_results}")
         except HTTPError as e:
             logger.error(f"Failed to fetch search results: {e}. Returning None.")
             return None
 
         return search_results
 
-    def _format_search_results(self, search_results):
+    @staticmethod
+    def _format_search_results(search_results):
         """
-        Formats the search results into a list of dictionaries with relevant information.
+        Cleans up search results to only keep relevant information.
+
+        Args:
+            search_results (list): A list of search results from the Google API.
+
+        Returns:
+            formatted_results (list[SearchResult]): list of parsed search results.
         """
         formatted_results = []
         for result in search_results:
+            # Extract author and date from pagemap.metatags (if available)
             metatags = result.get("pagemap", {}).get("metatags", [{}])[0]
 
-            formatted_result = {
-                "title": result.get("title"),
-                "metatag_title": metatags.get("title"),
-                "author": metatags.get("author"),
-                "link": result.get("link"),
-                "snippet": result.get("snippet"),
-            }
-            formatted_results.append(formatted_result)
+            # Extract relevant information from the search result metadata
+            result = SearchResult(
+                title=result.get("title"),
+                metatag_title=metatags.get("title", None),
+                author=metatags.get("author", None),
+                link=result.get("link"),
+                snippet=result.get("snippet"),
+            )
+            formatted_results.append(result)
         return formatted_results
 
     def sustainability_reports(self):
         """
-        This is code that uses a web crawler and uses Apple as an example
+        Uses Selenium to scrape ESG reports from the Sustainability Reports website.
+
+        Returns:
+            sustainability_reports (list[ESGReport]): A list of ESG reports for the company.
         """
         driver = webdriver.Chrome()
         try:
-            url = self._sustainability_reports_request_url
-            driver.get(url)
-            print("Opened page:", url)
+            driver.get(self._sustainability_reports_request_url)
+            logger.debug("Opened page:", self._sustainability_reports_request_url)
             all_links = WebDriverWait(driver, 10).until(
                 EC.presence_of_all_elements_located((By.TAG_NAME, "a"))
             )
             total_links = len(all_links)
-            print(f"Found {total_links} <a> tags on the search results page.")
+            logger.debug(f"Found {total_links} <a> tags on the search results page.")
             if total_links < 11:
-                print(
-                    "Not enough links (less than 11) on the page to click the 11th link."
+                logger.warning(
+                    f"No results returned for {self.company.security}. Returning None."
                 )
-                return
-            eleventh_link = all_links[10]
-            print(
-                f"Clicking the 11th link: text='{eleventh_link.text.strip()}', URL={eleventh_link.get_attribute('href')}"
-            )
-            eleventh_link.click()
-            print(
-                "Clicked the 11th link, waiting for the company details page to load..."
-            )
+                return None
+
+            company_details_page = all_links[10]
+            company_details_page.click()
+            logger.info("Found company details page. Waiting for page to load...")
             company_links = WebDriverWait(driver, 10).until(
                 EC.presence_of_all_elements_located((By.TAG_NAME, "a"))
             )
+
             total_company_links = len(company_links)
-            print(f"Found {total_company_links} <a> tags on the company details page.")
+            logger.debug(
+                f"Found {total_company_links} <a> tags on the company details page."
+            )
             needed_links = []
             if total_company_links > 15:
                 needed_links.append(company_links[15])
             else:
-                print("Not enough links (less than 16) on the company details page.")
+                logger.warning(
+                    "Not enough links (less than 16) on the company details page."
+                )
+                return None
+
             start_idx = 19
             end_idx = total_company_links - 12
             if end_idx >= start_idx:
@@ -136,20 +168,26 @@ class Search:
                     if ordinal % 2 == 0:
                         needed_links.append(company_links[idx])
             else:
-                print(
+                logger.warning(
                     "Not enough links on the company details page to satisfy the range from the 20th link to the 12th from last link."
                 )
+                return None
+
+            links = []
             if needed_links:
-                print("The required filtered links are:")
                 for i, link in enumerate(needed_links):
                     text = link.text.strip()
                     href = link.get_attribute("href")
-                    print(f"  Link {i+1}: text='{text}', URL={href}")
+                    links.append({i: {"text": text, "href": href}})
+
+                logger.info(f"Found {len(links)} links on the company details page.")
+                logger.debug("Links:", links)
+                return links
             else:
-                print("No links satisfy the conditions.")
+                logger.warning("No links found. Returning None.")
             return needed_links
         except Exception as e:
-            print("Exception occurred:", e)
+            logger.error("Exception occurred:", e)
         finally:
             time.sleep(5)
             driver.quit()
@@ -169,12 +207,12 @@ if __name__ == "__main__":
 
     google_results = search.google()
     if google_results:
-        print(f"Found {len(google_results)} search results:")
+        logger.info(f"Found {len(google_results)} search results:")
         for result in google_results:
-            print(result)
+            logger.info(result)
 
-    sustainability_reports_results = search.sustainability_reports()
-    if sustainability_reports_results:
-        print(f"Found {len(sustainability_reports_results)} sustainability reports:")
-        for link in sustainability_reports_results:
-            print(link)
+    # sustainability_reports_results = search.sustainability_reports()
+    # if sustainability_reports_results:
+    #     logger.info(f"Found {len(sustainability_reports_results)} sustainability reports:")
+    #     for link in sustainability_reports_results:
+    #         logger.info(link)
