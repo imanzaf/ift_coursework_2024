@@ -195,6 +195,23 @@ def create_mongo_seed_file(df):
     # Ensure the 'mongo_seed' folder exists
     os.makedirs(seed_folder, exist_ok=True)
 
+
+def reset_database():
+    confirmation = input("Are you sure you want to reset the database? Yes/No: ").strip().lower()
+    if confirmation != "yes":
+        print("❌ Database reset aborted.")
+        return
+
+    mongo_client = connect_to_mongo()
+    if mongo_client:
+        db = mongo_client["csr_reports"]
+        db.companies.drop()  # Drops the 'companies' collection
+        print("✅ Database reset: 'companies' collection dropped.")
+
+        # Reimport the seed data
+        import_seed_to_mongo()
+        print("✅ Seed data imported successfully.")
+
 def import_seed_to_mongo():
     """Automatically import the seed data from the generated JSON file into MongoDB."""
     mongo_client = connect_to_mongo()  # Connect to MongoDB

@@ -46,3 +46,7 @@
 [2025-02-18 14:18:46] Abbott Laboratories: PDF Processing Error | Error: HTTPSConnectionPool(host='www.abbott.com', port=443): Max retries exceeded with url: /content/dam/corp/abbott/en-us/hub-new/Abbott-2023-Global-Sustainability-Report-June-2024.pdf (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000020EF2B14DD0>: Failed to resolve 'www.abbott.com' ([Errno 11001] getaddrinfo failed)")) | URL: https://www.abbott.com/content/dam/corp/abbott/en-us/hub-new/Abbott-2023-Global-Sustainability-Report-June-2024.pdf
 [2025-02-18 14:19:06] Abbott Laboratories: Valid PDF downloaded | URL: https://www.abbott.com/content/dam/corp/abbott/en-us/hub-new/Abbott-2023-Global-Sustainability-Report-Summary.pdf
 [2025-02-18 14:22:08] Abbott Laboratories: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Abbott%20Laboratories%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-20 17:41:19] Abbott Laboratories: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Abbott%20Laboratories%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-20 20:22:52] Abbott Laboratories: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Abbott%20Laboratories%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-20 20:22:53] Abbott Laboratories: Searching PDF in Webpage | URL: https://www.abbott.com/responsibility/sustainability/sustainability-reporting/current-reports.html
+[2025-02-20 20:22:56] Abbott Laboratories: Found 3 PDF on webpage.

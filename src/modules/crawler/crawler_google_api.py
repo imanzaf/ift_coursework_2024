@@ -3,54 +3,103 @@ import os
 import re
 import sys
 from typing import List
-
 import requests
 from dotenv import load_dotenv
 from loguru import logger
+import itertools
+import time
 
+# Load environment variables
 load_dotenv()
 
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 SEARCH_ENGINE_ID = os.getenv("SEARCH_ENGINE_ID")
+# List of API keys (stored in .env file)
+API_KEYS = [
+    os.getenv("GOOGLE_API_KEY_1"),
+    os.getenv("GOOGLE_API_KEY_2"),
+    os.getenv("GOOGLE_API_KEY_3"),
+    os.getenv("GOOGLE_API_KEY_4"),
+    os.getenv("GOOGLE_API_KEY_5"),
+    os.getenv("GOOGLE_API_KEY_6"),
+    os.getenv("GOOGLE_API_KEY_7"),
+    os.getenv("GOOGLE_API_KEY_8"),
+    os.getenv("GOOGLE_API_KEY_9"),
+    os.getenv("GOOGLE_API_KEY_10"),
+    os.getenv("GOOGLE_API_KEY_11"),
+    os.getenv("GOOGLE_API_KEY_12"),
+    os.getenv("GOOGLE_API_KEY_13")
+]
 
-if not all([GOOGLE_API_KEY, SEARCH_ENGINE_ID]):
-    raise ValueError("Environment variables GOOGLE_API_KEY, SEARCH_ENGINE_ID are not set.")
 
 
-def _get_report_search_results(company_name: str, year: str) -> dict:
+# Ensure all required environment variables are set
+if not all(API_KEYS) or not SEARCH_ENGINE_ID:
+    raise ValueError("Missing API keys or SEARCH_ENGINE_ID in environment variables.")
+
+# Create an iterator to cycle through API keys
+api_key_cycle = itertools.cycle(API_KEYS)
+
+def get_current_api_key():
+    """Get the next API key from the cycle"""
+    return next(api_key_cycle)
+
+def _get_report_search_results(company_name: str, ticker: str, year: str) -> str:
     """
-    Retrieve the top 5 URLs of the company's ESG reports using Google Custom Search.
+    Retrieve the highest-scoring URL of the company's ESG report using Google Custom Search.
+    Cycles through API keys if rate limits are hit.
     """
     search_query = f"{company_name} {year} ESG report filetype:pdf"
     url = "https://www.googleapis.com/customsearch/v1"
-    params = {
-        "q": search_query,
-        "key": GOOGLE_API_KEY,
-        "cx": SEARCH_ENGINE_ID,
-    }
 
-    # Make the search request
-    response = requests.get(url, params=params)
-    response.raise_for_status()
-    search_results = response.json().get("items", [])[:5]  # Get top 5 results
+    # Try each API key until one succeeds
+    for _ in range(len(API_KEYS)):
+        api_key = get_current_api_key()  # Get the next API key
+        params = {
+            "q": search_query,
+            "key": api_key,
+            "cx": SEARCH_ENGINE_ID,
+        }
 
-    if not search_results:
-        logger.warning(f"No ESG reports found for {company_name} in {year}")
-        sys.exit()
+        try:
+            logger.info(f"Using API Key: {api_key}")
+            response = requests.get(url, params=params)
 
-    sorted_results = _sort_search_results(company_name, year, search_results)
-    esg_urls = {
-        index: value.get("link", "") for index, value in enumerate(sorted_results)
-    }
-    logger.debug(f"ESG report URLs for {company_name} in {year}: {esg_urls}")
-    return esg_urls
+            # Handle rate limit errors
+            if response.status_code == 429:
+                logger.warning(f"API Key {api_key} hit rate limit (429). Switching to next key...")
+                time.sleep(2)  # Short delay before retrying
+                continue  # Try the next API key
 
+            response.raise_for_status()  # Raise exception for other errors
 
-def _sort_search_results(company_name: str, year: str, search_results: List[dict]) -> List[dict]:
-    sorted_results = []
+            search_results = response.json().get("items", [])[:5]  # Get top 5 results
+
+            if not search_results:
+                logger.warning(f"No ESG reports found for {company_name} ({ticker}) in {year}")
+                return None
+
+            sorted_results = _sort_search_results(company_name, ticker, year, search_results)
+            highest_scoring_url = sorted_results[0].get("link") if sorted_results else None
+            logger.debug(f"Highest scoring ESG report URL for {company_name} in {year}: {highest_scoring_url}")
+            return highest_scoring_url
+
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Error with API Key {api_key}: {e}")
+            time.sleep(2)  # Delay before retrying
+            continue  # Try next API key
+
+    # If all API keys fail
+    logger.error("All API keys exhausted or failed. Please check API limits.")
+    return None
+
+def _sort_search_results(company_name: str, ticker: str, year: str, search_results: List[dict]) -> List[dict]:
+    """
+    Sort search results based on relevance to the company, ticker, and year.
+    """
     for result in search_results:
         result_obj = SearchResult(
             company_name=company_name,
+            ticker=ticker,
             url=result.get("link", ""),
             title=result.get("title", ""),
             description=result.get("snippet", ""),
@@ -58,18 +107,13 @@ def _sort_search_results(company_name: str, year: str, search_results: List[dict
         )
         result["score"] = result_obj.score_search()
 
-    sorted_results = sorted(
-        search_results,
-        key=lambda item: item.get("score"),
-        reverse=True,
-    )
-
+    sorted_results = sorted(search_results, key=lambda item: item.get("score"), reverse=True)
     return sorted_results
 
-
 class SearchResult:
-    def __init__(self, company_name: str, url: str, title: str, description: str, year: str):
+    def __init__(self, company_name: str, ticker: str, url: str, title: str, description: str, year: str):
         self.company_name = company_name
+        self.ticker = ticker
         self.url = url
         self.title = title
         self.description = description
@@ -88,88 +132,50 @@ class SearchResult:
                             and stripped_name not in self.description.lower()
                             and stripped_name not in self.url.lower()
                     )
-                    else 1
-                )  # strongly penalize if name is not there
+                    else 5
+                )
         )
-        url_score = self.score_text(self.url) + (1 if self.company_name_lookup() else 0)
+        if stripped_name in self.url.lower():
+            text_score += 5
+
         year_score = self.score_year(
-            self.title.lower() + self.description.lower() + self.url.lower()
+            self.title.lower() + self.description.lower() + self.url.lower(), self.year
         )
 
-        # Validate the year in the metadata
-        if self.year not in self.title.lower() and self.year not in self.description.lower():
-            year_score -= 2  # penalize if the year is not found
+        if "sec/" in self.url.lower() or "sec-filings/" in self.url.lower():
+            text_score -= 5
+        if "10-k" or "8-k" in self.title.lower() or self.url.lower():
+            text_score -= 5
+        if "sustainability reports archive" in self.url.lower():
+            text_score += 2
 
-        return text_score + url_score + year_score
+        return text_score + year_score
 
     @staticmethod
     def score_text(text: str):
-        # Score based on keywords matching
         keywords = ["esg", "sustainability", "report", "environmental", "social", "governance"]
-        count = sum(keyword in text for keyword in keywords)
-        return count
+        return sum(keyword in text for keyword in keywords)
 
     def company_name_lookup(self):
-        # get the site name from url
-        url_index = re.search(
-            r"(?:https?://)?(?:www\.)?([a-zA-Z0-9]+)", self.url
-        ).group()
+        url_index = re.search(r"(?:https?://)?(?:www\.)?([a-zA-Z0-9]+)", self.url)
+        url_index = url_index.group() if url_index else ""
         stripped_name = self.company_name.split(" ")[0].lower()
-        # check if company name starts with site name
-        if stripped_name in url_index:
-            return 2
-        else:
-            return 0
+        return 2 if stripped_name in url_index else 0
 
     @staticmethod
-    def score_year(text):
-        current_year = dt.datetime.now().year
-        year_lag = current_year - 1
-        two_year_lag = current_year - 2
-        three_year_lag = current_year - 3
-
-        # Extract all years from the text
+    def score_year(text, target_year):
         years_in_text = [int(year) for year in re.findall(r"\b\d{4}\b", text)]
+        penalty = sum(-3 for year in years_in_text if year != int(target_year))
+        return (5 if int(target_year) in years_in_text else -5) + penalty
 
-        # Check for years that are 3 years older than the current year or older
-        if any(year < three_year_lag for year in years_in_text):
-            return -2
-
-        # Check if the text contains the current year, year lag, or two-year lag
-        if current_year in years_in_text:
-            return 2
-        if any(
-                year in {current_year, year_lag, two_year_lag} for year in years_in_text
-        ):
-            return 1
-
-        return -1
-
-
-# Example usage:
+# Example usage
 if __name__ == "__main__":
     company_name = input("Enter the company name: ")
-    ticker = input("Enter the company ticker (optional): ").strip()  # Optional ticker input
+    ticker = input("Enter the company ticker (or leave blank): ")
     year = input("Enter the year for the ESG report: ")
 
-    esg_urls = _get_report_search_results(company_name, year)
-
-    # Display the correct link
-    if esg_urls:
-        print("\nFound ESG report links:")
-        selected_url = None
-
-        for index, url in esg_urls.items():
-            print(f"{index + 1}. {url}")
-
-            # Check if the URL contains the exact year provided by the user
-            if year in url:
-                # Also check if the ticker or company name is in the URL
-                if (ticker.lower() in url.lower() or company_name.lower() in url.lower()):
-                    selected_url = url
-                    break  # Stop once we find the first URL that matches both year and name/ticker
-
-        if not selected_url:
-            print(f"\nNo data found for {company_name} in {year}")
-        else:
-            print(f"\nSelected ESG Report: {selected_url}")
+    esg_url = _get_report_search_results(company_name, ticker, year)
+    if esg_url:
+        print(f"✅ Highest scoring ESG report URL: {esg_url}")
+    else:
+        print("❌ No valid ESG report found.")
