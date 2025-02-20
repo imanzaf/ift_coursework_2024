@@ -6,7 +6,6 @@ import os
 import sys
 import time
 from datetime import datetime
-from urllib.parse import quote
 
 import requests
 from loguru import logger
@@ -16,6 +15,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+
+# from urllib.parse import quote
+
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
@@ -40,30 +42,30 @@ class Search(BaseModel):
     )
 
     # Private attributes
-    search_query: str = PrivateAttr(
-        f"{company.security} {str(datetime.now().year)} ESG report filetype:pdf"
-    )
-    _encoded_search_query: str = PrivateAttr(quote(search_query))
-
     # Google API Config
     _google_api_url: str = PrivateAttr("https://www.googleapis.com/customsearch/v1")
     _google_api_key: str = PrivateAttr(auth_settings.GOOGLE_API_KEY)
     _google_engine_id: str = PrivateAttr(auth_settings.GOOGLE_ENGINE_ID)
-
     # Sustainability Reports URLs
     _sustainability_reports_url: str = PrivateAttr(
         "https://www.responsibilityreports.com"
     )
-    _sustainability_reports_request_url: str = PrivateAttr(
-        f"{_sustainability_reports_url}/Companies?search={company.security}"
-    )
+
+    @property
+    def _google_search_query(self):
+        search_query = f"{self.company.security} {str(datetime.now().year)} ESG report filetype:pdf"
+        return search_query
+
+    @property
+    def _sustainability_reports_request_url(self):
+        return f"{self._sustainability_reports_url}/Companies?search={self.company.security}"
 
     def google(self):
         """
         Uses Google API to scrape search results.
         """
         params = {
-            "q": self.search_query,
+            "q": self._google_search_query,
             "key": self._google_api_key,
             "cx": self._google_engine_id,
             "num": 3,  # Only return top 3 results
@@ -203,7 +205,7 @@ if __name__ == "__main__":
         region="North America",
     )
 
-    search = Search(company)
+    search = Search(company=company)
 
     google_results = search.google()
     if google_results:

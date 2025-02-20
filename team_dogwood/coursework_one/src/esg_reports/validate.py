@@ -86,7 +86,7 @@ class SearchResultValidator(BaseModel):
             or any(
                 [
                     year in result.link
-                    for year in [self.current_year, self.previous_year]
+                    for year in [self._current_year, self._previous_year]
                 ]
             )
         ):
