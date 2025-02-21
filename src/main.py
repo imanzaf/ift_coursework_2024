@@ -6,56 +6,11 @@ import src.modules.crawler.sustainability_reports_beautifulsoup as sustainabilit
 from datetime import datetime
 import logging
 
-
-def populate_reports_sustainability_reports_org(db):
-    """Populate all documents with available CSR reports using BeautifulSoup before processing."""
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-    logger = logging.getLogger(__name__)
-
-    collection = db.companies  # Adjust collection name as needed
-
-    # Loop through each document and populate with available reports
-    for document in collection.find():
-        company_name = document["security"]
-        ticker = document.get("symbol", "")  # Ensure ticker is present if needed
-        logger.info(f"Populating CSR reports for company: {company_name}")
-
-        try:
-            existing_reports = document.get("csr_reports", {})
-
-            # Fetch CSR reports using BeautifulSoup
-            csr_reports = sustainability_reports_beautifulsoup.store_reports_for_company(company_name, ticker)
-
-            if "error" in csr_reports:
-                logger.warning(f"No CSR reports found for {company_name}.")
-                continue
-
-            # Append the CSR reports to the database if they are available
-            update_data = {}
-            for year, report_url in csr_reports.items():
-                if str(year) not in existing_reports or not existing_reports[str(year)]:
-                    update_data.setdefault("csr_reports", {})[str(year)] = report_url
-
-            # Only update if new reports are found
-            if update_data.get("csr_reports"):
-                update_data["updated_at"] = datetime.utcnow()  # Add timestamp for update
-                collection.update_one({"_id": document["_id"]}, {"$set": update_data})
-                logger.info(f"Updated CSR report URLs for {company_name}")
-            else:
-                logger.info(f"No new CSR reports to add for {company_name}.")
-
-        except Exception as e:
-            logger.error(f"Error populating CSR reports for {company_name}: {e}")
-
-
-
-
-
 def retrieve_and_store_csr_reports(db, years):
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
 
-    collection = db.companies  # Adjust collection name as needed
+    collection = db.companies
 
     current_year = str(datetime.now().year)
     previous_year = str(datetime.now().year - 1)
@@ -84,10 +39,15 @@ def retrieve_and_store_csr_reports(db, years):
                         logger.warning(f"No valid result found for {company_name} for year {year}")
                         continue
                     webpage_url, pdf_url = result
+                    #TODO: Add a check if it available for latest year!!!
+                    #TODO: Add validation of pdf!!!
+                    #TODO: If year is current year, make sure the pdf is not as in the previous year
                     update_data.setdefault("csr_reports", {})[str(year)] = pdf_url
                     update_data["website_url"] = webpage_url
                 else:
                     pdf_url = crawler_google_api._get_report_search_results(company_name, ticker, year)
+                    # TODO: Add a check if it available for given year!!!
+                    # TODO: Add validation of pdf!!!
                     update_data.setdefault("csr_reports", {})[str(year)] = pdf_url
 
             if update_data.get("csr_reports"):  # Only update if new data is found
@@ -123,7 +83,7 @@ if __name__ == '__main__':
     if minio_client is None:
         exit(1)
     db = mongo_client["csr_reports"]
-    populate_reports_sustainability_reports_org(db)
+    sustainability_reports_beautifulsoup.populate_reports_sustainability_reports_org(db)
     #mongo.reset_database()
     #user_input_years = input("Enter the years to process (comma-separated): ")
     #years_list = [year.strip() for year in user_input_years.split(",")]

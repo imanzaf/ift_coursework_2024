@@ -50,3 +50,91 @@
 [2025-02-20 20:22:52] Abbott Laboratories: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Abbott%20Laboratories%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
 [2025-02-20 20:22:53] Abbott Laboratories: Searching PDF in Webpage | URL: https://www.abbott.com/responsibility/sustainability/sustainability-reporting/current-reports.html
 [2025-02-20 20:22:56] Abbott Laboratories: Found 3 PDF on webpage.
+[2025-02-21 11:06:38] Netflix: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Netflix%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 11:06:39] Netflix: Searching PDF in Webpage | URL: https://about.netflix.com/en/sustainability
+[2025-02-21 11:06:45] Netflix: Found 0 PDF on webpage.
+[2025-02-21 11:06:45] Netflix: No valid PDF found in webpage https://about.netflix.com/en/sustainability
+[2025-02-21 11:06:45] Netflix: Searching PDF in Webpage | URL: https://ir.netflix.net/governance/ESG/default.aspx
+[2025-02-21 11:06:50] Netflix: Found 8 PDF on webpage.
+[2025-02-21 11:07:41] Netflix: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Netflix%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 11:07:42] Netflix: Searching PDF in Webpage | URL: https://about.netflix.com/en/sustainability
+[2025-02-21 11:07:47] Netflix: Found 0 PDF on webpage.
+[2025-02-21 11:07:47] Netflix: No valid PDF found in webpage https://about.netflix.com/en/sustainability
+[2025-02-21 11:07:47] Netflix: Searching PDF in Webpage | URL: https://ir.netflix.net/governance/ESG/default.aspx
+[2025-02-21 11:07:52] Netflix: Found 8 PDF on webpage.
+[2025-02-21 11:10:20] Apple: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Apple%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 11:10:21] Apple: Searching PDF in Webpage | URL: https://www.apple.com/environment/
+[2025-02-21 11:10:39] Apple: Found 3 PDF on webpage.
+[2025-02-21 11:24:36] Apple: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Apple%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 11:24:37] Apple: Searching PDF in Webpage | URL: https://www.apple.com/environment/
+[2025-02-21 11:24:55] Apple: Found 3 PDF on webpage.
+[2025-02-21 11:44:01] FleetCor Technologies Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=FleetCor%20Technologies%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 11:44:02] FleetCor Technologies Inc: Searching PDF in Webpage | URL: https://ditchcarbon.com/organizations/fleetcor-technologies
+[2025-02-21 11:44:10] FleetCor Technologies Inc: Found 0 PDF on webpage.
+[2025-02-21 11:44:10] FleetCor Technologies Inc: No valid PDF found in webpage https://ditchcarbon.com/organizations/fleetcor-technologies
+[2025-02-21 11:44:10] FleetCor Technologies Inc: Searching PDF in Webpage | URL: https://investor.fleetcor.com/static-files/cf20440b-7e42-48fa-88e5-b91dd47c7fe2
+[2025-02-21 11:45:50] FleetCor Technologies Inc: Failed to get search results after 3 attempts: Message: 
+
+[2025-02-21 11:45:50] FleetCor Technologies Inc: No Search Results Found | URL: https://investor.fleetcor.com/static-files/cf20440b-7e42-48fa-88e5-b91dd47c7fe2
+[2025-02-21 11:45:50] FleetCor Technologies Inc: No valid PDF found in webpage https://investor.fleetcor.com/static-files/cf20440b-7e42-48fa-88e5-b91dd47c7fe2
+[2025-02-21 11:45:50] FleetCor Technologies Inc: Searching PDF in Webpage | URL: https://sustainabilityreports.com/reports/corpay-inc-2021-corporate-responsibility-and-sustainability-report-pdf/
+[2025-02-21 11:45:56] FleetCor Technologies Inc: Found 0 PDF on webpage.
+[2025-02-21 11:45:56] FleetCor Technologies Inc: No valid PDF found in webpage https://sustainabilityreports.com/reports/corpay-inc-2021-corporate-responsibility-and-sustainability-report-pdf/
+[2025-02-21 11:48:04] FleetCor Technologies Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=FleetCor%20Technologies%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 11:48:05] FleetCor Technologies Inc: Searching PDF in Webpage | URL: https://ditchcarbon.com/organizations/fleetcor-technologies
+[2025-02-21 11:50:01] FleetCor Technologies Inc: Found 0 PDF on webpage.
+[2025-02-21 11:50:01] FleetCor Technologies Inc: No valid PDF found in webpage https://ditchcarbon.com/organizations/fleetcor-technologies
+[2025-02-21 11:50:01] FleetCor Technologies Inc: Searching PDF in Webpage | URL: https://theimpactinvestor.com/stocks/flt/
+[2025-02-21 11:50:05] FleetCor Technologies Inc: Found 0 PDF on webpage.
+[2025-02-21 11:50:05] FleetCor Technologies Inc: No valid PDF found in webpage https://theimpactinvestor.com/stocks/flt/
+[2025-02-21 11:55:12] FleetCor Technologies Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=FleetCor%20Technologies%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 11:55:13] FleetCor Technologies Inc: Searching PDF in Webpage | URL: https://ditchcarbon.com/organizations/fleetcor-technologies
+[2025-02-21 11:55:25] FleetCor Technologies Inc: Found 0 PDF on webpage.
+[2025-02-21 11:55:25] FleetCor Technologies Inc: No valid PDF found in webpage https://ditchcarbon.com/organizations/fleetcor-technologies
+[2025-02-21 11:55:25] FleetCor Technologies Inc: Searching PDF in Webpage | URL: https://investor.fleetcor.com/static-files/cf20440b-7e42-48fa-88e5-b91dd47c7fe2
+[2025-02-21 11:57:01] FleetCor Technologies Inc: Failed to get search results after 3 attempts: Message: 
+
+[2025-02-21 11:57:01] FleetCor Technologies Inc: No Search Results Found | URL: https://investor.fleetcor.com/static-files/cf20440b-7e42-48fa-88e5-b91dd47c7fe2
+[2025-02-21 11:57:01] FleetCor Technologies Inc: No valid PDF found in webpage https://investor.fleetcor.com/static-files/cf20440b-7e42-48fa-88e5-b91dd47c7fe2
+[2025-02-21 11:57:40] FleetCor Technologies Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=FleetCor%20Technologies%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 11:57:43] FleetCor Technologies Inc: Searching PDF in Webpage | URL: https://ditchcarbon.com/organizations/fleetcor-technologies
+[2025-02-21 11:57:49] FleetCor Technologies Inc: Found 0 PDF on webpage.
+[2025-02-21 11:57:49] FleetCor Technologies Inc: No valid PDF found in webpage https://ditchcarbon.com/organizations/fleetcor-technologies
+[2025-02-21 11:57:57] FleetCor Technologies Inc: Searching PDF in Webpage | URL: https://investor.fleetcor.com/static-files/cf20440b-7e42-48fa-88e5-b91dd47c7fe2
+[2025-02-21 11:59:33] FleetCor Technologies Inc: Failed to get search results after 3 attempts: Message: 
+
+[2025-02-21 11:59:33] FleetCor Technologies Inc: No Search Results Found | URL: https://investor.fleetcor.com/static-files/cf20440b-7e42-48fa-88e5-b91dd47c7fe2
+[2025-02-21 11:59:33] FleetCor Technologies Inc: No valid PDF found in webpage https://investor.fleetcor.com/static-files/cf20440b-7e42-48fa-88e5-b91dd47c7fe2
+[2025-02-21 12:00:39] FleetCor Technologies Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=FleetCor%20Technologies%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 12:02:48] FleetCor Technologies Inc: Searching PDF in Webpage | URL: https://investor.fleetcor.com/static-files/cf20440b-7e42-48fa-88e5-b91dd47c7fe2
+[2025-02-21 12:04:24] FleetCor Technologies Inc: Failed to get search results after 3 attempts: Message: 
+
+[2025-02-21 12:04:24] FleetCor Technologies Inc: No Search Results Found | URL: https://investor.fleetcor.com/static-files/cf20440b-7e42-48fa-88e5-b91dd47c7fe2
+[2025-02-21 13:39:41] Facebook, Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Facebook%2C%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 13:39:42] Facebook, Inc: Searching PDF in Webpage | URL: https://sustainability.atmeta.com/2024-sustainability-report/
+[2025-02-21 13:39:44] Facebook, Inc: Found 0 PDF on webpage.
+[2025-02-21 13:39:44] Facebook, Inc: No valid PDF found in webpage https://sustainability.atmeta.com/2024-sustainability-report/
+[2025-02-21 13:39:44] Facebook, Inc: Searching PDF in Webpage | URL: https://sustainability.atmeta.com/
+[2025-02-21 13:39:45] Facebook, Inc: Found 0 PDF on webpage.
+[2025-02-21 13:39:45] Facebook, Inc: No valid PDF found in webpage https://sustainability.atmeta.com/
+[2025-02-21 13:39:45] Facebook, Inc: Searching PDF in Webpage | URL: https://www.facebook.com/sustainability./
+[2025-02-21 13:39:47] Facebook, Inc: Found 0 PDF on webpage.
+[2025-02-21 13:39:47] Facebook, Inc: No valid PDF found in webpage https://www.facebook.com/sustainability./
+[2025-02-21 13:40:16] Meta: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Meta%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 13:40:17] Meta: Searching PDF in Webpage | URL: https://sustainability.atmeta.com/
+[2025-02-21 13:40:19] Meta: Found 0 PDF on webpage.
+[2025-02-21 13:40:19] Meta: No valid PDF found in webpage https://sustainability.atmeta.com/
+[2025-02-21 13:40:19] Meta: Searching PDF in Webpage | URL: https://sustainability.atmeta.com/2024-sustainability-report/
+[2025-02-21 13:40:21] Meta: Found 0 PDF on webpage.
+[2025-02-21 13:40:21] Meta: No valid PDF found in webpage https://sustainability.atmeta.com/2024-sustainability-report/
+[2025-02-21 13:40:21] Meta: Searching PDF in Webpage | URL: https://sustainability.atmeta.com/energy/
+[2025-02-21 13:40:26] Meta: Found 0 PDF on webpage.
+[2025-02-21 13:40:26] Meta: No valid PDF found in webpage https://sustainability.atmeta.com/energy/
+[2025-02-21 13:40:40] Meta: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Meta%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 13:40:41] Meta: Searching PDF in Webpage | URL: https://sustainability.atmeta.com/
+[2025-02-21 13:40:49] Apple: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Apple%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 13:40:49] Apple: Searching PDF in Webpage | URL: https://www.apple.com/environment/
+[2025-02-21 13:41:01] Apple: Found 3 PDF on webpage.
+[2025-02-21 14:23:41] Apple: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Apple%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 14:23:42] Apple: Searching PDF in Webpage | URL: https://www.apple.com/environment/
+[2025-02-21 14:23:54] Apple: Found 3 PDF on webpage.

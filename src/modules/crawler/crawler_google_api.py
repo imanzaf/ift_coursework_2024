@@ -77,7 +77,8 @@ def _get_report_search_results(company_name: str, ticker: str, year: str) -> str
             if not search_results:
                 logger.warning(f"No ESG reports found for {company_name} ({ticker}) in {year}")
                 return None
-
+            for search_result in search_results:
+                print(search_result.get("link", "No link available"))
             sorted_results = _sort_search_results(company_name, ticker, year, search_results)
             highest_scoring_url = sorted_results[0].get("link") if sorted_results else None
             logger.debug(f"Highest scoring ESG report URL for {company_name} in {year}: {highest_scoring_url}")
@@ -126,7 +127,7 @@ class SearchResult:
                 self.score_text(self.title.lower())
                 + self.score_text(self.description.lower())
                 + (
-                    -5
+                    -10
                     if (
                             stripped_name not in self.title.lower()
                             and stripped_name not in self.description.lower()
