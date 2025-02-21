@@ -143,7 +143,7 @@ def populate_reports_sustainability_reports_org(db):
 
             # Only update if new reports are found
             if update_data.get("csr_reports"):
-                update_data["updated_at"] = datetime.utcnow()  # Add timestamp for update
+                update_data["updated_at"] = x0datetime.utcnow()  # Add timestamp for update
                 collection.update_one({"_id": document["_id"]}, {"$set": update_data})
                 logger.info(f"Updated CSR report URLs for {company_name}")
             else:

@@ -527,3 +527,282 @@
 [2025-02-20 19:38:20] Akamai Technologies Inc: No valid PDF found in webpage https://www.akamai.com/company/corporate-responsibility
 [2025-02-20 19:38:24] Alaska Air Group Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Alaska%20Air%20Group%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
 [2025-02-20 19:38:25] Alaska Air Group Inc: Searching PDF in Webpage | URL: https://www.alaskaair.com/2023report
+[2025-02-21 16:12:11] 3M Company: Searching Webpage in Bing | URL: https://www.bing.com/search?q=3M%20Company%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 16:12:12] 3M Company: Searching PDF in Webpage | URL: https://www.3m.com/3M/en_US/sustainability-us/
+[2025-02-21 16:12:18] 3M Company: Found 1 PDF on webpage.
+[2025-02-21 16:44:47] Abbott Laboratories: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Abbott%20Laboratories%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 16:44:49] Abbott Laboratories: Searching PDF in Webpage | URL: https://www.abbott.com/responsibility/sustainability/sustainability-reporting/current-reports.html
+[2025-02-21 16:44:54] Abbott Laboratories: Found 3 PDF on webpage.
+[2025-02-21 16:45:02] AbbVie Inc.: Searching Webpage in Bing | URL: https://www.bing.com/search?q=AbbVie%20Inc.%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 16:45:03] AbbVie Inc.: Searching PDF in Webpage | URL: https://www.abbvie.com/sustainability/environmental-social-and-governance/environmental-sustainability.html
+[2025-02-21 16:45:15] AbbVie Inc.: Found 1 PDF on webpage.
+[2025-02-21 16:45:20] ABIOMED Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=ABIOMED%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 16:45:21] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.abiomed.com/en-us
+[2025-02-21 17:05:41] 3M Company: Searching Webpage in Bing | URL: https://www.bing.com/search?q=3M%20Company%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 17:05:42] 3M Company: Searching PDF in Webpage | URL: https://www.3m.com/3M/en_US/sustainability-us/
+[2025-02-21 17:05:49] 3M Company: Found 1 PDF on webpage.
+[2025-02-21 17:05:54] ABIOMED Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=ABIOMED%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 17:05:55] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.abiomed.com/en-us
+[2025-02-21 17:06:00] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 17:06:00] ABIOMED Inc: No valid PDF found in webpage https://www.abiomed.com/en-us
+[2025-02-21 17:06:00] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.csrhub.com/CSR_and_sustainability_information/ABIOMED-Inc
+[2025-02-21 17:06:07] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 17:06:07] ABIOMED Inc: No valid PDF found in webpage https://www.csrhub.com/CSR_and_sustainability_information/ABIOMED-Inc
+[2025-02-21 17:06:07] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.sustainabilitytracker.com/brand/abiomed/
+[2025-02-21 17:06:20] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 17:06:20] ABIOMED Inc: No valid PDF found in webpage https://www.sustainabilitytracker.com/brand/abiomed/
+[2025-02-21 17:07:12] Accenture plc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Accenture%20plc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 17:07:13] Accenture plc: Searching PDF in Webpage | URL: https://www.accenture.com/us-en/about/company/reporting-approach-esg-disclosures
+[2025-02-21 17:07:22] Accenture plc: Found 1 PDF on webpage.
+[2025-02-21 17:08:01] Activision Blizzard: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Activision%20Blizzard%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 17:08:01] Activision Blizzard: Searching PDF in Webpage | URL: https://ourcommitments.activisionblizzard.com/
+[2025-02-21 17:08:06] Activision Blizzard: Found 0 PDF on webpage.
+[2025-02-21 17:08:06] Activision Blizzard: No valid PDF found in webpage https://ourcommitments.activisionblizzard.com/
+[2025-02-21 17:08:06] Activision Blizzard: Searching PDF in Webpage | URL: https://www.activisionblizzard.com/ourcommitments/esgreports
+[2025-02-21 17:08:11] Activision Blizzard: Found 5 PDF on webpage.
+[2025-02-21 18:24:51] ABIOMED Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=ABIOMED%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 18:24:51] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.abiomed.com/en-us
+[2025-02-21 18:24:55] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 18:24:55] ABIOMED Inc: No valid PDF found in webpage https://www.abiomed.com/en-us
+[2025-02-21 18:24:55] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.spglobal.com/esg/scores/results?cid=4812233
+[2025-02-21 18:25:05] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 18:25:05] ABIOMED Inc: No valid PDF found in webpage https://www.spglobal.com/esg/scores/results?cid=4812233
+[2025-02-21 18:25:05] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.csrhub.com/CSR_and_sustainability_information/ABIOMED-Inc
+[2025-02-21 18:25:10] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 18:25:10] ABIOMED Inc: No valid PDF found in webpage https://www.csrhub.com/CSR_and_sustainability_information/ABIOMED-Inc
+[2025-02-21 18:26:29] Adobe Systems Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Adobe%20Systems%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 18:26:29] Adobe Systems Inc: Searching PDF in Webpage | URL: https://www.adobe.com/corporate-responsibility/corporate-responsibility-reports.html
+[2025-02-21 18:30:24] ABIOMED Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=ABIOMED%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 18:30:25] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.abiomed.com/en-us
+[2025-02-21 18:30:33] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 18:30:33] ABIOMED Inc: No valid PDF found in webpage https://www.abiomed.com/en-us
+[2025-02-21 18:30:33] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.spglobal.com/esg/scores/results?cid=4812233
+[2025-02-21 18:30:42] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 18:30:42] ABIOMED Inc: No valid PDF found in webpage https://www.spglobal.com/esg/scores/results?cid=4812233
+[2025-02-21 18:30:42] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.csrhub.com/CSR_and_sustainability_information/ABIOMED-Inc
+[2025-02-21 18:30:47] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 18:30:47] ABIOMED Inc: No valid PDF found in webpage https://www.csrhub.com/CSR_and_sustainability_information/ABIOMED-Inc
+[2025-02-21 18:34:30] ABIOMED Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=ABIOMED%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 18:34:31] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.abiomed.com/en-us
+[2025-02-21 18:34:36] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 18:34:36] ABIOMED Inc: No valid PDF found in webpage https://www.abiomed.com/en-us
+[2025-02-21 18:34:36] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.spglobal.com/esg/scores/results?cid=4812233
+[2025-02-21 18:34:45] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 18:34:45] ABIOMED Inc: No valid PDF found in webpage https://www.spglobal.com/esg/scores/results?cid=4812233
+[2025-02-21 18:34:45] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.csrhub.com/CSR_and_sustainability_information/ABIOMED-Inc
+[2025-02-21 18:34:50] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 18:34:50] ABIOMED Inc: No valid PDF found in webpage https://www.csrhub.com/CSR_and_sustainability_information/ABIOMED-Inc
+[2025-02-21 18:35:02] Accenture plc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Accenture%20plc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 18:35:03] Accenture plc: Searching PDF in Webpage | URL: https://www.accenture.com/us-en/about/company/reporting-approach-esg-disclosures
+[2025-02-21 18:35:11] Accenture plc: Found 1 PDF on webpage.
+[2025-02-21 18:35:35] Adobe Systems Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Adobe%20Systems%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 18:35:36] Adobe Systems Inc: Searching PDF in Webpage | URL: https://www.adobe.com/corporate-responsibility/corporate-responsibility-reports.html
+[2025-02-21 18:35:47] Adobe Systems Inc: Found 0 PDF on webpage.
+[2025-02-21 18:35:47] Adobe Systems Inc: No valid PDF found in webpage https://www.adobe.com/corporate-responsibility/corporate-responsibility-reports.html
+[2025-02-21 18:35:47] Adobe Systems Inc: Searching PDF in Webpage | URL: https://www.adobe.com/corporate-responsibility/sustainability.html
+[2025-02-21 18:35:49] Adobe Systems Inc: Found 0 PDF on webpage.
+[2025-02-21 18:35:49] Adobe Systems Inc: No valid PDF found in webpage https://www.adobe.com/corporate-responsibility/sustainability.html
+[2025-02-21 18:35:49] Adobe Systems Inc: Searching PDF in Webpage | URL: https://www.adobe.com/corporate-responsibility/sustainability-at-scale.html
+[2025-02-21 18:35:51] Adobe Systems Inc: Found 0 PDF on webpage.
+[2025-02-21 18:35:51] Adobe Systems Inc: No valid PDF found in webpage https://www.adobe.com/corporate-responsibility/sustainability-at-scale.html
+[2025-02-21 18:36:47] Advanced Micro Devices Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Advanced%20Micro%20Devices%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 18:36:49] Advanced Micro Devices Inc: Searching PDF in Webpage | URL: https://www.amd.com/en/corporate/corporate-responsibility/esg-disclosures.html
+[2025-02-21 18:37:02] Advanced Micro Devices Inc: Found 6 PDF on webpage.
+[2025-02-21 18:37:45] Advance Auto Parts: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Advance%20Auto%20Parts%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 18:37:46] Advance Auto Parts: Searching PDF in Webpage | URL: https://esg.advanceauto.us/Home/default.aspx
+[2025-02-21 18:37:49] Advance Auto Parts: Found 0 PDF on webpage.
+[2025-02-21 18:37:49] Advance Auto Parts: No valid PDF found in webpage https://esg.advanceauto.us/Home/default.aspx
+[2025-02-21 18:37:49] Advance Auto Parts: Searching PDF in Webpage | URL: https://ir.advanceautoparts.com/investors/news-and-events/press-releases/press-release-details/2023/Introducing-Our-2022-Corporate-Sustainability-and-Social-Report/default.aspx
+[2025-02-21 18:37:56] Advance Auto Parts: Found 0 PDF on webpage.
+[2025-02-21 18:37:56] Advance Auto Parts: No valid PDF found in webpage https://ir.advanceautoparts.com/investors/news-and-events/press-releases/press-release-details/2023/Introducing-Our-2022-Corporate-Sustainability-and-Social-Report/default.aspx
+[2025-02-21 18:37:56] Advance Auto Parts: Searching PDF in Webpage | URL: https://corp.advanceautoparts.com/home/default.aspx
+[2025-02-21 18:38:00] Advance Auto Parts: Found 0 PDF on webpage.
+[2025-02-21 18:38:00] Advance Auto Parts: No valid PDF found in webpage https://corp.advanceautoparts.com/home/default.aspx
+[2025-02-21 18:38:52] AES Corp: Searching Webpage in Bing | URL: https://www.bing.com/search?q=AES%20Corp%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 18:38:53] AES Corp: Searching PDF in Webpage | URL: https://www.aes.com/sustainability-resources
+[2025-02-21 18:39:04] AES Corp: Found 42 PDF on webpage.
+[2025-02-21 18:40:03] Affiliated Managers Group Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Affiliated%20Managers%20Group%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 18:40:04] Affiliated Managers Group Inc: Searching PDF in Webpage | URL: https://www.amg.com/about-amg/corporate-responsibility/
+[2025-02-21 18:40:09] Affiliated Managers Group Inc: Found 0 PDF on webpage.
+[2025-02-21 18:40:09] Affiliated Managers Group Inc: No valid PDF found in webpage https://www.amg.com/about-amg/corporate-responsibility/
+[2025-02-21 18:40:09] Affiliated Managers Group Inc: Searching PDF in Webpage | URL: https://ir.amg.com/
+[2025-02-21 18:40:14] Affiliated Managers Group Inc: Found 0 PDF on webpage.
+[2025-02-21 18:40:14] Affiliated Managers Group Inc: No valid PDF found in webpage https://ir.amg.com/
+[2025-02-21 18:40:14] Affiliated Managers Group Inc: Searching PDF in Webpage | URL: https://www.amg.com/about-amg/corporate-responsibility/environment-2/
+[2025-02-21 18:40:15] Affiliated Managers Group Inc: Found 0 PDF on webpage.
+[2025-02-21 18:40:15] Affiliated Managers Group Inc: No valid PDF found in webpage https://www.amg.com/about-amg/corporate-responsibility/environment-2/
+[2025-02-21 18:40:24] AFLAC Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=AFLAC%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 18:40:26] AFLAC Inc: Searching PDF in Webpage | URL: https://investors.aflac.com/Sustainability/default.aspx
+[2025-02-21 18:40:33] AFLAC Inc: Found 10 PDF on webpage.
+[2025-02-21 18:40:40] Agilent Technologies Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Agilent%20Technologies%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 18:40:41] Agilent Technologies Inc: Searching PDF in Webpage | URL: https://www.agilent.com/about/companyinfo/sustainability/2020-Agilent-CSR.html
+[2025-02-21 18:41:33] Agilent Technologies Inc: Found 2 PDF on webpage.
+[2025-02-21 18:41:38] Air Products & Chemicals Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Air%20Products%20%26%20Chemicals%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 18:41:40] Air Products & Chemicals Inc: Searching PDF in Webpage | URL: https://www.airproducts.com/company/sustainability
+[2025-02-21 18:41:58] Air Products & Chemicals Inc: Found 6 PDF on webpage.
+[2025-02-21 19:03:06] ABIOMED Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=ABIOMED%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:03:07] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.abiomed.com/en-us
+[2025-02-21 19:03:11] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 19:03:11] ABIOMED Inc: No valid PDF found in webpage https://www.abiomed.com/en-us
+[2025-02-21 19:03:11] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.spglobal.com/esg/scores/results?cid=4812233
+[2025-02-21 19:03:21] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 19:03:21] ABIOMED Inc: No valid PDF found in webpage https://www.spglobal.com/esg/scores/results?cid=4812233
+[2025-02-21 19:03:21] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.csrhub.com/CSR_and_sustainability_information/ABIOMED-Inc
+[2025-02-21 19:03:26] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 19:03:26] ABIOMED Inc: No valid PDF found in webpage https://www.csrhub.com/CSR_and_sustainability_information/ABIOMED-Inc
+[2025-02-21 19:03:34] Adobe Systems Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Adobe%20Systems%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:03:35] Adobe Systems Inc: Searching PDF in Webpage | URL: https://www.adobe.com/corporate-responsibility/corporate-responsibility-reports.html
+[2025-02-21 19:03:46] Adobe Systems Inc: Found 0 PDF on webpage.
+[2025-02-21 19:03:46] Adobe Systems Inc: No valid PDF found in webpage https://www.adobe.com/corporate-responsibility/corporate-responsibility-reports.html
+[2025-02-21 19:03:46] Adobe Systems Inc: Searching PDF in Webpage | URL: https://www.adobe.com/corporate-responsibility/sustainability.html
+[2025-02-21 19:03:48] Adobe Systems Inc: Found 0 PDF on webpage.
+[2025-02-21 19:03:48] Adobe Systems Inc: No valid PDF found in webpage https://www.adobe.com/corporate-responsibility/sustainability.html
+[2025-02-21 19:03:48] Adobe Systems Inc: Searching PDF in Webpage | URL: https://www.adobe.com/corporate-responsibility/sustainability-at-scale.html
+[2025-02-21 19:05:53] ABIOMED Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=ABIOMED%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:05:55] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.sustainabilitytracker.com/brand/abiomed/
+[2025-02-21 19:06:04] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 19:06:04] ABIOMED Inc: No valid PDF found in webpage https://www.sustainabilitytracker.com/brand/abiomed/
+[2025-02-21 19:06:04] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.spglobal.com/esg/scores/results?cid=4812233
+[2025-02-21 19:06:10] ABIOMED Inc: Found 0 PDF on webpage.
+[2025-02-21 19:06:10] ABIOMED Inc: No valid PDF found in webpage https://www.spglobal.com/esg/scores/results?cid=4812233
+[2025-02-21 19:06:17] Accenture plc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Accenture%20plc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:06:18] Accenture plc: Searching PDF in Webpage | URL: https://www.accenture.com/us-en/about/company/reporting-approach-esg-disclosures
+[2025-02-21 19:06:27] Accenture plc: Found 1 PDF on webpage.
+[2025-02-21 19:06:32] Adobe Systems Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Adobe%20Systems%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:06:33] Adobe Systems Inc: Searching PDF in Webpage | URL: https://www.adobe.com/corporate-responsibility/corporate-responsibility-reports.html
+[2025-02-21 19:06:45] Adobe Systems Inc: Found 0 PDF on webpage.
+[2025-02-21 19:06:45] Adobe Systems Inc: No valid PDF found in webpage https://www.adobe.com/corporate-responsibility/corporate-responsibility-reports.html
+[2025-02-21 19:06:45] Adobe Systems Inc: Searching PDF in Webpage | URL: https://www.adobe.com/corporate-responsibility/sustainability.html
+[2025-02-21 19:11:23] Adobe Systems Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Adobe%20Systems%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:11:24] Adobe Systems Inc: Searching PDF in Webpage | URL: https://www.adobe.com/corporate-responsibility/sustainability.html
+[2025-02-21 19:11:28] Adobe Systems Inc: Found 0 PDF on webpage.
+[2025-02-21 19:11:28] Adobe Systems Inc: No valid PDF found in webpage https://www.adobe.com/corporate-responsibility/sustainability.html
+[2025-02-21 19:11:28] Adobe Systems Inc: Searching PDF in Webpage | URL: https://www.adobe.com/corporate-responsibility/corporate-responsibility-reports.html
+[2025-02-21 19:11:38] Adobe Systems Inc: Found 0 PDF on webpage.
+[2025-02-21 19:11:38] Adobe Systems Inc: No valid PDF found in webpage https://www.adobe.com/corporate-responsibility/corporate-responsibility-reports.html
+[2025-02-21 19:11:38] Adobe Systems Inc: Searching PDF in Webpage | URL: https://www.adobe.com/corporate-responsibility/sustainability-at-scale.html
+[2025-02-21 19:11:39] Adobe Systems Inc: Found 0 PDF on webpage.
+[2025-02-21 19:11:39] Adobe Systems Inc: No valid PDF found in webpage https://www.adobe.com/corporate-responsibility/sustainability-at-scale.html
+[2025-02-21 19:11:47] Advance Auto Parts: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Advance%20Auto%20Parts%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:11:48] Advance Auto Parts: Searching PDF in Webpage | URL: https://esg.advanceauto.us/Home/default.aspx
+[2025-02-21 19:11:52] Advance Auto Parts: Found 0 PDF on webpage.
+[2025-02-21 19:11:52] Advance Auto Parts: No valid PDF found in webpage https://esg.advanceauto.us/Home/default.aspx
+[2025-02-21 19:11:52] Advance Auto Parts: Searching PDF in Webpage | URL: https://ir.advanceautoparts.com/investors/news-and-events/press-releases/press-release-details/2023/Introducing-Our-2022-Corporate-Sustainability-and-Social-Report/default.aspx
+[2025-02-21 19:11:58] Advance Auto Parts: Found 0 PDF on webpage.
+[2025-02-21 19:11:58] Advance Auto Parts: No valid PDF found in webpage https://ir.advanceautoparts.com/investors/news-and-events/press-releases/press-release-details/2023/Introducing-Our-2022-Corporate-Sustainability-and-Social-Report/default.aspx
+[2025-02-21 19:11:58] Advance Auto Parts: Searching PDF in Webpage | URL: https://corp.advanceautoparts.com/home/default.aspx
+[2025-02-21 19:12:03] Advance Auto Parts: Found 0 PDF on webpage.
+[2025-02-21 19:12:03] Advance Auto Parts: No valid PDF found in webpage https://corp.advanceautoparts.com/home/default.aspx
+[2025-02-21 19:12:10] Affiliated Managers Group Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Affiliated%20Managers%20Group%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:12:11] Affiliated Managers Group Inc: Searching PDF in Webpage | URL: https://www.amg.com/about-amg/corporate-responsibility/
+[2025-02-21 19:12:15] Affiliated Managers Group Inc: Found 0 PDF on webpage.
+[2025-02-21 19:12:15] Affiliated Managers Group Inc: No valid PDF found in webpage https://www.amg.com/about-amg/corporate-responsibility/
+[2025-02-21 19:12:15] Affiliated Managers Group Inc: Searching PDF in Webpage | URL: https://www.amg.com/about-amg/corporate-responsibility/environment-2/
+[2025-02-21 19:12:18] Affiliated Managers Group Inc: Found 0 PDF on webpage.
+[2025-02-21 19:12:18] Affiliated Managers Group Inc: No valid PDF found in webpage https://www.amg.com/about-amg/corporate-responsibility/environment-2/
+[2025-02-21 19:12:18] Affiliated Managers Group Inc: Searching PDF in Webpage | URL: https://www.amg.com/
+[2025-02-21 19:12:20] Affiliated Managers Group Inc: Found 0 PDF on webpage.
+[2025-02-21 19:12:20] Affiliated Managers Group Inc: No valid PDF found in webpage https://www.amg.com/
+[2025-02-21 19:12:26] Akamai Technologies Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Akamai%20Technologies%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:12:27] Akamai Technologies Inc: Searching PDF in Webpage | URL: https://www.akamai.com/company/corporate-responsibility/sustainability
+[2025-02-21 19:12:41] Akamai Technologies Inc: Found 0 PDF on webpage.
+[2025-02-21 19:12:41] Akamai Technologies Inc: No valid PDF found in webpage https://www.akamai.com/company/corporate-responsibility/sustainability
+[2025-02-21 19:12:41] Akamai Technologies Inc: Searching PDF in Webpage | URL: https://www.akamai.com/newsroom/press-release/akamai-announces-2023-sustainability-report-and-microsite
+[2025-02-21 19:12:47] Akamai Technologies Inc: Found 0 PDF on webpage.
+[2025-02-21 19:12:47] Akamai Technologies Inc: No valid PDF found in webpage https://www.akamai.com/newsroom/press-release/akamai-announces-2023-sustainability-report-and-microsite
+[2025-02-21 19:12:47] Akamai Technologies Inc: Searching PDF in Webpage | URL: https://www.akamai.com/company/corporate-responsibility
+[2025-02-21 19:13:00] Akamai Technologies Inc: Found 0 PDF on webpage.
+[2025-02-21 19:13:00] Akamai Technologies Inc: No valid PDF found in webpage https://www.akamai.com/company/corporate-responsibility
+[2025-02-21 19:13:08] Alaska Air Group Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Alaska%20Air%20Group%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:13:09] Alaska Air Group Inc: Searching PDF in Webpage | URL: https://www.alaskaair.com/2023report
+[2025-02-21 19:14:47] Alaska Air Group Inc: Failed to get search results after 3 attempts: Message: 
+
+[2025-02-21 19:14:47] Alaska Air Group Inc: No Search Results Found | URL: https://www.alaskaair.com/2023report
+[2025-02-21 19:14:47] Alaska Air Group Inc: No valid PDF found in webpage https://www.alaskaair.com/2023report
+[2025-02-21 19:14:47] Alaska Air Group Inc: Searching PDF in Webpage | URL: https://www.alaskaair.com/content/about-us/esg
+[2025-02-21 19:15:05] Alaska Air Group Inc: Found 0 PDF on webpage.
+[2025-02-21 19:15:05] Alaska Air Group Inc: No valid PDF found in webpage https://www.alaskaair.com/content/about-us/esg
+[2025-02-21 19:15:05] Alaska Air Group Inc: Searching PDF in Webpage | URL: https://news.alaskaair.com/sustainability/10-highlights-alaska-airlines-annual-sustainability-report/
+[2025-02-21 19:15:16] Alaska Air Group Inc: Found 0 PDF on webpage.
+[2025-02-21 19:15:16] Alaska Air Group Inc: No valid PDF found in webpage https://news.alaskaair.com/sustainability/10-highlights-alaska-airlines-annual-sustainability-report/
+[2025-02-21 19:15:23] Albemarle Corp: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Albemarle%20Corp%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:15:23] Albemarle Corp: Searching PDF in Webpage | URL: https://www.albemarle.com/us/en/sustainability
+[2025-02-21 19:15:30] Albemarle Corp: Found 1 PDF on webpage.
+[2025-02-21 19:15:37] Alexandria Real Estate Equities: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Alexandria%20Real%20Estate%20Equities%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:15:37] Alexandria Real Estate Equities: Searching PDF in Webpage | URL: https://www.are.com/corporate-responsibility.html
+[2025-02-21 19:15:42] Alexandria Real Estate Equities: Found 16 PDF on webpage.
+[2025-02-21 19:15:48] Alexion Pharmaceuticals: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Alexion%20Pharmaceuticals%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:15:49] Alexion Pharmaceuticals: Searching PDF in Webpage | URL: https://alexion.com/
+[2025-02-21 19:15:59] Alexion Pharmaceuticals: Found 0 PDF on webpage.
+[2025-02-21 19:15:59] Alexion Pharmaceuticals: No valid PDF found in webpage https://alexion.com/
+[2025-02-21 19:15:59] Alexion Pharmaceuticals: Searching PDF in Webpage | URL: https://www.astrazeneca.com/sustainability.html
+[2025-02-21 19:16:40] Alexion Pharmaceuticals: Found 2 PDF on webpage.
+[2025-02-21 19:16:45] Align Technology: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Align%20Technology%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:16:46] Align Technology: Searching PDF in Webpage | URL: https://www.aligntech.com/about/corporate_social_responsibility
+[2025-02-21 19:16:49] Align Technology: Found 1 PDF on webpage.
+[2025-02-21 19:16:55] Allegion: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Allegion%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:16:56] Allegion: Searching PDF in Webpage | URL: https://www.allegion.com/corp/en/about/ESG/environmental.html
+[2025-02-21 19:17:03] Allegion: Found 0 PDF on webpage.
+[2025-02-21 19:17:03] Allegion: No valid PDF found in webpage https://www.allegion.com/corp/en/about/ESG/environmental.html
+[2025-02-21 19:17:03] Allegion: Searching PDF in Webpage | URL: https://www.allegion.com/corp/en/about/ESG.html
+[2025-02-21 19:17:09] Allegion: Found 1 PDF on webpage.
+[2025-02-21 19:17:17] Allergan, Plc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Allergan%2C%20Plc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:17:19] Allergan, Plc: Searching PDF in Webpage | URL: https://ditchcarbon.com/organizations/allergan
+[2025-02-21 19:17:26] Allergan, Plc: Found 0 PDF on webpage.
+[2025-02-21 19:17:26] Allergan, Plc: No valid PDF found in webpage https://ditchcarbon.com/organizations/allergan
+[2025-02-21 19:17:26] Allergan, Plc: Searching PDF in Webpage | URL: https://www.abbvie.com/join-us/opportunities.html
+[2025-02-21 19:17:36] Allergan, Plc: Found 0 PDF on webpage.
+[2025-02-21 19:17:36] Allergan, Plc: No valid PDF found in webpage https://www.abbvie.com/join-us/opportunities.html
+[2025-02-21 19:17:36] Allergan, Plc: Searching PDF in Webpage | URL: https://www.abbvie.com/allergan.html
+[2025-02-21 19:17:37] Allergan, Plc: Found 0 PDF on webpage.
+[2025-02-21 19:17:37] Allergan, Plc: No valid PDF found in webpage https://www.abbvie.com/allergan.html
+[2025-02-21 19:17:43] Alliance Data Systems: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Alliance%20Data%20Systems%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:17:44] Alliance Data Systems: Searching PDF in Webpage | URL: https://www.prnewswire.com/news-releases/alliance-data-releases-2020-esg-performance-report-provides-update-on-three-year-sustainability-goals-301314989.html
+[2025-02-21 19:18:19] Alliance Data Systems: Found 1 PDF on webpage.
+[2025-02-21 19:18:24] Alliant Energy Corp: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Alliant%20Energy%20Corp%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:18:25] Alliant Energy Corp: Searching PDF in Webpage | URL: https://www.alliantenergy.com/cleanenergy/ourenergyvision/responsibilityreport/esgdatareports
+[2025-02-21 19:18:35] Alliant Energy Corp: Found 7 PDF on webpage.
+[2025-02-21 19:18:41] Allstate Corp: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Allstate%20Corp%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:18:43] Allstate Corp: Searching PDF in Webpage | URL: https://www.allstatesustainability.com/
+[2025-02-21 19:18:47] Allstate Corp: Found 0 PDF on webpage.
+[2025-02-21 19:18:47] Allstate Corp: No valid PDF found in webpage https://www.allstatesustainability.com/
+[2025-02-21 19:18:47] Allstate Corp: Searching PDF in Webpage | URL: https://www.allstatesustainability.com/reporting
+[2025-02-21 19:18:52] Allstate Corp: Found 0 PDF on webpage.
+[2025-02-21 19:18:52] Allstate Corp: No valid PDF found in webpage https://www.allstatesustainability.com/reporting
+[2025-02-21 19:18:52] Allstate Corp: Searching PDF in Webpage | URL: https://delivery.contenthub.allstate.com/api/public/content/2eda6586d01b4b3bb0605047eacdc4e7?v=19494efc
+[2025-02-21 19:20:27] Allstate Corp: Failed to get search results after 3 attempts: Message: 
+
+[2025-02-21 19:20:27] Allstate Corp: No Search Results Found | URL: https://delivery.contenthub.allstate.com/api/public/content/2eda6586d01b4b3bb0605047eacdc4e7?v=19494efc
+[2025-02-21 19:20:27] Allstate Corp: No valid PDF found in webpage https://delivery.contenthub.allstate.com/api/public/content/2eda6586d01b4b3bb0605047eacdc4e7?v=19494efc
+[2025-02-21 19:20:35] Alphabet Inc Class A: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Alphabet%20Inc%20Class%20A%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:20:36] Alphabet Inc Class A: Searching PDF in Webpage | URL: https://www.alphabet.com/en-gb/our-sustainability-approach
+[2025-02-21 19:20:42] Alphabet Inc Class A: Found 0 PDF on webpage.
+[2025-02-21 19:20:42] Alphabet Inc Class A: No valid PDF found in webpage https://www.alphabet.com/en-gb/our-sustainability-approach
+[2025-02-21 19:20:42] Alphabet Inc Class A: Searching PDF in Webpage | URL: http://abc.xyz/investor/esg
+[2025-02-21 19:20:45] Alphabet Inc Class A: Found 9 PDF on webpage.
+[2025-02-21 19:20:51] Alphabet Inc Class C: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Alphabet%20Inc%20Class%20C%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:20:52] Alphabet Inc Class C: Searching PDF in Webpage | URL: https://www.alphabet.com/en-gb/our-sustainability-approach
+[2025-02-21 19:20:57] Alphabet Inc Class C: Found 0 PDF on webpage.
+[2025-02-21 19:20:57] Alphabet Inc Class C: No valid PDF found in webpage https://www.alphabet.com/en-gb/our-sustainability-approach
+[2025-02-21 19:20:57] Alphabet Inc Class C: Searching PDF in Webpage | URL: https://www.alphabet.com/en-ww/sustainability-responsibility-compliance
+[2025-02-21 19:21:01] Alphabet Inc Class C: Found 1 PDF on webpage.
+[2025-02-21 19:21:08] Altria Group Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Altria%20Group%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:21:09] Altria Group Inc: Searching PDF in Webpage | URL: https://www.altria.com/en/responsibility/esg-reporting-and-data
+[2025-02-21 19:21:55] Altria Group Inc: Found 3 PDF on webpage.
+[2025-02-21 19:22:01] Amazon.com Inc.: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Amazon.com%20Inc.%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:22:02] Amazon.com Inc.: Searching PDF in Webpage | URL: https://sustainability.aboutamazon.com/
+[2025-02-21 19:22:07] Amazon.com Inc.: Found 0 PDF on webpage.
+[2025-02-21 19:22:07] Amazon.com Inc.: No valid PDF found in webpage https://sustainability.aboutamazon.com/
+[2025-02-21 19:22:07] Amazon.com Inc.: Searching PDF in Webpage | URL: https://sustainability.aboutamazon.com/reporting
+[2025-02-21 19:22:11] Amazon.com Inc.: Found 1 PDF on webpage.
+[2025-02-21 19:22:18] Ameren Corp: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Ameren%20Corp%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:22:19] Ameren Corp: Searching PDF in Webpage | URL: https://www.amereninvestors.com/corporate-governance/Sustainability-ESG-Reporting/default.aspx
+[2025-02-21 19:22:23] Ameren Corp: Found 11 PDF on webpage.
+[2025-02-21 19:22:29] American Airlines Group: Searching Webpage in Bing | URL: https://www.bing.com/search?q=American%20Airlines%20Group%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:22:29] American Airlines Group: Searching PDF in Webpage | URL: https://news.aa.com/news/news-details/2024/American-Airlines-releases-2023-Sustainability-Report-GEN-OTH-07/
+[2025-02-21 19:22:37] American Airlines Group: Found 1 PDF on webpage.
+[2025-02-21 19:22:44] American Electric Power: Searching Webpage in Bing | URL: https://www.bing.com/search?q=American%20Electric%20Power%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:22:45] American Electric Power: Searching PDF in Webpage | URL: https://aepsustainability.com/
+[2025-02-21 19:22:50] American Electric Power: Found 1 PDF on webpage.
+[2025-02-21 19:22:56] American Express Co: Searching Webpage in Bing | URL: https://www.bing.com/search?q=American%20Express%20Co%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-21 19:22:58] American Express Co: Searching PDF in Webpage | URL: https://www.americanexpress.com/en-us/company/corporate-sustainability/

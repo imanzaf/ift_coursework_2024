@@ -154,7 +154,7 @@ def download_pdf(company_name, url, max_trials=3):
 
 # Step 1: Try to search PDF directly in Bing
 def search_pdf_in_bing(driver, company_name):
-    year = str(datetime.now().year -1 )
+    year = str(datetime.now().year)
     # Search query
     search_query = f"{company_name} sustainability report " + year + " pdf -responsibilityreports"
     search_url = f"https://www.bing.com/search?q={urllib.parse.quote(search_query)}&first=1&form=QBRE"
@@ -325,7 +325,7 @@ LOG_FILENAME = "log.txt"
 if __name__ == "__main__":
     
     # Single company
-    company_name = "Apple"
+    company_name = "Microsoft"
     webpage_url, pdf_url = process_company(company_name)
     print(f"Webpage URL: {webpage_url}")
     print(f"PDF URL: {pdf_url}")
