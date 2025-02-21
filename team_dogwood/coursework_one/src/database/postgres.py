@@ -41,6 +41,9 @@ class PostgreSQLDB(BaseModel):
         self.connection.close()
 
     def execute(self, ops_type, sql_statement=None, data_load=None):
+        """
+        TODO - understand and fix!!
+        """
         Session = scoped_session(self._conn)
         s = Session()
         if ops_type == "upsert":
@@ -55,17 +58,18 @@ class PostgreSQLDB(BaseModel):
                 ),
             )
             output = s.execute(stmt)
-            s.commit()
+            self.commit()
             return output.is_insert
         elif ops_type == "read":
-            output = s.execute(text(sql_statement))
+            output = self.execute(text(sql_statement))
             return output.mappings().all()
         else:
             raise TypeError("Database method not supported. Only read and write.")
 
-    def _conn_postgres(self):
+    @staticmethod
+    def _conn_postgres():
         url_object = engine.URL.create(
-            drivername="postgresql",
+            drivername=postgres_settings.DRIVER,
             username=postgres_settings.USERNAME,
             password=postgres_settings.PASSWORD,
             host=postgres_settings.HOST,

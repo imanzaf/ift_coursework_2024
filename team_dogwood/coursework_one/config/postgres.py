@@ -8,6 +8,7 @@ load_dotenv()
 
 
 class PostgresSettings(BaseSettings):
+    DRIVER: str
     USERNAME: str
     PASSWORD: str
     PORT: str

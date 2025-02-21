@@ -41,9 +41,9 @@ class SearchResultValidator(BaseModel):
 
     # filter name of company for legal suffices and common articles etc.
     _legal_pattern: str = PrivateAttr(
-        r"\b(Inc|Ltd|LLC|PLC|Corp|GmbH|S\.A\.|NV|AG|Pty Ltd|Co\., Ltd\.|Pvt\.|Ltd\.)\b[.,\s]*"
+        r"\b(Inc|Ltd|LLC|PLC|Corp|GmbH|S\.A|NV|AG|Pty Ltd|Co|Co\., Ltd|Pvt|Ltd)\b[.,\s]*"
     )
-    _article_pattern: str = PrivateAttr(r"\b(a|the|and|&|at|of)\b")
+    _article_pattern: str = PrivateAttr(r"\b(a|the|and|at|of)\b|\s&")
 
     @property
     def clean_company_name(self):
