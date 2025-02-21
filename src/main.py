@@ -1,12 +1,14 @@
 import src.modules.mongo_db.company_data as mongo
 import src.modules.minio.minio_script as minio
 import src.modules.crawler.crawler as crawler
-import src.modules.crawler.crawler_google_api as crawler_google_api
+#import src.modules.crawler.crawler_google_api_parser_validation as crawler_google_api_parse
+#import src.modules.crawler.crawler_google_api as crawler_google_api_key
+import src.modules.crawler.google_api_combined_crawler as google_api_combined_crawler
 import src.modules.crawler.sustainability_reports_beautifulsoup as sustainability_reports_beautifulsoup
 from datetime import datetime
 import logging
 
-def retrieve_and_store_csr_reports(db, years):
+def retrieve_and_store_csr_reports(db):
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
 
@@ -21,7 +23,15 @@ def retrieve_and_store_csr_reports(db, years):
         logger.info(f"Processing company: {company_name}")
 
         try:
-            years_to_process = set(years)
+            existing_reports = document.get("csr_reports", {})
+            if existing_reports:
+                earliest_year = str(min(map(int, existing_reports.keys()))) # Find the lowest year
+            else:
+                earliest_year = str(current_year)  # Default to current year if no reports exist
+
+            # Generate all years from earliest found to current year
+            years_to_process = list(range(int(earliest_year), int(current_year)))
+            print(years_to_process)
             update_data = {"updated_at": datetime.utcnow()}
 
             # Get existing CSR reports if present
@@ -34,18 +44,38 @@ def retrieve_and_store_csr_reports(db, years):
                     continue
 
                 if str(year) in [current_year, previous_year]:
-                    result = crawler.process_company(company_name)
-                    if result == (None, None, None):
+                    try:
+                        result = crawler.process_company(company_name)
+
+                        if result == (None, None):
+                            logger.warning(f"No valid result found for {company_name} for year {year}")
+                            result = google_api_combined_crawler._get_report_search_results(company_name, ticker, str(year))
+                            result = (None, result)
+                        #If still no results, continue
+                        if result == (None, None):
+                            continue
+                        webpage_url, pdf_url = result
+                        #TODO: Add a check if it available for latest year!!!
+                        #TODO: Add validation of pdf!!!
+                        #TODO: If year is current year, make sure the pdf is not as in the previous year
+                        update_data.setdefault("csr_reports", {})[str(year)] = pdf_url
+                        update_data["website_url"] = webpage_url
+                    except Exception as e:
                         logger.warning(f"No valid result found for {company_name} for year {year}")
-                        continue
-                    webpage_url, pdf_url = result
-                    #TODO: Add a check if it available for latest year!!!
-                    #TODO: Add validation of pdf!!!
-                    #TODO: If year is current year, make sure the pdf is not as in the previous year
-                    update_data.setdefault("csr_reports", {})[str(year)] = pdf_url
-                    update_data["website_url"] = webpage_url
+                        result = google_api_combined_crawler._get_report_search_results(company_name, ticker, str(year))
+                        result = (None, result)
+                        #If still no results, continue
+                        if result == (None, None):
+                            continue
+                        webpage_url, pdf_url = result
+                        #TODO: Add a check if it available for latest year!!!
+                        #TODO: Add validation of pdf!!!
+                        #TODO: If year is current year, make sure the pdf is not as in the previous year
+                        update_data.setdefault("csr_reports", {})[str(year)] = pdf_url
+                        update_data["website_url"] = webpage_url
+
                 else:
-                    pdf_url = crawler_google_api._get_report_search_results(company_name, ticker, year)
+                    pdf_url = google_api_combined_crawler._get_report_search_results(company_name, ticker, str(year))
                     # TODO: Add a check if it available for given year!!!
                     # TODO: Add validation of pdf!!!
                     update_data.setdefault("csr_reports", {})[str(year)] = pdf_url
@@ -83,11 +113,8 @@ if __name__ == '__main__':
     if minio_client is None:
         exit(1)
     db = mongo_client["csr_reports"]
-    sustainability_reports_beautifulsoup.populate_reports_sustainability_reports_org(db)
+    #sustainability_reports_beautifulsoup.populate_reports_sustainability_reports_org(db)
     #mongo.reset_database()
-    #user_input_years = input("Enter the years to process (comma-separated): ")
-    #years_list = [year.strip() for year in user_input_years.split(",")]
 
-
-    #retrieve_and_store_csr_reports(db, years_list)
+    retrieve_and_store_csr_reports(db)
     #upload_csr_reports_to_minio(db, minio_client)

@@ -136,8 +136,11 @@ def _score_esg_report(pdf_url: str, company_name: str, target_year: str) -> int:
             logger.warning(f"❌ Company name '{stripped_name}' not found in document.")
             return None  # Reject this document
 
-        # Ensure the input year is in the document
-        year_count = text.count(target_year) + text.count(str(int(target_year) - 1))
+
+        year_str = str(target_year).strip("{}")  # Fix invalid set issue
+        prev_year_str = str(int(year_str) - 1)
+        year_count = text.count(year_str) + text.count(prev_year_str)
+
         if year_count > 1:
             score += 5  # Base + 2 points per mention
             logger.info(f"✅ Year '{target_year}' found")
