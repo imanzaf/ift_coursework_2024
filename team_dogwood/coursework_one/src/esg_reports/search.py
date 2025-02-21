@@ -21,7 +21,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
-from config.auth import auth_settings
+from config.google import google_settings
 from src.data_models.company import Company, SearchResult
 
 
@@ -44,8 +44,8 @@ class Search(BaseModel):
     # Private attributes
     # Google API Config
     _google_api_url: str = PrivateAttr("https://www.googleapis.com/customsearch/v1")
-    _google_api_key: str = PrivateAttr(auth_settings.GOOGLE_API_KEY)
-    _google_engine_id: str = PrivateAttr(auth_settings.GOOGLE_ENGINE_ID)
+    _google_api_key: str = PrivateAttr(google_settings.API_KEY)
+    _google_engine_id: str = PrivateAttr(google_settings.ENGINE_ID)
     # Sustainability Reports URLs
     _sustainability_reports_url: str = PrivateAttr(
         "https://www.responsibilityreports.com"

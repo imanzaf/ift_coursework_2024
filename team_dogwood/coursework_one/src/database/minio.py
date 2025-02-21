@@ -5,6 +5,8 @@ TODO -
 
 from ift_global import MinioFileSystemRepo
 
+# from config.minio import minio_settings
+
 
 class MinioFileSystem(MinioFileSystemRepo):
     """
