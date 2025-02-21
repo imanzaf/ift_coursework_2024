@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "Team_Adansonia"
+version = "0.1.0"
+description = "Team Adansonia"
+authors = ["Balazs Bellus <ucesbb4@ucl.ac.uk>"]
+license = "MIT"
+
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.8"  # Adjust Python version as needed
+requests = "*"
+dotenv = "*"
+loguru = "*"
+minio = "*"
+pymongo = "*"
+pandas = "*"
+flask = "*"
+PyPDF2 = "*"
+selenium = "*"
+imageio = "*"
+urllib3 = "*"
+dnspython = "*"  # Required for some MongoDB setups
+webdriver-manager = "*"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+black = "*"
+isort = "*"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+

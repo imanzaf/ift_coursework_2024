@@ -1,6 +1,6 @@
 import os
 import time
-import datetime
+from datetime import datetime
 import urllib.parse
 import threading
 #from concurrent.futures import ThreadPoolExecutor, wait
@@ -72,16 +72,16 @@ def get_search_results(driver, company_name, search_url, search_query, max_trial
 
 # Helper Function: Determine if the PDF content contains keywords
 def is_pdf_contains_keywords(pdf_path):
-
+    current_year = datetime.now().year
     keywords = ['scope 1', 'scope 2']
-    years = ['2024', '2023']
+    years = [str(current_year), str(current_year-1)]
     
     try:
         reader = PdfReader(pdf_path)
         text = ""
         for page in reader.pages:
             page_text = page.extract_text()
-            # Only extract text if it contains 'scope 1' or 'scope 2' and '2024' or '2023'
+            # Only extract text if it contains 'scope 1' or 'scope 2' and currentyear, currentyear -1
             if any(keyword in page_text.lower() for keyword in keywords) and \
                   any(year in page_text.lower() for year in years):
                 text += page_text
@@ -154,9 +154,9 @@ def download_pdf(company_name, url, max_trials=3):
 
 # Step 1: Try to search PDF directly in Bing
 def search_pdf_in_bing(driver, company_name):
-    
+    year = str(datetime.now().year -1 )
     # Search query
-    search_query = f"{company_name} sustainability report 2024 pdf -responsibilityreports"
+    search_query = f"{company_name} sustainability report " + year + " pdf -responsibilityreports"
     search_url = f"https://www.bing.com/search?q={urllib.parse.quote(search_query)}&first=1&form=QBRE"
     write_log(f"{company_name}: Searching PDF in Bing | URL: {search_url}")
 

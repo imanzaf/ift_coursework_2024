@@ -27,12 +27,14 @@ def connect_to_minio():
         print(f"❌ Error connecting to MinIO: {e}")
         return None
 
+
 def upload_report_to_minio(document, client):
     """
     Upload the CSR report from the given document to MinIO in the structured format.
+    Skips the upload if the report already exists in the MinIO bucket.
     """
     try:
-        # Extract document data
+        # Extract necessary document data
         symbol = document.get("symbol")
         security_name = document.get("security")
         csr_reports = document.get("csr_reports")
@@ -43,19 +45,19 @@ def upload_report_to_minio(document, client):
 
         # Iterate over all years in csr_reports and upload each report
         for year, csr_report_url in csr_reports.items():
-            # Check if the report URL is valid
             if not csr_report_url:
                 print(f"Invalid CSR report URL for {security_name} in {year}. Skipping.")
                 continue
 
-            # Create the folder structure
+            # Create the folder structure for company and year
             folder_path = f"csreport/{security_name}/{year}"
 
-            # Check if the folder already contains the report
             try:
                 # Check if the report already exists by listing objects in the year subfolder
                 objects = client.list_objects(bucket_name="csreport", prefix=f"{security_name}/{year}/", recursive=True)
                 report_uploaded = False
+
+                # Check if any object with the same report file name exists
                 for obj in objects:
                     if csr_report_url.split("/")[-1] in obj.object_name:
                         report_uploaded = True
@@ -63,19 +65,19 @@ def upload_report_to_minio(document, client):
 
                 if report_uploaded:
                     print(f"Report for {security_name} in {year} already exists in MinIO. Skipping upload.")
-                    continue
+                    continue  # Skip upload if the report already exists
 
             except S3Error as e:
                 print(f"Error checking report existence: {e}")
-                continue
+                continue  # Skip the upload if there's an error in checking
 
             # Use tempfile to create a temporary file to store the downloaded report
             with tempfile.NamedTemporaryFile(delete=False) as temp_file:
                 report_name = csr_report_url.split("/")[-1]
                 report_file_path = temp_file.name  # The temp file's path
 
-                # Download the CSR report and save it to the temp file
                 try:
+                    # Download the CSR report and save it to the temp file
                     response = requests.get(csr_report_url, stream=True)
                     if response.status_code == 200:
                         with open(report_file_path, 'wb') as file:
