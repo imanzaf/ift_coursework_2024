@@ -10,11 +10,15 @@ import sys
 from datetime import datetime
 from typing import List
 
+from loguru import logger
 from pydantic import BaseModel, Field, PrivateAttr
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
 from src.data_models.company import Company, SearchResult
+
+# TODO - add method for returning older or future reports
+# if report not present, return None
 
 
 class SearchResultValidator(BaseModel):
@@ -45,8 +49,27 @@ class SearchResultValidator(BaseModel):
     )
     _article_pattern: str = PrivateAttr(r"\b(a|the|and|at|of)\b|\s&")
 
+    # ESG keywords
+    _esg_keywords: List[str] = PrivateAttr(
+        [
+            "esg",
+            "environmental",
+            "social",
+            "governance",
+            "sustainability",
+            "climate",
+            "carbon",
+            "emission",
+            "responsibility",
+            "impact",
+        ]
+    )
+
     @property
     def clean_company_name(self):
+        """
+        Clean the company name by removing legal suffixes and common articles.
+        """
         # Remove all matches of the legal suffix
         cleaned_name = re.sub(
             self._legal_pattern, "", self.company.security, flags=re.IGNORECASE
@@ -58,12 +81,21 @@ class SearchResultValidator(BaseModel):
 
     @property
     def validated_results(self):
+        """
+        Validate search results based on presence of year,company name and keywords.
+
+        Returns
+            validated_results (list[SearchResult]): List of validated search results
+        """
         valid_results = []
         for result in self.search_results:
-            if self._year_in_result(result) and self._company_name_in_result(result):
+            if all(
+                [self._year_in_result(result), self._company_name_in_result(result)]
+            ) or all(
+                [self._company_name_in_result(result), self._keywords_in_result(result)]
+            ):
                 valid_results.append(result)
 
-        # TODO - check keywords in valid results
         return valid_results
 
     def _year_in_result(self, result: SearchResult):
@@ -95,12 +127,17 @@ class SearchResultValidator(BaseModel):
 
     def _company_name_in_result(self, result: SearchResult):
         """
-        Check that the company name is in the author field, title, or snippet
+        Check that the company name is in the author field, title, snippet, or link.
         """
         if any(
             [
-                self.clean_company_name in metadata
-                for metadata in [result.title, result.snippet, result.author]
+                self.clean_company_name.lower() in str(metadata).lower()
+                for metadata in [
+                    result.title,
+                    result.snippet,
+                    result.author,
+                    result.link,
+                ]
             ]
         ):
             return True
@@ -108,10 +145,17 @@ class SearchResultValidator(BaseModel):
 
     def _keywords_in_result(self, result: SearchResult):
         """
-        TODO !!
-        Check that ESG keywords are in the title, snippet or link
+        Check that ESG keywords are in the title, snippet or link.
         """
-        pass
+        if (
+            any([keyword in result.title.lower() for keyword in self._esg_keywords])
+            or any(
+                [keyword in result.snippet.lower() for keyword in self._esg_keywords]
+            )
+            or any([keyword in result.link.lower() for keyword in self._esg_keywords])
+        ):
+            return True
+        return False
 
 
 if __name__ == "__main__":
@@ -135,4 +179,4 @@ if __name__ == "__main__":
     ]
 
     validator = SearchResultValidator(company=company, search_results=results)
-    print(validator.clean_company_name)
+    logger.info(f"Cleaned Company Name: {validator.clean_company_name}")

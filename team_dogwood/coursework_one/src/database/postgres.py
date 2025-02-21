@@ -4,9 +4,7 @@ TODO -
     - Methods for loading company data from sql database (postrgres)
 """
 
-from typing import Dict
-
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from sqlalchemy import create_engine, engine
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -18,8 +16,6 @@ from src.data_models.company import Company
 
 class PostgreSQLDB(BaseModel):
     """ """
-
-    sql_config: Dict = Field(..., description="SQL configuration dict")
 
     def __enter__(self):
         return self

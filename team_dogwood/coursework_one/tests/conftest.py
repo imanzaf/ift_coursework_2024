@@ -36,11 +36,11 @@ def multiple_search_results():
             snippet="Comprehensive sustainability initiatives",
         ),
         SearchResult(
-            title="Apple Corporate Responsibility",
-            metatag_title="Corporate Responsibility Report",
-            author="Apple Corporate",
-            link="https://example.com/apple_corporate.pdf",
-            snippet="Corporate responsibility and governance",
+            title="Microsoft Report",
+            metatag_title="",
+            author="Microsoft",
+            link="https://example.com/microsoft_report.pdf",
+            snippet="Microsoft Sustainability Report",
         ),
     ]
 
