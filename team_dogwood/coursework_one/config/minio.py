@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Load environment variables from .env file
 # loaded manually due to subdirectory structure of this project
@@ -12,12 +12,13 @@ class MinioSettings(BaseSettings):
     PASSWORD: str
     PORT: str
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        env_prefix = "MINIO_"
-        case_sensitive = True
-        extra = "ignore"
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        env_prefix="MINIO_",
+        case_sensitive=True,
+        extra="ignore",
+    )
 
 
 minio_settings = MinioSettings()

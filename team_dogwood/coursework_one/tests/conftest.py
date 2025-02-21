@@ -46,9 +46,26 @@ def multiple_search_results():
 
 
 @pytest.fixture
-def validator_with_results(
-    sample_company, multiple_search_results
-) -> SearchResultValidator:
+def validator_with_results(sample_company, multiple_search_results):
     return SearchResultValidator(
         company=sample_company, search_results=multiple_search_results
     )
+
+
+@pytest.fixture
+def google_response():
+    return [
+        {
+            "title": "Apple ESG Report 2023",
+            "snippet": "Latest environmental report from Apple",
+            "link": "https://example.com/apple_esg_2023.pdf",
+            "pagemap": {
+                "metatags": [
+                    {
+                        "title": "Apple Environmental Report",
+                        "author": "Apple Inc.",
+                    }
+                ]
+            },
+        }
+    ]

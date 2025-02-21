@@ -15,7 +15,9 @@ from src.data_models.company import Company
 
 
 class PostgreSQLDB(BaseModel):
-    """ """
+    """
+    Methods for connecting to and interacting with the postgres database
+    """
 
     def __enter__(self):
         return self

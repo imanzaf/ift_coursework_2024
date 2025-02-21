@@ -1,7 +1,5 @@
 """
-TODO -
-    - Methods to validate the retrieved URL contains the correct data
-    - methods to sort reports retrieved from google and sustainability reports
+Methods to validate that URLs retrieved from the Google API contains the correct data.
 """
 
 import os
@@ -16,9 +14,6 @@ from pydantic import BaseModel, Field, PrivateAttr
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
 from src.data_models.company import Company, SearchResult
-
-# TODO - add method for returning older or future reports
-# if report not present, return None
 
 
 class SearchResultValidator(BaseModel):

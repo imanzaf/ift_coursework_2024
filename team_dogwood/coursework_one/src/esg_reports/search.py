@@ -2,6 +2,9 @@
 Search class for scraping ESG reports from various sources.
 """
 
+# TODO - add method for returning older reports with a year param
+# if report not present, return None
+
 import os
 import sys
 import time
@@ -15,9 +18,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-
-# from urllib.parse import quote
-
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
@@ -86,7 +86,7 @@ class Search(BaseModel):
                 return None
 
             # format search results
-            search_results = self._format_search_results(search_results)
+            search_results = self._format_google_results(search_results)
         except HTTPError as e:
             logger.error(f"Failed to fetch search results: {e}. Returning None.")
             return None
@@ -94,7 +94,7 @@ class Search(BaseModel):
         return search_results
 
     @staticmethod
-    def _format_search_results(search_results):
+    def _format_google_results(search_results) -> list[SearchResult]:
         """
         Cleans up search results to only keep relevant information.
 
@@ -106,6 +106,7 @@ class Search(BaseModel):
         """
         formatted_results = []
         for result in search_results:
+            logger.info(f"Search result: {result}")
             # Extract author and date from pagemap.metatags (if available)
             metatags = result.get("pagemap", {}).get("metatags", [{}])[0]
 
