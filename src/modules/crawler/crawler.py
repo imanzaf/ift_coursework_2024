@@ -21,7 +21,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # Helper Function: Write log
 def write_log(message):
     """Write log with timestamp"""
-    timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     with open(LOG_FILENAME, 'a', encoding='utf-8') as f:
         f.write(f"[{timestamp}] {message}\n")
 
@@ -73,7 +73,7 @@ def get_search_results(driver, company_name, search_url, search_query, max_trial
 # Helper Function: Determine if the PDF content contains keywords
 def is_pdf_contains_keywords(pdf_path):
     current_year = datetime.now().year
-    keywords = ['scope 1', 'scope 2']
+    keywords = ['scope 1', 'scope 2', "esg", "csr"]
     years = [str(current_year), str(current_year-1)]
     
     try:
@@ -284,36 +284,38 @@ def find_pdf_in_webpage(driver, company_name, url):
         
 # Process single company
 def process_company(company_name):
+    try:
+        print(f"Processing {company_name}...")
+        driver = init_driver()
+        if not driver:
+            write_log(f"{company_name}: Failed to initialize WebDriver.")
+            return None
+        print("Driver initialized.")
+        '''
+        # 1. Search PDF directly
+        pdf_url = search_pdf_in_bing(driver, company_name)
+        if pdf_url:
+            driver.quit()
+            return pdf_url
+        '''
 
-    print(f"Processing {company_name}...")
-    driver = init_driver()
-    if not driver:
-        write_log(f"{company_name}: Failed to initialize WebDriver.")
-        return None
-    print("Driver initialized.")
-    '''
-    # 1. Search PDF directly
-    pdf_url = search_pdf_in_bing(driver, company_name)
-    if pdf_url:
+        # 2. If PDF not found, search webpage, and find PDF in webpage
+        webpage_url_list = search_webpage_in_bing(driver, company_name)
+        if webpage_url_list:
+            for webpage_url in webpage_url_list:
+                result = find_pdf_in_webpage(driver, company_name, webpage_url)
+                if result is None:
+                    write_log(f"{company_name}: No valid PDF found in webpage {webpage_url}")
+                    continue  # Skip to next URL or company
+                pdf_url = result
+                if pdf_url:
+                    driver.quit()
+                    return webpage_url, pdf_url
+
         driver.quit()
-        return pdf_url
-    '''
-
-    # 2. If PDF not found, search webpage, and find PDF in webpage
-    webpage_url_list = search_webpage_in_bing(driver, company_name)
-    if webpage_url_list:
-        for webpage_url in webpage_url_list:
-            result = find_pdf_in_webpage(driver, company_name, webpage_url)
-            if result is None:
-                write_log(f"{company_name}: No valid PDF found in webpage {webpage_url}")
-                continue  # Skip to next URL or company
-            pdf_url = result
-            if pdf_url:
-                driver.quit()
-                return webpage_url, pdf_url
-
-    driver.quit()
-
+    except Exception as e:
+        write_log(f"{company_name}: No report found for {company_name}")
+        return None
 
 
 # Initialize global variables
@@ -323,8 +325,7 @@ LOG_FILENAME = "log.txt"
 if __name__ == "__main__":
     
     # Single company
-    company_name = "Abbott Laboratories"
-    webpage_url, pdf_url, pdf_path = process_company(company_name)
+    company_name = "Apple"
+    webpage_url, pdf_url = process_company(company_name)
     print(f"Webpage URL: {webpage_url}")
     print(f"PDF URL: {pdf_url}")
-    print(f"PDF Path: {pdf_path}")
