@@ -7,10 +7,10 @@ readme = "README.md"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 pandas = "^2.2.3"
 pre-commit = "^4.1.0"
-black = "^25.1.0"
+black = "^24.10.0"
 isort = "^6.0.0"
 flake8 = "^7.1.1"
 bandit = "^1.8.2"
@@ -21,6 +21,7 @@ loguru = "^0.7.3"
 requests = "^2.32.3"
 beautifulsoup4 = "^4.13.3"
 selenium = "^4.28.1"
+ift-global = {git = "https://github.com/iftucl/ift_global.git"}
 
 [tool.isort]
 profile = "black"

@@ -1,5 +1,5 @@
 """
 TODO -
     - Methods for writing company details to sql database (postrgres)
-    - Methods for writing ESG report object to minio database
+    - Methods for loading company data from sql database (postrgres)
 """
