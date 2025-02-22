@@ -61,7 +61,7 @@ class SearchResultValidator(BaseModel):
     )
 
     @property
-    def clean_company_name(self):
+    def clean_company_name(self) -> str:
         """
         Clean the company name by removing legal suffixes and common articles.
         """
@@ -75,7 +75,7 @@ class SearchResultValidator(BaseModel):
         return cleaned_name
 
     @property
-    def validated_results(self):
+    def validated_results(self) -> List[SearchResult]:
         """
         Validate search results based on presence of year,company name and keywords.
 
@@ -93,7 +93,7 @@ class SearchResultValidator(BaseModel):
 
         return valid_results
 
-    def _year_in_result(self, result: SearchResult):
+    def _year_in_result(self, result: SearchResult) -> bool:
         """
         Check that current or previous year is in the title, snippet or link
         """
@@ -120,7 +120,7 @@ class SearchResultValidator(BaseModel):
             return True
         return False
 
-    def _company_name_in_result(self, result: SearchResult):
+    def _company_name_in_result(self, result: SearchResult) -> bool:
         """
         Check that the company name is in the author field, title, snippet, or link.
         """
@@ -138,7 +138,7 @@ class SearchResultValidator(BaseModel):
             return True
         return False
 
-    def _keywords_in_result(self, result: SearchResult):
+    def _keywords_in_result(self, result: SearchResult) -> bool:
         """
         Check that ESG keywords are in the title, snippet or link.
         """

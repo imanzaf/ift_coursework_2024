@@ -10,6 +10,7 @@ import re
 import sys
 import time
 from datetime import datetime
+from typing import List, Union
 
 import requests
 from loguru import logger
@@ -56,15 +57,15 @@ class Search(BaseModel):
     )
 
     @property
-    def _google_search_query(self):
+    def _google_search_query(self) -> str:
         search_query = f"{self.company.security} {str(datetime.now().year)} ESG report filetype:pdf"
         return search_query
 
     @property
-    def _sustainability_reports_request_url(self):
+    def _sustainability_reports_request_url(self) -> str:
         return f"{self._sustainability_reports_url}/Companies?search={self.company.security}"
 
-    def google(self):
+    def google(self) -> Union[List[SearchResult], None]:
         """
         Uses Google API to scrape search results.
         """
@@ -125,7 +126,7 @@ class Search(BaseModel):
             formatted_results.append(result)
         return formatted_results
 
-    def sustainability_reports_dot_com(self):
+    def sustainability_reports_dot_com(self) -> ESGReport:
         """
         Search for sustainability reports on sustainabilityreports.com
         """
