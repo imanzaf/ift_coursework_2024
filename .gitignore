@@ -207,6 +207,9 @@ __pycache__
 # vs code settings
 .vscode
 
+# pycharm settings
+.idea
+
 # volumes folders docker
 
 postgres-data/

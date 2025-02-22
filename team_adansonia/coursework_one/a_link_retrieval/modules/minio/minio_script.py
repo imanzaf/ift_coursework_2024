@@ -1,7 +1,7 @@
 import os
 from minio import Minio
 from minio.error import S3Error
-from src.modules.mongo_db.company_data import CompanyData, connect_to_mongo  # Importing necessary classes from the other file
+from mongo_db.company_data import CompanyData, connect_to_mongo  # Importing necessary classes from the other file
 import tempfile
 import os
 import requests
