@@ -7,17 +7,20 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 load_dotenv()
 
 
-class GoogleSettings(BaseSettings):
-    API_KEY: str
-    ENGINE_ID: str
+class SearchSettings(BaseSettings):
+    GOOGLE_API_URL: str
+    GOOGLE_API_KEY: str
+    GOOGLE_ENGINE_ID: str
+
+    SUSTAINABILITY_REPORTS_API_URL: str
 
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
-        env_prefix="GOOGLE_",
+        env_prefix="SEARCH_",
         case_sensitive=True,
         extra="ignore",
     )
 
 
-google_settings = GoogleSettings()
+search_settings = SearchSettings()

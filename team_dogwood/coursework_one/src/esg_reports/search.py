@@ -24,7 +24,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
-from config.google import google_settings
+from team_dogwood.coursework_one.config.search import search_settings
+
 from src.data_models.company import Company, ESGReport, SearchResult
 
 
@@ -46,12 +47,12 @@ class Search(BaseModel):
 
     # Private attributes
     # Google API Config
-    _google_api_url: str = PrivateAttr("https://www.googleapis.com/customsearch/v1")
-    _google_api_key: str = PrivateAttr(google_settings.API_KEY)
-    _google_engine_id: str = PrivateAttr(google_settings.ENGINE_ID)
+    _google_api_url: str = PrivateAttr(search_settings.GOOGLE_API_URL)
+    _google_api_key: str = PrivateAttr(search_settings.GOOGLE_API_KEY)
+    _google_engine_id: str = PrivateAttr(search_settings.GOOGLE_ENGINE_ID)
     # Sustainability Reports URLs
     _sustainability_reports_url: str = PrivateAttr(
-        "https://www.responsibilityreports.com/"
+        search_settings.SUSTAINABILITY_REPORTS_API_URL
     )
 
     @property
