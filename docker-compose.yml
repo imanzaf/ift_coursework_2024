@@ -96,6 +96,7 @@ services:
           sleep 10 && /usr/bin/mc mb minio/csreport;
           mc anonymous set public minio/csreport;
           tail -f /dev/null
+          "
 
 networks:
     iceberg_net:
