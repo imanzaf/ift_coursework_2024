@@ -1,10 +1,10 @@
-import src.modules.mongo_db.company_data as mongo
-import src.modules.minio.minio_script as minio
-import src.modules.crawler.crawler as crawler
+import modules.mongo_db.company_data as mongo
+import modules.minio.minio_script as minio
+import modules.crawler.crawler as crawler
 #import src.modules.crawler.crawler_google_api_parser_validation as crawler_google_api_parse
 #import src.modules.crawler.crawler_google_api as crawler_google_api_key
-import src.modules.crawler.google_api_combined_crawler as google_api_combined_crawler
-import src.modules.crawler.sustainability_reports_beautifulsoup as sustainability_reports_beautifulsoup
+import modules.crawler.google_api_combined_crawler as google_api_combined_crawler
+import modules.crawler.sustainability_reports_beautifulsoup as sustainability_reports_beautifulsoup
 from datetime import datetime
 import logging
 
@@ -115,6 +115,6 @@ if __name__ == '__main__':
     db = mongo_client["csr_reports"]
     #sustainability_reports_beautifulsoup.populate_reports_sustainability_reports_org(db)
     #mongo.reset_database()
-
-    retrieve_and_store_csr_reports(db)
+    print("Database connected")
+    #retrieve_and_store_csr_reports(db)
     #upload_csr_reports_to_minio(db, minio_client)

@@ -1,7 +1,0 @@
-# use "pip install -r requirements.txt" to install all the dependencies
-
-requests
-urllib3
-selenium
-PyPDF2
-pycryptodome
