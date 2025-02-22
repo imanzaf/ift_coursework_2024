@@ -1,6 +1,22 @@
-version: '3.5'
-
 services:
+    zookeeper:
+      container_name: zookeeper
+      image: confluentinc/cp-zookeeper:latest
+      ports:
+        - "2181:2181"
+      environment:
+        ZOOKEEPER_CLIENT_PORT: 2181
+    kafka:
+      container_name: kafka
+      image: confluentinc/cp-kafka:latest
+      ports:
+        - "9092:9092"
+      environment:
+        KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+        KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+        KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      depends_on:
+        - zookeeper
     mongo_db:
       container_name: mongo_db_cw
       image: mongo:latest
@@ -8,8 +24,8 @@ services:
         - 27019:27017
     postgres_db:
         container_name: postgres_db_cw
-        image: postgres:10.5        
-        environment: 
+image: postgres:10.5
+        environment:
           - POSTGRES_USER=postgres
           - POSTGRES_PASSWORD=postgres
           - PGUSER=postgres
@@ -25,20 +41,20 @@ services:
           test: ["CMD-SHELL", "pg_isready"]
           interval: 10s
           timeout: 5s
-          retries: 5          
+          retries: 5
     postgres_seed:
       container_name: postgres_seed_cw
       restart: on-failure
       environment:
         POSTGRES_DATABASE: postgres_feeder
         POSTGRES_HOST: postgres_feeder
-        POSTGRES_PORT: 5439
-        POSTGRES_USER: postgres_feeder
-        POSTGRES_PASSWORD: postgres_feeder
+POSTGRES_PORT: 5439
+        	POSTGRES_USER: postgres_feeder
+        	POSTGRES_PASSWORD: postgres_feeder
       depends_on:
         postgres_db:
           condition: service_healthy
-      build: 
+      build:
         dockerfile: ./000.Database/SQL/Dockerfile
     pgadmin:
       container_name: pg_admin_cw
@@ -56,7 +72,7 @@ services:
         iceberg_net:
       environment:
         - MINIO_ROOT_USER=ift_bigdata
-        - MINIO_ROOT_PASSWORD=minio_password
+  		- MINIO_ROOT_PASSWORD=minio_password
         - MINIO_DOMAIN=miniocw
       ports:
         - 9001:9001
@@ -80,4 +96,6 @@ services:
         sleep 10 && /usr/bin/mc mb minio/csreport;
         mc anonymous set public minio/csreport;
         tail -f /dev/null
-        "
+
+networks:
+    iceberg_net:
