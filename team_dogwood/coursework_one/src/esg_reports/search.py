@@ -6,6 +6,7 @@ Search class for scraping ESG reports from various sources.
 # if report not present, return None
 
 import os
+import re
 import sys
 import time
 from datetime import datetime
@@ -15,14 +16,16 @@ from loguru import logger
 from pydantic import BaseModel, Field, PrivateAttr
 from requests.exceptions import HTTPError
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
 from config.google import google_settings
-from src.data_models.company import Company, SearchResult
+from src.data_models.company import Company, ESGReport, SearchResult
 
 
 class Search(BaseModel):
@@ -48,7 +51,7 @@ class Search(BaseModel):
     _google_engine_id: str = PrivateAttr(google_settings.ENGINE_ID)
     # Sustainability Reports URLs
     _sustainability_reports_url: str = PrivateAttr(
-        "https://www.responsibilityreports.com"
+        "https://www.responsibilityreports.com/"
     )
 
     @property
@@ -121,79 +124,170 @@ class Search(BaseModel):
             formatted_results.append(result)
         return formatted_results
 
-    def sustainability_reports(self):
+    def sustainability_reports_dot_com(self):
         """
-        Uses Selenium to scrape ESG reports from the Sustainability Reports website.
-
-        Returns:
-            sustainability_reports (list[ESGReport]): A list of ESG reports for the company.
+        Search for sustainability reports on sustainabilityreports.com
         """
+        # strip company name
+        company_name = self.company.security.strip()
         driver = webdriver.Chrome()
+        wait = WebDriverWait(driver, 10)
         try:
-            driver.get(self._sustainability_reports_request_url)
-            logger.debug("Opened page:", self._sustainability_reports_request_url)
-            all_links = WebDriverWait(driver, 10).until(
-                EC.presence_of_all_elements_located((By.TAG_NAME, "a"))
-            )
-            total_links = len(all_links)
-            logger.debug(f"Found {total_links} <a> tags on the search results page.")
-            if total_links < 11:
-                logger.warning(
-                    f"No results returned for {self.company.security}. Returning None."
+            # Open the search page and enter the company name
+            driver.get(self._sustainability_reports_url)
+            search_box = wait.until(
+                EC.element_to_be_clickable(
+                    (
+                        By.CSS_SELECTOR,
+                        "input[name='search'][placeholder='Company Name or Ticker Symbol']",
+                    )
                 )
-                return None
+            )
+            search_box.click()
+            search_box.clear()
+            search_box.send_keys(company_name)
+            search_box.send_keys(Keys.ENTER)
+            time.sleep(2)
 
-            company_details_page = all_links[10]
-            company_details_page.click()
-            logger.info("Found company details page. Waiting for page to load...")
-            company_links = WebDriverWait(driver, 10).until(
+            # wait for links to be clickable on results page
+            all_links = wait.until(
                 EC.presence_of_all_elements_located((By.TAG_NAME, "a"))
             )
-
-            total_company_links = len(company_links)
+            count = len(all_links)
             logger.debug(
-                f"Found {total_company_links} <a> tags on the company details page."
+                f"Number of <a> tags obtained using the original search term '{company_name}': {count}"
             )
-            needed_links = []
-            if total_company_links > 15:
-                needed_links.append(company_links[15])
-            else:
+            if count == 21:
+                # Not enough tags on page, re-doing search with cleaned company name
+                company_name = self._clean_company_name(company_name)
                 logger.warning(
-                    "Not enough links (less than 16) on the company details page."
+                    f"Original search term returned 21 <a> tags, re-searching using normalized search term '{company_name}'"
                 )
-                return None
-
-            start_idx = 19
-            end_idx = total_company_links - 12
-            if end_idx >= start_idx:
-                for idx in range(start_idx, end_idx + 1):
-                    ordinal = idx + 1
-                    if ordinal % 2 == 0:
-                        needed_links.append(company_links[idx])
-            else:
-                logger.warning(
-                    "Not enough links on the company details page to satisfy the range from the 20th link to the 12th from last link."
-                )
-                return None
-
-            links = []
-            if needed_links:
-                for i, link in enumerate(needed_links):
+                while True:
+                    driver.get(self._sustainability_reports_url)
+                    search_box = wait.until(
+                        EC.element_to_be_clickable(
+                            (
+                                By.CSS_SELECTOR,
+                                "input[name='search'][placeholder='Company Name or Ticker Symbol']",
+                            )
+                        )
+                    )
+                    search_box.click()
+                    search_box.clear()
+                    search_box.send_keys(company_name)
+                    search_box.send_keys(Keys.ENTER)
+                    time.sleep(2)
+                    all_links = wait.until(
+                        EC.presence_of_all_elements_located((By.TAG_NAME, "a"))
+                    )
+                    count = len(all_links)
+                    logger.debug(
+                        f"Number of <a> tags obtained using the normalized search term '{company_name}': {count}"
+                    )
+                    if count == 21:
+                        if " " in company_name:
+                            company_name = company_name.rsplit(" ", 1)[0]
+                            logger.debug(
+                                f"Still 21 <a> tags, shortening search term to: '{company_name}'"
+                            )
+                            continue
+                        else:
+                            logger.warning(
+                                "Search term shortened to the minimum but still returns 21 <a> tags, returning none."
+                            )
+                            driver.quit()
+                            return (company_name, "none", "none")
+                    else:
+                        break
+            elif count == 22:
+                # If there are 22 <a> tags, the 11th one is the correct one.
+                selected_link = all_links[10]
+            elif count > 22:
+                # If there are more than 22 <a> tags, we score the links to find the correct one.
+                candidate_links = all_links[10 : count - 12 + 1]  # noqa: E203
+                best_score = -1
+                selected_link = None
+                for link in candidate_links:
                     text = link.text.strip()
-                    href = link.get_attribute("href")
-                    links.append({i: {"text": text, "href": href}})
-
-                logger.info(f"Found {len(links)} links on the company details page.")
-                logger.debug("Links:", links)
-                return links
+                    score = self._match_score(text, company_name)
+                    if score > best_score:
+                        best_score = score
+                        selected_link = link
+                if selected_link is None:
+                    # If no link has a score better than -1, we select the first one.
+                    selected_link = candidate_links[0]
             else:
-                logger.warning("No links found. Returning None.")
-            return needed_links
+                logger.warning("Not enough <a> tags on the page, cannot proceed.")
+                driver.quit()
+                return ESGReport(
+                    url=None,
+                    year=None,
+                )
+
+            # Click on the selected link and wait for the report link to appear.
+            selected_link.click()
+            time.sleep(2)
+            try:
+                report_link_element = wait.until(
+                    EC.element_to_be_clickable((By.CSS_SELECTOR, "a.btn_form_10k"))
+                )
+            except TimeoutException:
+                logger.warning(
+                    "Link with class 'btn_form_10k' not found, returning none"
+                )
+                driver.quit()
+                return ESGReport(
+                    url=None,
+                    year=None,
+                )
+
+            # Extract the report URL and the year from the link.
+            report_url = report_link_element.get_attribute("href")
+            logger.debug(f"Report URL: {report_url}")
+
+            # Look for year in aria-label, link text, or href.
+            aria_label = report_link_element.get_attribute("aria-label") or ""
+            link_text = report_link_element.text or ""
+            href = report_link_element.get_attribute("href") or ""
+
+            report_year = None
+            for text in [aria_label, link_text, href]:
+                match_year = re.search(r"(20\d{2})", text)
+                if match_year:
+                    report_year = match_year.group(1)
+                    break
+
+            return ESGReport(
+                url=report_url,
+                year=report_year,
+            )
         except Exception as e:
-            logger.error("Exception occurred:", e)
+            logger.warning(f"Exception occurred: {e}. Returning None.")
+            return ESGReport(
+                url=None,
+                year=None,
+            )
         finally:
             time.sleep(5)
             driver.quit()
+
+    def _clean_company_name(name: str) -> str:
+        """
+        Clean the company name by removing non-alphanumeric characters and extra spaces.
+        TODO - maybe switch to using same cleaning function as in validate.py?
+        """
+        cleaned = re.sub(r"[^\w]", " ", name)
+        cleaned = re.sub(r"\s+", " ", cleaned).strip()
+        return cleaned
+
+    def _match_score(text: str, search_term: str) -> int:
+        """
+        Calculate match score based on the number of matching words between the text and the search term.
+        """
+        text_words = set(text.lower().split())
+        term_words = set(search_term.lower().split())
+        return sum(1 for word in term_words if word in text_words)
 
 
 if __name__ == "__main__":
@@ -214,8 +308,7 @@ if __name__ == "__main__":
         for result in google_results:
             logger.info(result)
 
-    # sustainability_reports_results = search.sustainability_reports()
-    # if sustainability_reports_results:
-    #     logger.info(f"Found {len(sustainability_reports_results)} sustainability reports:")
-    #     for link in sustainability_reports_results:
-    #         logger.info(link)
+    sustainability_reports_results = search.sustainability_reports_dot_com()
+    logger.info(
+        f"Result from SustainabilityReports.com: {sustainability_reports_results}"
+    )

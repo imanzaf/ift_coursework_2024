@@ -16,8 +16,10 @@ class Company(BaseModel):
 
 
 class ESGReport(BaseModel):
-    url: str = Field(..., description="The URL of the ESG report")
-    year: str = Field(..., description="The year the ESG report was published")
+    url: Optional[str] = Field(None, description="The URL of the ESG report")
+    year: Optional[str] = Field(
+        None, description="The year the ESG report was published"
+    )
 
 
 class SearchResult(BaseModel):
