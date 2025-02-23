@@ -1,6 +1,5 @@
 """
-TODO -
-    - Methods for writing and reading pdf object from minio database.
+Methods for interacting with minio database.
 """
 
 import os

@@ -1,0 +1,78 @@
+pipeline {
+    agent { dockerfile true }
+    
+    environment {
+        POETRY_VERSION = "2.1.1"  // Set desired Poetry version
+        PYTHON_VERSION = "3.10.0"   // Set desired Python version
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Clone the Git repository
+                    checkout scm
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    // Install Python using pyenv (if needed)
+                    sh '''
+                    if ! command -v python3 &> /dev/null; then
+                        echo "Python not found, installing..."
+                        sudo apt update && sudo apt install -y python3 python3-pip
+                    fi
+                    '''
+
+                    // Install Poetry if not already installed
+                    sh '''
+                    if ! command -v poetry &> /dev/null; then
+                        curl -sSL https://install.python-poetry.org | python3 -
+                        echo "export PATH=$HOME/.local/bin:$PATH" >> $HOME/.bashrc
+                        export PATH=$HOME/.local/bin:$PATH
+                    fi
+                    '''
+
+                    // Verify Poetry installation
+                    sh "poetry --version"
+                    // Ensure Poetry uses the correct Python version
+                    sh "poetry env use python${PYTHON_VERSION}"
+                    // Install project dependencies
+                    sh "poetry install"
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    // Run linters using Poetry
+                    sh "pre-commit run --all-files"
+                    // Run tests using Poetry
+                    sh "poetry run pytest"
+                }
+            }
+        }
+
+        stage('Run') {
+            steps {
+                script {
+                    // Run the main script using Poetry
+                    echo "Running the main script..."
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Build and tests completed successfully!"
+        }
+        failure {
+            echo "Build or tests failed!"
+        }
+    }
+}

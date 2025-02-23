@@ -44,3 +44,11 @@ To run the unit tests, run the following command in the root directory of the pr
 ```bash
 poetry run pytest
 ```
+
+### Running the Jenkins Container
+```bash
+docker run -d --name jenkins \
+  -p 8080:8080 -p 50000:50000 \
+  -v jenkins_home:/var/jenkins_home \
+  jenkins/jenkins:lts
+```
