@@ -20,7 +20,7 @@ RUN pip install poetry \
     && poetry --version
 
 # Install Ollama CLI (assumes Linux-based installation)
-RUN curl -fsSL https://ollama.com/install.sh | sh && mv ollama /usr/local/bin/
+RUN curl -fsSL https://ollama.com/install.sh | sh
 
 # Create a working directory for the application
 WORKDIR /app
