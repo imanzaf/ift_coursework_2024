@@ -6,7 +6,8 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_VERSION=1.6.1 \
     POETRY_HOME="/opt/poetry" \
     POETRY_VIRTUALENVS_CREATE=false \
-    POETRY_NO_INTERACTION=1
+    POETRY_NO_INTERACTION=1 \
+    PATH="$POETRY_HOME/bin:$PATH"
 
 # Install system dependencies required for Poetry, Ollama, and Python packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -16,7 +17,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry
-RUN pip install poetry
+RUN pip install poetry \
+    && poetry --version
 
 # Install Ollama CLI (assumes Linux-based installation)
 RUN curl -sSL https://ollama.com/download/linux | bash && mv ollama /usr/local/bin/
