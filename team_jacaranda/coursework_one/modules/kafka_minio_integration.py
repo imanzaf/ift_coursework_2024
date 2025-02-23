@@ -72,6 +72,11 @@ def download_pdf(url):
 def upload_to_minio(file_name, file_data):
     print(f"Uploading {file_name} to MinIO...")
     try:
+        # 调试信息：打印 file_data 的类型和长度
+        print(f"File data type: {type(file_data)}")
+        print(f"File data length: {len(file_data)}")
+
+        # 上传文件到 MinIO
         minio_client.put_object(
             MINIO_BUCKET,
             file_name,
