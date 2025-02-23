@@ -10,7 +10,6 @@ services:
           - kafka
         volumes:
           - .:/app  # 挂载项目目录到容器中
-        command: poetry run python main.py  # 运行 Python 应用程序
     zookeeper:
         container_name: zookeeper
         image: confluentinc/cp-zookeeper:latest
