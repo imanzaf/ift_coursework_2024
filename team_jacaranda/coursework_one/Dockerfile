@@ -11,8 +11,8 @@ ENV PYTHONUNBUFFERED=1 \
 # Install system dependencies required for Poetry, Ollama, and Python packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl build-essential libffi-dev libssl-dev \
+    libpq-dev python3-dev && \
     # 添加 Kafka 和 PostgreSQL 的系统依赖
-    libpq-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry
