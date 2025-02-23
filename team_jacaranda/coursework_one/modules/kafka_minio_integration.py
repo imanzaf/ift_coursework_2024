@@ -1,3 +1,4 @@
+import io
 import json
 import requests
 from kafka import KafkaConsumer
@@ -76,11 +77,14 @@ def upload_to_minio(file_name, file_data):
         print(f"File data type: {type(file_data)}")
         print(f"File data length: {len(file_data)}")
 
+        # 将 bytes 对象转换为 BytesIO 对象
+        file_stream = io.BytesIO(file_data)
+
         # 上传文件到 MinIO
         minio_client.put_object(
             MINIO_BUCKET,
             file_name,
-            file_data,
+            file_stream,  # 使用文件流对象
             length=len(file_data),
             content_type='application/pdf'
         )
