@@ -16,6 +16,8 @@ sqlite3 = "^3.36.0"
 logging = "^0.4.9.6"
 pathlib = "^1.0.1"
 urllib3 = "^1.26.7"
+kafka-python = "^2.0.2"
+minio = "^7.1.0"
 
 
 [build-system]
