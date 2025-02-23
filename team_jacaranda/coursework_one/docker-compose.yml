@@ -55,7 +55,7 @@ services:
           postgres_db:
             condition: service_healthy
         build:
-          dockerfile: ./000.Database/SQL/Dockerfile
+          dockerfile: ../../000.Database/SQL/Dockerfile
     pgadmin:
         container_name: pg_admin_cw
         image: dpage/pgadmin4
