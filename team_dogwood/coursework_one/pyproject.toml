@@ -22,6 +22,8 @@ requests = "^2.32.3"
 beautifulsoup4 = "^4.13.3"
 selenium = "^4.28.1"
 ift-global = {git = "https://github.com/iftucl/ift_global.git"}
+minio = "^7.2.15"
+psycopg2-binary = "^2.9.10"
 
 [tool.isort]
 profile = "black"
