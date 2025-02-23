@@ -30,7 +30,7 @@ COPY pyproject.toml ./
 COPY poetry.lock ./
 
 # Install Python dependencies using Poetry
-RUN poetry install --no-dev --no-root
+RUN poetry install --without dev --no-root
 RUN poetry run python -m spacy download en_core_web_sm
 RUN poetry run python -m nltk.downloader stopwords
 
