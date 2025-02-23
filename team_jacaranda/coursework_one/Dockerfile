@@ -26,7 +26,8 @@ RUN curl -sSL https://ollama.com/download/linux | bash && mv ollama /usr/local/b
 WORKDIR /app
 
 # Copy Poetry configuration files first to leverage Docker's caching mechanism
-COPY pyproject.toml poetry.lock
+COPY pyproject.toml ./
+COPY poetry.lock ./
 
 # Install Python dependencies using Poetry
 RUN poetry install --no-dev --no-root
