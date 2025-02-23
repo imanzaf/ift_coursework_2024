@@ -2,8 +2,7 @@ services:
     python_app:
         container_name: python_app_cw
         build:
-          context: .  # 使用项目根目录作为构建上下文
-          dockerfile: Dockerfile  # 使用根目录下的 Dockerfile
+          dockerfile: ./team_jacaranda/coursework_one/Dockerfile
         environment:
           - PYTHONUNBUFFERED=1
         depends_on:
