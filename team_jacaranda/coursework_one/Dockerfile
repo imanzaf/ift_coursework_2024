@@ -7,7 +7,6 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_HOME="/opt/poetry" \
     POETRY_VIRTUALENVS_CREATE=false \
     POETRY_NO_INTERACTION=1 \
-    PATH="$POETRY_HOME/bin:$PATH"
 
 # Install system dependencies required for Poetry, Ollama, and Python packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
