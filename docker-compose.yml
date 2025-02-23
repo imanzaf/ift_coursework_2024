@@ -1,11 +1,14 @@
 version: '3.5'
 
 services:
+    # ✅ MongoDB
     mongo_db:
       container_name: mongo_db_cw
       image: mongo:latest
       ports:
         - 27019:27017
+
+    # ✅ PostgreSQL
     postgres_db:
         container_name: postgres_db_cw
         image: postgres:10.5        
@@ -18,14 +21,16 @@ services:
             max-size: 10m
             max-file: "3"
         ports:
-          - '5439:5432'
+          - '5439:5432'  
         volumes:
-          - ./postgres-data:/var/lib/postgresql/data
+          - postgres-data:/var/lib/postgresql/data
         healthcheck:
           test: ["CMD-SHELL", "pg_isready"]
           interval: 10s
           timeout: 5s
           retries: 5          
+
+    # ✅ PostgreSQL Seed 
     postgres_seed:
       container_name: postgres_seed_cw
       restart: on-failure
@@ -40,6 +45,8 @@ services:
           condition: service_healthy
       build: 
         dockerfile: ./000.Database/SQL/Dockerfile
+
+    # ✅ pgAdmin（可视化管理 PostgreSQL）
     pgadmin:
       container_name: pg_admin_cw
       image: dpage/pgadmin4
@@ -49,11 +56,13 @@ services:
         PGADMIN_DEFAULT_PASSWORD: root
       ports:
         - "5051:80"
+
+    # ✅ MinIO
     miniocw:
       image: minio/minio
       container_name: miniocw
       networks:
-        iceberg_net:
+        - iceberg_net  
       environment:
         - MINIO_ROOT_USER=ift_bigdata
         - MINIO_ROOT_PASSWORD=minio_password
@@ -62,10 +71,12 @@ services:
         - 9001:9001
         - 9000:9000
       command: ["server", "/data", "--console-address", ":9001"]
+
+    # ✅ MinIO Client
     minio_client_cw:
       container_name: minio_client_cw
       networks:
-        iceberg_net:
+        - iceberg_net  
       depends_on:
         - miniocw
       image: minio/mc
@@ -81,3 +92,32 @@ services:
         mc anonymous set public minio/csreport;
         tail -f /dev/null
         "
+
+    # ✅ Zookeeper
+    zookeeper:
+      image: confluentinc/cp-zookeeper:latest
+      container_name: zookeeper_cw
+      restart: always
+      ports:
+        - "2181:2181"
+      environment:
+        ZOOKEEPER_CLIENT_PORT: 2181
+
+    # ✅ Kafka
+    kafka:
+      image: confluentinc/cp-kafka:latest
+      container_name: kafka_cw
+      restart: always
+      ports:
+        - "9092:9092"
+      environment:
+        KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+        KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      depends_on:
+        - zookeeper
+
+volumes:
+  postgres-data:
+
+networks:
+  iceberg_net:
