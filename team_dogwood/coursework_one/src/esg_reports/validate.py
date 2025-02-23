@@ -3,7 +3,6 @@ Methods to validate that URLs retrieved from the Google API contains the correct
 """
 
 import os
-import re
 import sys
 from datetime import datetime
 from typing import List
@@ -14,6 +13,7 @@ from pydantic import BaseModel, Field, PrivateAttr
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
 from src.data_models.company import Company, SearchResult
+from src.utils.search import clean_company_name
 
 
 class SearchResultValidator(BaseModel):
@@ -38,12 +38,6 @@ class SearchResultValidator(BaseModel):
         _current_year: str = PrivateAttr(str(datetime.now().year))
         _previous_year: str = PrivateAttr(str(datetime.now().year - 1))
 
-    # filter name of company for legal suffices and common articles etc.
-    _legal_pattern: str = PrivateAttr(
-        r"\b(Inc|Ltd|LLC|PLC|Corp|GmbH|S\.A|NV|AG|Pty Ltd|Co|Co\., Ltd|Pvt|Ltd)\b[.,\s]*"
-    )
-    _article_pattern: str = PrivateAttr(r"\b(a|the|and|at|of)\b|\s&")
-
     # ESG keywords
     _esg_keywords: List[str] = PrivateAttr(
         [
@@ -65,14 +59,8 @@ class SearchResultValidator(BaseModel):
         """
         Clean the company name by removing legal suffixes and common articles.
         """
-        # Remove all matches of the legal suffix
-        cleaned_name = re.sub(
-            self._legal_pattern, "", self.company.security, flags=re.IGNORECASE
-        ).strip()
-        cleaned_name = re.sub(
-            self._article_pattern, "", cleaned_name, flags=re.IGNORECASE
-        ).strip()
-        return cleaned_name
+        name = clean_company_name(self.company.security)
+        return name
 
     @property
     def validated_results(self) -> List[SearchResult]:

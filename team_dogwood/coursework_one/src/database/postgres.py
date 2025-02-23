@@ -10,7 +10,7 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.sql import text
 
-from config.postgres import postgres_settings
+from config.db import database_settings
 from src.data_models.company import Company
 
 
@@ -67,12 +67,12 @@ class PostgreSQLDB(BaseModel):
     @staticmethod
     def _conn_postgres():
         url_object = engine.URL.create(
-            drivername=postgres_settings.DRIVER,
-            username=postgres_settings.USERNAME,
-            password=postgres_settings.PASSWORD,
-            host=postgres_settings.HOST,
-            database=postgres_settings.DB,
-            port=postgres_settings.HOST,
+            drivername=database_settings.POSTGRES_DRIVER,
+            username=database_settings.POSTGRES_USERNAME,
+            password=database_settings.POSTGRES_PASSWORD,
+            host=database_settings.POSTGRES_HOST,
+            database=database_settings.POSTGRES_DB_NAME,
+            port=database_settings.POSTGRES_PORT,
         )
         try:
             connection_engine = create_engine(

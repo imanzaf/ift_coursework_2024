@@ -4,11 +4,12 @@ TODO -
 """
 
 from ift_global import MinioFileSystemRepo
+from pydantic import BaseModel
 
-# from config.minio import minio_settings
+from config.db import database_settings
 
 
-class MinioFileSystem(MinioFileSystemRepo):
+class MinioFileSystem(MinioFileSystemRepo, BaseModel):
     """
     Overwrite file read and file write methods in MinioFileSystemRepo to add functionality to process pdf files.
 
@@ -20,6 +21,8 @@ class MinioFileSystem(MinioFileSystemRepo):
         - dir_exists
         - file_exists
     """
+
+    bucket_name: str = database_settings.MINIO_BUCKET_NAME
 
     def read_file():
         """

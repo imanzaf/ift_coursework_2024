@@ -25,9 +25,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
-from team_dogwood.coursework_one.config.search import search_settings
-
+from config.search import search_settings
 from src.data_models.company import Company, ESGReport, SearchResult
+from src.utils.search import clean_company_name
 
 
 class Search(BaseModel):
@@ -161,7 +161,7 @@ class Search(BaseModel):
             )
             if count == 21:
                 # Not enough tags on page, re-doing search with cleaned company name
-                company_name = self._clean_company_name(company_name)
+                company_name = clean_company_name(company_name)
                 logger.warning(
                     f"Original search term returned 21 <a> tags, re-searching using normalized search term '{company_name}'"
                 )
@@ -274,15 +274,7 @@ class Search(BaseModel):
             time.sleep(5)
             driver.quit()
 
-    def _clean_company_name(name: str) -> str:
-        """
-        Clean the company name by removing non-alphanumeric characters and extra spaces.
-        TODO - maybe switch to using same cleaning function as in validate.py?
-        """
-        cleaned = re.sub(r"[^\w]", " ", name)
-        cleaned = re.sub(r"\s+", " ", cleaned).strip()
-        return cleaned
-
+    @staticmethod
     def _match_score(text: str, search_term: str) -> int:
         """
         Calculate match score based on the number of matching words between the text and the search term.
