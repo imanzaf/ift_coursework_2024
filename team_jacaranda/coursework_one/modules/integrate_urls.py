@@ -7,7 +7,7 @@ from pathlib import Path
 # 获取脚本文件的绝对路径
 script_dir = Path(__file__).resolve().parent
 # 构建数据文件的路径
-json_file_path = script_dir / "../../../coursework_one/static/company_pdf_links.json"
+json_file_path = script_dir / "../../../team_jacaranda/coursework_one/static/company_pdf_links.json"
 # 解析路径（去除多余的 ../）
 json_file_path = json_file_path.resolve()
 
