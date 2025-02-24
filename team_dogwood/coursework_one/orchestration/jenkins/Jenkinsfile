@@ -44,7 +44,7 @@ pipeline {
                     sh "/root/.local/bin/poetry install"
 
                     // Run linters using Poetry
-                    sh "pre-commit run --all-files"
+                    sh "/root/.local/bin/poetry run pre-commit run --all-files"
                     // Run tests using Poetry
                     sh "/root/.local/bin/poetry run pytest"
                 }
