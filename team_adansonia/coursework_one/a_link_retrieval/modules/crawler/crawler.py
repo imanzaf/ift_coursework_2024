@@ -3,6 +3,8 @@ import time
 from datetime import datetime
 import urllib.parse
 import threading
+from enum import nonmember
+
 #from concurrent.futures import ThreadPoolExecutor, wait
 
 from PyPDF2 import PdfReader
@@ -13,7 +15,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+from team_adansonia.coursework_one.a_link_retrieval.modules.validation.validation import is_valid_esg_report_from_url
 
 # Disable warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -291,13 +293,6 @@ def process_company(company_name):
             write_log(f"{company_name}: Failed to initialize WebDriver.")
             return None
         print("Driver initialized.")
-        '''
-        # 1. Search PDF directly
-        pdf_url = search_pdf_in_bing(driver, company_name)
-        if pdf_url:
-            driver.quit()
-            return pdf_url
-        '''
 
         # 2. If PDF not found, search webpage, and find PDF in webpage
         webpage_url_list = search_webpage_in_bing(driver, company_name)
@@ -309,13 +304,15 @@ def process_company(company_name):
                     continue  # Skip to next URL or company
                 pdf_url = result
                 if pdf_url:
-                    driver.quit()
-                    return webpage_url, pdf_url
-
+                    if is_valid_esg_report_from_url(pdf_url):
+                        driver.quit()
+                        return webpage_url, pdf_url
+                    else:
+                        return webpage_url, None
         driver.quit()
     except Exception as e:
         write_log(f"{company_name}: No report found for {company_name}")
-        return None
+        return (None, None)
 
 
 # Initialize global variables

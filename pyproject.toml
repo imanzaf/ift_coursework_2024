@@ -22,6 +22,7 @@ imageio = "*"
 urllib3 = "*"
 dnspython = "*"  # Required for some MongoDB setups
 webdriver-manager = "*"
+pycryptodome = "^3.21.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "*"

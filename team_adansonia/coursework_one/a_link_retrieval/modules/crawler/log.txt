@@ -173,3 +173,13 @@
 [2025-02-21 18:24:52] Microsoft: Searching PDF in Webpage | URL: https://www.microsoft.com/en-us/corporate-responsibility/sustainability-journey
 [2025-02-21 18:24:57] Microsoft: Found 0 PDF on webpage.
 [2025-02-21 18:24:57] Microsoft: No valid PDF found in webpage https://www.microsoft.com/en-us/corporate-responsibility/sustainability-journey
+[2025-02-24 15:15:31] Microsoft: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Microsoft%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-24 15:15:32] Microsoft: Searching PDF in Webpage | URL: https://www.microsoft.com/en-us/corporate-responsibility/sustainability/report
+[2025-02-24 15:15:37] Microsoft: Found 0 PDF on webpage.
+[2025-02-24 15:15:37] Microsoft: No valid PDF found in webpage https://www.microsoft.com/en-us/corporate-responsibility/sustainability/report
+[2025-02-24 15:15:37] Microsoft: Searching PDF in Webpage | URL: https://www.microsoft.com/en-us/corporate-responsibility/sustainability
+[2025-02-24 15:15:41] Microsoft: Found 0 PDF on webpage.
+[2025-02-24 15:15:41] Microsoft: No valid PDF found in webpage https://www.microsoft.com/en-us/corporate-responsibility/sustainability
+[2025-02-24 15:15:41] Microsoft: Searching PDF in Webpage | URL: https://www.microsoft.com/en-us/sustainability
+[2025-02-24 15:15:49] Microsoft: Found 0 PDF on webpage.
+[2025-02-24 15:15:49] Microsoft: No valid PDF found in webpage https://www.microsoft.com/en-us/sustainability

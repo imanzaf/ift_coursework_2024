@@ -1,7 +1,6 @@
-import os
 from minio import Minio
 from minio.error import S3Error
-from mongo_db.company_data import CompanyData, connect_to_mongo  # Importing necessary classes from the other file
+from team_adansonia.coursework_one.a_link_retrieval.modules.mongo_db.company_data import connect_to_mongo, CompanyData
 import tempfile
 import os
 import requests
@@ -27,21 +26,33 @@ def connect_to_minio():
         print(f"❌ Error connecting to MinIO: {e}")
         return None
 
+from datetime import timedelta
+from pymongo import MongoClient
+from bson.objectid import ObjectId
+import tempfile
+import os
+import requests
+from minio import Minio
+from minio.error import S3Error
 
-def upload_report_to_minio(document, client):
+
+def upload_report_to_minio(document, client, mongo_client):
     """
-    Upload the CSR report from the given document to MinIO in the structured format.
-    Skips the upload if the report already exists in the MinIO bucket.
+    Upload CSR reports to MinIO and update the MongoDB document with MinIO URLs.
     """
     try:
         # Extract necessary document data
         symbol = document.get("symbol")
         security_name = document.get("security")
         csr_reports = document.get("csr_reports")
+        document_id = document.get("_id")  # Ensure the document contains its _id
 
-        if not symbol or not security_name or not csr_reports:
+        if not symbol or not security_name or not csr_reports or not document_id:
             print("Invalid document data. Missing required fields.")
             return
+
+        # Dictionary to hold MinIO URLs for each year
+        minio_urls = {}
 
         # Iterate over all years in csr_reports and upload each report
         for year, csr_report_url in csr_reports.items():
@@ -49,32 +60,23 @@ def upload_report_to_minio(document, client):
                 print(f"Invalid CSR report URL for {security_name} in {year}. Skipping.")
                 continue
 
-            # Create the folder structure for company and year
-            folder_path = f"csreport/{security_name}/{year}"
+            # Create the object name for MinIO
+            object_name = f"{security_name}/{year}/{csr_report_url.split('/')[-1]}"
 
             try:
-                # Check if the report already exists by listing objects in the year subfolder
-                objects = client.list_objects(bucket_name="csreport", prefix=f"{security_name}/{year}/", recursive=True)
-                report_uploaded = False
-
-                # Check if any object with the same report file name exists
-                for obj in objects:
-                    if csr_report_url.split("/")[-1] in obj.object_name:
-                        report_uploaded = True
-                        break
-
-                if report_uploaded:
+                # Check if the report already exists
+                try:
+                    client.stat_object("csreport", object_name)
                     print(f"Report for {security_name} in {year} already exists in MinIO. Skipping upload.")
                     continue  # Skip upload if the report already exists
+                except S3Error as e:
+                    if e.code != 'NoSuchKey':
+                        print(f"Error checking report existence: {e}")
+                        continue  # Skip the upload if there's an error other than 'NoSuchKey'
 
-            except S3Error as e:
-                print(f"Error checking report existence: {e}")
-                continue  # Skip the upload if there's an error in checking
-
-            # Use tempfile to create a temporary file to store the downloaded report
-            with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-                report_name = csr_report_url.split("/")[-1]
-                report_file_path = temp_file.name  # The temp file's path
+                # Use tempfile to create a temporary file to store the downloaded report
+                with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+                    report_file_path = temp_file.name  # The temp file's path
 
                 try:
                     # Download the CSR report and save it to the temp file
@@ -90,10 +92,20 @@ def upload_report_to_minio(document, client):
                     # Upload the report to MinIO
                     client.fput_object(
                         bucket_name="csreport",
-                        object_name=f"{security_name}/{year}/{report_name}",
+                        object_name=object_name,
                         file_path=report_file_path
                     )
-                    print(f"Successfully uploaded {report_name} to {folder_path} in MinIO.")
+                    print(f"Successfully uploaded {object_name} to MinIO.")
+
+                    # Generate a presigned URL valid for 7 days
+                    presigned_url = client.presigned_get_object(
+                        "csreport",
+                        object_name,
+                        expires=timedelta(days=7)
+                    )
+
+                    # Add the presigned URL to the dictionary
+                    minio_urls[year] = presigned_url
 
                 except requests.RequestException as e:
                     print(f"Error downloading report: {e}")
@@ -102,11 +114,23 @@ def upload_report_to_minio(document, client):
                     if os.path.exists(report_file_path):
                         os.remove(report_file_path)
 
-    except S3Error as e:
-        print(f"MinIO S3Error: {e}")
-    except Exception as e:
-        print(f"Error: {e}")
+            except S3Error as e:
+                print(f"MinIO S3Error: {e}")
+            except Exception as e:
+                print(f"Error: {e}")
 
+        # Update the MongoDB document with the dictionary of MinIO URLs
+        if minio_urls:
+            db = mongo_client["csr_reports"]  # Replace with your database name
+            collection = db['companies']  # Replace with your collection name
+            collection.update_one(
+                {"_id": ObjectId(document_id)},
+                {"$set": {"minio_urls": minio_urls}}
+            )
+            print(f"Updated MongoDB document with MinIO URLs: {minio_urls}")
+
+    except Exception as e:
+        print(f"Unexpected error: {e}")
 
 def main():
     # Sample company data with CSR report for Microsoft
@@ -133,7 +157,7 @@ def main():
         exit(1)  # Exit if MinIO is not connected
 
     # --- Upload CSR Reports to MinIO ---
-    upload_report_to_minio(sample_company.to_dict(), client)
+    upload_report_to_minio(sample_company.to_dict(), client, mongo_client)
 
     # --- Test: Add a New CSR Report to MongoDB and Upload to MinIO ---
     # Here we would normally update the MongoDB database with the new CSR report,
