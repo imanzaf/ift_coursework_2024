@@ -183,3 +183,23 @@
 [2025-02-24 15:15:41] Microsoft: Searching PDF in Webpage | URL: https://www.microsoft.com/en-us/sustainability
 [2025-02-24 15:15:49] Microsoft: Found 0 PDF on webpage.
 [2025-02-24 15:15:49] Microsoft: No valid PDF found in webpage https://www.microsoft.com/en-us/sustainability
+[2025-02-24 21:45:25] Microsoft: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Microsoft%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-24 21:45:26] Microsoft: Searching PDF in Webpage | URL: https://www.microsoft.com/en-us/corporate-responsibility/sustainability/report
+[2025-02-24 21:45:35] Microsoft: Found 0 PDF on webpage.
+[2025-02-24 21:45:35] Microsoft: No valid PDF found in webpage https://www.microsoft.com/en-us/corporate-responsibility/sustainability/report
+[2025-02-24 21:45:35] Microsoft: Searching PDF in Webpage | URL: https://www.microsoft.com/en-us/corporate-responsibility/sustainability
+[2025-02-24 21:45:52] 3M Company: Searching Webpage in Bing | URL: https://www.bing.com/search?q=3M%20Company%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-24 21:45:53] 3M Company: Searching PDF in Webpage | URL: https://www.3m.com/3M/en_US/sustainability-us/
+[2025-02-24 21:45:59] 3M Company: Found 1 PDF on webpage.
+[2025-02-24 21:45:59] 3M Company: No report found for 3M Company
+[2025-02-24 21:50:40] 3M Company: Searching Webpage in Bing | URL: https://www.bing.com/search?q=3M%20Company%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-24 21:50:41] 3M Company: Searching PDF in Webpage | URL: https://www.3m.com/3M/en_US/sustainability-us/
+[2025-02-24 21:50:47] 3M Company: Found 1 PDF on webpage.
+[2025-02-24 21:50:47] 3M Company: No report found for 3M Company
+[2025-02-24 22:59:04] Apple: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Apple%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-24 22:59:05] Apple: Searching PDF in Webpage | URL: https://www.apple.com/environment/
+[2025-02-24 22:59:25] Apple: Found 3 PDF on webpage.
+[2025-02-24 22:59:25] Apple: No report found for Apple
+[2025-02-24 23:06:13] 3M Company: Searching Webpage in Bing | URL: https://www.bing.com/search?q=3M%20Company%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-24 23:06:14] 3M Company: Searching PDF in Webpage | URL: https://www.3m.com/3M/en_US/sustainability-us/
+[2025-02-24 23:06:20] 3M Company: Found 1 PDF on webpage.

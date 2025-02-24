@@ -51,8 +51,8 @@ def retrieve_and_store_csr_reports(collection):
                     logger.info(f"Skipping {company_name} for year {year}, report already exists.")
                     continue
 
-                # Process for current or previous year
-                if year_str in [current_year, previous_year]:
+                # Process for current year
+                if year_str == current_year:
                     try:
                         result = crawler.process_company(company_name)
 
@@ -71,7 +71,7 @@ def retrieve_and_store_csr_reports(collection):
                         logger.warning(f"No valid result found for {company_name} for year {year}")
                         result = google_api_combined_crawler._get_report_search_results(company_name, ticker, year_str)
 
-                        if result == (None, None):
+                        if result is None:
                             continue
 
                         webpage_url, pdf_url = result
@@ -189,6 +189,6 @@ def populate_database():
 '''
 
 if __name__ == '__main__':
-    #mongo.reset_database()
+    mongo.reset_database()
     #responsibility_reports_seed()
-    populate_database()
+    #populate_database()
