@@ -52,3 +52,13 @@ docker run -d --name jenkins \
   -v jenkins_home:/var/jenkins_home \
   jenkins/jenkins:lts
 ```
+
+Get the initial admin password from the container logs:
+```bash
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+```
+
+TODO! Add instructions for setting up the Jenkins pipeline. 
+1. How to create and configure a pipeline
+2. How to log on as admin
+3. How to schedule a pipeline
