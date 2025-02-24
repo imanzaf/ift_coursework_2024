@@ -18,7 +18,7 @@ pipeline {
 
         stage('Build Environment') {
             steps {
-                script {
+                dir('team_dogwood/coursework_one') {
                     // Install Python using pyenv (if needed)
                     sh '''
                     if ! command -v python3 &> /dev/null; then
@@ -34,6 +34,8 @@ pipeline {
                     fi
                     '''
 
+                    // Navigate to the project directory
+                    
                     // Verify Poetry installation
                     sh '/root/.local/bin/poetry --version'
                     // Ensure Poetry uses the correct Python version
@@ -46,7 +48,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                script {
+                dir('team_dogwood/coursework_one') {
                     // Run linters using Poetry
                     sh "pre-commit run --all-files"
                     // Run tests using Poetry
