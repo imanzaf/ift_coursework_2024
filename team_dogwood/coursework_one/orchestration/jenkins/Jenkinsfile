@@ -39,7 +39,7 @@ pipeline {
                     // Verify Poetry installation
                     sh '/root/.local/bin/poetry --version'
                     // Ensure Poetry uses the correct Python version
-                    sh "/root/.local/bin/poetry env use python${PYTHON_VERSION}"
+                    sh "/root/.local/bin/poetry env use /usr/bin/python3"
                     // Install project dependencies
                     sh "/root/.local/bin/poetry install"
                 }
