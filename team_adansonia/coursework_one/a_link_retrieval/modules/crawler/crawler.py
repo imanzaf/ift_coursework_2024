@@ -304,7 +304,7 @@ def process_company(company_name):
                     continue  # Skip to next URL or company
                 pdf_url = result
                 if pdf_url:
-                    if is_valid_esg_report_from_url(pdf_url):
+                    if is_valid_esg_report_from_url(pdf_url, company_name, str(datetime.now().year)):
                         driver.quit()
                         return webpage_url, pdf_url
                     else:
@@ -322,7 +322,7 @@ LOG_FILENAME = "log.txt"
 if __name__ == "__main__":
     
     # Single company
-    company_name = "Microsoft"
+    company_name = "3M Company"
     webpage_url, pdf_url = process_company(company_name)
     print(f"Webpage URL: {webpage_url}")
     print(f"PDF URL: {pdf_url}")

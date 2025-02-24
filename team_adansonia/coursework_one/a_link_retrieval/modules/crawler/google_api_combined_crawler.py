@@ -68,18 +68,17 @@ def _get_report_search_results(company_name: str, ticker: str, year: str) -> str
                 title = result.get("title", "")
                 description = result.get("snippet", "")
                 pdf_url = result.get("link")
+                cd = result.get("pagemap", {}).get("metatags", [{}])[0].get('creationdate', "")
                 if pdf_url:
                     score = _score_esg_report(pdf_url, company_name, year)
                     if score is not None:
-                        scored_reports.append((score, pdf_url, title, description))
+                        scored_reports.append((score, pdf_url, title, description, cd))
 
             if scored_reports:
-                best_report = max(scored_reports, key=lambda x: x[0])
-                best_url, best_title, best_desc = best_report[1], best_report[2], best_report[3]
-
-                # Validate the selected best report
-                if validation.validate_esg_report(best_url, f"{best_title} {best_desc}", company_name, int(year)):
-                    logger.info(f"✅ Best ESG report found: {best_url} (Score: {best_report[0]})")
+                best_result = max(scored_reports, key=lambda x: x[0])
+                best_url, best_title, best_desc, best_cd = best_result[1], best_result[2], best_result[3], best_result[4]
+                if validation.validate_esg_report(best_url, best_title, best_desc, best_cd, company_name, year):
+                    logger.info(f"✅ Best ESG report found with keywords: {best_url}")
                     return best_url
 
             sorted_results = _sort_search_results(company_name, ticker, year, search_results)
@@ -89,9 +88,10 @@ def _get_report_search_results(company_name: str, ticker: str, year: str) -> str
                 best_url = best_result.get("link")
                 best_title = best_result.get("title", "")
                 best_desc = best_result.get("snippet", "")
+                best_cd = best_result.get("pagemap", {}).get("metatags", [{}])[0].get('creationdate', "")
 
                 # Validate fallback result
-                if validation.validate_esg_report(best_url, f"{best_title} {best_desc}", company_name, year):
+                if validation.validate_esg_report(best_url, best_title, best_desc, best_cd, company_name, year):
                     logger.info(f"✅ Best ESG report found with keywords: {best_url}")
                     return best_url
             return None
