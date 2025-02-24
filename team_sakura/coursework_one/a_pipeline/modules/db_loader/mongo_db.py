@@ -1,10 +1,19 @@
 import yaml
 from pymongo import MongoClient
+import os
 
 
-# Load configuration
-with open("/Users/estheragossa/PycharmProjects/ift_coursework_2024/team_sakura/coursework_one/a_pipeline/config/conf.yaml", "r") as file:
-    config = yaml.safe_load(file)
+# Get the current working directory
+script_dir = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.join(script_dir, 'config', 'conf.yaml')
+
+# Load config file
+try:
+    with open(config_path, 'r') as file:
+        config = yaml.safe_load(file)
+except FileNotFoundError:
+    print(f"Config file not found at {config_path}. Please ensure it's in the correct directory.")
+    raise
 
 ### MongoDB Connection ###
 def get_mongo_collection():
