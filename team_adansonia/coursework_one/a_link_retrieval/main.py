@@ -190,5 +190,5 @@ def populate_database():
 
 if __name__ == '__main__':
     #mongo.reset_database()
-    responsibility_reports_seed()
-    #populate_database()
+    #responsibility_reports_seed()
+    populate_database()

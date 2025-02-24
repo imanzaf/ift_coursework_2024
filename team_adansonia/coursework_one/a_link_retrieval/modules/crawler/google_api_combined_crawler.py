@@ -69,7 +69,7 @@ def _get_report_search_results(company_name: str, ticker: str, year: str) -> str
                 description = result.get("snippet", "")
                 pdf_url = result.get("link")
                 if pdf_url:
-                    score = _score_esg_report(result, company_name, year)
+                    score = _score_esg_report(pdf_url, company_name, year)
                     if score is not None:
                         scored_reports.append((score, pdf_url, title, description))
 

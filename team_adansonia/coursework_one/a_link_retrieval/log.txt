@@ -10425,3 +10425,17 @@ Stacktrace:
 [2025-02-24 16:20:24] Advanced Micro Devices Inc: No report found for Advanced Micro Devices Inc
 [2025-02-24 16:20:27] Advance Auto Parts: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Advance%20Auto%20Parts%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
 [2025-02-24 16:20:29] Advance Auto Parts: Searching PDF in Webpage | URL: https://esg.advanceauto.us/Home/default.aspx
+[2025-02-24 21:31:38] 3M Company: Searching Webpage in Bing | URL: https://www.bing.com/search?q=3M%20Company%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-24 21:31:38] 3M Company: Searching PDF in Webpage | URL: https://www.3m.com/3M/en_US/sustainability-us/
+[2025-02-24 21:31:41] 3M Company: Found 1 PDF on webpage.
+[2025-02-24 21:31:41] 3M Company: No report found for 3M Company
+[2025-02-24 21:31:44] Abbott Laboratories: Searching Webpage in Bing | URL: https://www.bing.com/search?q=Abbott%20Laboratories%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-24 21:31:45] Abbott Laboratories: Searching PDF in Webpage | URL: https://www.abbott.com/responsibility/sustainability/sustainability-reporting/current-reports.html
+[2025-02-24 21:31:51] Abbott Laboratories: Found 3 PDF on webpage.
+[2025-02-24 21:31:51] Abbott Laboratories: No report found for Abbott Laboratories
+[2025-02-24 21:31:54] AbbVie Inc.: Searching Webpage in Bing | URL: https://www.bing.com/search?q=AbbVie%20Inc.%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-24 21:31:55] AbbVie Inc.: Searching PDF in Webpage | URL: https://www.abbvie.com/sustainability/environmental-social-and-governance/environmental-sustainability.html
+[2025-02-24 21:32:07] AbbVie Inc.: Found 1 PDF on webpage.
+[2025-02-24 21:32:07] AbbVie Inc.: No report found for AbbVie Inc.
+[2025-02-24 21:32:11] ABIOMED Inc: Searching Webpage in Bing | URL: https://www.bing.com/search?q=ABIOMED%20Inc%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-24 21:32:12] ABIOMED Inc: Searching PDF in Webpage | URL: https://www.spglobal.com/esg/scores/results?cid=4812233
