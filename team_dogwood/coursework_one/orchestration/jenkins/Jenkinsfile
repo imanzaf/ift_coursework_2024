@@ -31,7 +31,7 @@ pipeline {
                     sh '''
                     if ! command -v poetry &> /dev/null; then
                         curl -sSL https://install.python-poetry.org | python3 -
-                        export PATH="/root/.local/bin:$PATH"
+                        export PATH="$HOME/.local/bin:$PATH"
                     fi
                     '''
 
