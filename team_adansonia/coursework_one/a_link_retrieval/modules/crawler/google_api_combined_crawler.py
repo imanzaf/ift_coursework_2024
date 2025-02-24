@@ -1,3 +1,4 @@
+
 import os
 import re
 import time
@@ -7,7 +8,7 @@ import fitz  # PyMuPDF for PDF parsing
 from dotenv import load_dotenv
 from loguru import logger
 from typing import List
-
+import team_adansonia.coursework_one.a_link_retrieval.modules.validation.validation as validation
 # Load environment variables
 load_dotenv()
 
@@ -64,24 +65,36 @@ def _get_report_search_results(company_name: str, ticker: str, year: str) -> str
 
             scored_reports = []
             for result in search_results:
+                title = result.get("title", "")
+                description = result.get("snippet", "")
                 pdf_url = result.get("link")
                 if pdf_url:
-                    score = _score_search(result, company_name, year)
+                    score = _score_esg_report(result, company_name, year)
                     if score is not None:
-                        scored_reports.append((score, pdf_url))
+                        scored_reports.append((score, pdf_url, title, description))
 
             if scored_reports:
                 best_report = max(scored_reports, key=lambda x: x[0])
-                logger.info(f"✅ Best ESG report found: {best_report[1]} (Score: {best_report[0]})")
-                return best_report[1]
+                best_url, best_title, best_desc = best_report[1], best_report[2], best_report[3]
 
-            # Fallback to keyword-based prioritization
-            logger.warning("Parsing-based scoring failed, falling back to keyword-based sorting.")
+                # Validate the selected best report
+                if validation.validate_esg_report(best_url, f"{best_title} {best_desc}", company_name, int(year)):
+                    logger.info(f"✅ Best ESG report found: {best_url} (Score: {best_report[0]})")
+                    return best_url
+
             sorted_results = _sort_search_results(company_name, ticker, year, search_results)
-            highest_scoring_url = sorted_results[0].get("link") if sorted_results else None
-            logger.info(f"✅ Best ESG report found with keywords: {highest_scoring_url}")
-            return highest_scoring_url
 
+            if sorted_results:
+                best_result = sorted_results[0]
+                best_url = best_result.get("link")
+                best_title = best_result.get("title", "")
+                best_desc = best_result.get("snippet", "")
+
+                # Validate fallback result
+                if validation.validate_esg_report(best_url, f"{best_title} {best_desc}", company_name, year):
+                    logger.info(f"✅ Best ESG report found with keywords: {best_url}")
+                    return best_url
+            return None
         except requests.exceptions.RequestException as e:
             logger.error(f"Error with API Key {api_key}: {e}")
             time.sleep(2)

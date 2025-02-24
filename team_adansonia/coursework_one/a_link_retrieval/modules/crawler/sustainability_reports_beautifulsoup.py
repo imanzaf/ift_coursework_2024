@@ -112,12 +112,10 @@ def store_reports_for_company(name, ticker):
 
     return report_data
 
-def populate_reports_sustainability_reports_org(db):
+def populate_reports_sustainability_reports_org(collection):
     """Populate all documents with available CSR reports using BeautifulSoup before processing."""
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
-
-    collection = db.companies  # Adjust collection name as needed
 
     # Loop through each document and populate with available reports
     for document in collection.find():
@@ -143,7 +141,7 @@ def populate_reports_sustainability_reports_org(db):
 
             # Only update if new reports are found
             if update_data.get("csr_reports"):
-                update_data["updated_at"] = x0datetime.utcnow()  # Add timestamp for update
+                update_data["updated_at"] = datetime.utcnow()  # Add timestamp for update
                 collection.update_one({"_id": document["_id"]}, {"$set": update_data})
                 logger.info(f"Updated CSR report URLs for {company_name}")
             else:
@@ -151,6 +149,8 @@ def populate_reports_sustainability_reports_org(db):
 
         except Exception as e:
             logger.error(f"Error populating CSR reports for {company_name}: {e}")
+    print("Completed processing all documents.")
+
 
 if __name__ == '__main__':
     companies_to_process = [

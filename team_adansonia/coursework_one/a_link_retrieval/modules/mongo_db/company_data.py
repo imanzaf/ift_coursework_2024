@@ -208,9 +208,13 @@ def reset_database():
         db.companies.drop()  # Drops the 'companies' collection
         print("✅ Database reset: 'companies' collection dropped.")
 
-        # Reimport the seed data
+        # Re-import the seed data
         import_seed_to_mongo()
         print("✅ Seed data imported successfully.")
+
+        # **Explicitly reset csr_reports to empty dictionary**
+        db.companies.update_many({}, {"$set": {"csr_reports": {}}})
+        print("✅ csr_reports field reset to empty dictionary for all records.")
 
 def import_seed_to_mongo():
     """Automatically import the seed data from the generated JSON file into MongoDB."""
@@ -243,8 +247,5 @@ def main():
 
     # Access the database (not the collection directly)
     db = mongo_client["csr_reports"]
-
-    # Now, initialize CompanyDatabase with the database
-    company_db = CompanyDatabase(db)
 
 main()
