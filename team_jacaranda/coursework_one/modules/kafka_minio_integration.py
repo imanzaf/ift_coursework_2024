@@ -126,11 +126,11 @@ def main():
                 # 记录上传状态到 PostgreSQL
                 print(f"Recording upload status in PostgreSQL for {file_name}...")
                 cursor.execute(
-                    "INSERT INTO csr_reporting.company_reports (company_name, report_url, minio_path) VALUES (%s, %s, %s)",
-                    (company_name, url, file_name)
+                    "UPDATE csr_reporting.company_reports SET minio_path = %s WHERE report_url = %s",
+                    (file_name, url)
                 )
                 conn.commit()
-                print(f"Successfully recorded {file_name} in PostgreSQL")
+                print(f"Successfully updated minio_path for {file_name} in PostgreSQL")
             except Exception as e:
                 print(f"Error processing {url}: {e}")
 
