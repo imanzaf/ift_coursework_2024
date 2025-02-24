@@ -16,7 +16,15 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build('test-docker', '-f team_dogwood/coursework_one/orchestration/jenkins/Dockerfile .')
+                }
+            }
+        }
+
+        stage('Build Environment') {
             steps {
                 script {
                     // Install Python using pyenv (if needed)
