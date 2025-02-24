@@ -4,6 +4,10 @@ pipeline {
     environment {
         POETRY_VERSION = "2.1.1"  // Set desired Poetry version
         PYTHON_VERSION = "3.10.0"   // Set desired Python version
+        SEARCH_GOOGLE_API_URL = "https://www.googleapis.com/customsearch/v1"
+        SEARCH_GOOGLE_ENGINE_ID = "d607709d07e8d4937"
+        SEARCH_GOOGLE_API_KEY = ""
+        SEARCH_SUSTAINABILITY_REPORTS_API_URL = "https://www.responsibilityreports.com/"
     }
 
     stages {
@@ -45,10 +49,13 @@ pipeline {
                     // Install project dependencies
                     sh "/root/.local/bin/poetry install"
 
-                    // Run black
+                    // Run linters using poetry
                     sh "/root/.local/bin/poetry run black ."
+                    sh "/root/.local/bin/poetry run isort ."
+                    sh "/root/.local/bin/poetry run flake8 ."
+                    sh "/root/.local/bin/poetry run bandit ."
                     // Run linters using Poetry
-                    sh "/root/.local/bin/poetry run pre-commit run --all-files"
+                    sh "/root/.local/bin/poetry run pre-commit ."
                     // Run tests using Poetry
                     sh "/root/.local/bin/poetry run pytest"
                 }
