@@ -6,7 +6,7 @@ pipeline {
         PYTHON_VERSION = "3.10.0"   // Set desired Python version
         SEARCH_GOOGLE_API_URL = "https://www.googleapis.com/customsearch/v1"
         SEARCH_GOOGLE_ENGINE_ID = "d607709d07e8d4937"
-        SEARCH_GOOGLE_API_KEY = ""
+        SEARCH_GOOGLE_API_KEY = "fake-key"
         SEARCH_SUSTAINABILITY_REPORTS_API_URL = "https://www.responsibilityreports.com/"
     }
 
