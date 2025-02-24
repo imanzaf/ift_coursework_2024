@@ -4,9 +4,26 @@ pipeline {
     environment {
         POETRY_VERSION = "2.1.1"  // Set desired Poetry version
         PYTHON_VERSION = "3.10.0"   // Set desired Python version
+
+        DB_MINIO_USERNAME = "ift_bigdata"
+        DB_MINIO_PASSWORD = "minio_password"
+        DB_MINIO_HOST = "localhost"
+        DB_MINIO_PORT = "9000"
+
+        DB_MINIO_BUCKET_NAME = "csr-reports"
+
+        DB_POSTGRES_DRIVER = "postgresql"
+        DB_POSTGRES_USERNAME = "postgres"
+        DB_POSTGRES_PASSWORD = "postgres"
+        DB_POSTGRES_HOST = "localhost"
+        DB_POSTGRES_PORT = "5432"
+        DB_POSTGRES_DB_NAME = "fift"
+
         SEARCH_GOOGLE_API_URL = "https://www.googleapis.com/customsearch/v1"
         SEARCH_GOOGLE_ENGINE_ID = "d607709d07e8d4937"
-        SEARCH_GOOGLE_API_KEY = "fake-key"
+        // TODO - store credentials in Jenkins credentials manager
+        SEARCH_GOOGLE_API_KEY = "AIzaSyClDAzS4wrIxmt_AA2uytLSXQy5WHopme8"
+
         SEARCH_SUSTAINABILITY_REPORTS_API_URL = "https://www.responsibilityreports.com/"
     }
 
@@ -60,7 +77,18 @@ pipeline {
             }
         }
 
-        stage('Run') {
+        stage('Run Pipeline 1: ESG URL Retrieval & Storage') {
+            steps {
+                dir('team_dogwood/coursework_one') {
+                    // Activate the virtual environment
+                    sh "/root/.local/bin/poetry env activate"
+                    // Run the main script using Poetry
+                    echo "Running the main script..."
+                }
+            }
+        }
+
+        stage('Run Pipeline 2: ESG Report Storage') {
             steps {
                 dir('team_dogwood/coursework_one') {
                     // Activate the virtual environment
