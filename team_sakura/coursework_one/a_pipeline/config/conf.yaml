@@ -3,7 +3,7 @@ google_api:
   search_engine_id: "${GOOGLE_SEARCH_ENGINE_ID}"
 
 database:
-  sqlite_path: "/Users/estheragossa/PycharmProjects/ift_coursework_2024/000.Database/SQL/Equity.db"
+  sqlite_path: "./000.Database/SQL/Equity.db"
   mongo_uri: "mongodb://localhost:27019/"
   mongo_db: "csr_reports_db2"
   mongo_collection: "reports"
