@@ -14,7 +14,7 @@ KAFKA_TOPIC = 'csr-report'
 MINIO_ENDPOINT = 'localhost:9000'
 MINIO_ACCESS_KEY = 'ift_bigdata'
 MINIO_SECRET_KEY = 'minio_password'
-MINIO_BUCKET = 'csr-reports'
+MINIO_BUCKET = 'csreport'
 
 # PostgreSQL 配置
 PG_HOST = 'host.docker.internal'
