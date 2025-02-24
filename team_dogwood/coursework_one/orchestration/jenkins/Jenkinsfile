@@ -16,7 +16,7 @@ pipeline {
             }
         }
 
-        stage('Build Environment') {
+        stage('Build Environment & Run Tests') {
             steps {
                 dir('team_dogwood/coursework_one') {
                     // Install Python using pyenv (if needed)
@@ -42,13 +42,7 @@ pipeline {
                     sh "/root/.local/bin/poetry env use /usr/bin/python3"
                     // Install project dependencies
                     sh "/root/.local/bin/poetry install"
-                }
-            }
-        }
 
-        stage('Test') {
-            steps {
-                dir('team_dogwood/coursework_one') {
                     // Run linters using Poetry
                     sh "pre-commit run --all-files"
                     // Run tests using Poetry
