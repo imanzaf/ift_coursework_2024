@@ -2,7 +2,7 @@
 
 ## Usage Instructions
 
-### Creating the Jenkins Container
+### Creating the Docker Containers
 1. Update the docker compose file to include the Jenkins service.
 ```bash
 services:
@@ -26,9 +26,9 @@ services:
 volumes:
   jenkins_home:
 ```
-2. Run the following command to build the container.
+2. Run the following command to build containers for postgres, minio, and jenkins.
 ```bash
-docker compose up --build -d jenkins
+docker compose up --build -d jenkins postgres_db_cw postgres_seed_cw miniocw minio_client_cw
 ```
 3. Access the Jenkins UI at `http://localhost:8080`.
 
