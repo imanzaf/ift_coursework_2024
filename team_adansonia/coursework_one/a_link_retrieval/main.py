@@ -1,5 +1,8 @@
 import json
 import os
+
+from bson import ObjectId
+
 from team_adansonia.coursework_one.a_link_retrieval.modules.mongo_db import company_data as mongo
 from team_adansonia.coursework_one.a_link_retrieval.modules.minio import minio_script as minio
 from team_adansonia.coursework_one.a_link_retrieval.modules.crawler import crawler as crawler, \
@@ -109,7 +112,6 @@ def upload_csr_reports_to_minio(db, client, mongo_client):
             logger.error(f"Error uploading {document.get('security')}: {e}")
 
 
-
 def responsibility_reports_seed():
     mongo_client = mongo.connect_to_mongo()
     if mongo_client is None:
@@ -118,24 +120,43 @@ def responsibility_reports_seed():
     minio_client = minio.connect_to_minio()
     if minio_client is None:
         exit(1)
+
     ROOT_DIR = os.getenv("ROOT_DIR")
     seed_folder = os.path.join(ROOT_DIR, "mongo-seed")
     seed_file = os.path.join(seed_folder, "seed_data.json")
 
     db = mongo_client["csr_reports"]
     collection = db.companies
+
+    # Load historical reports
     sustainability_reports_beautifulsoup.populate_reports_sustainability_reports_org(collection)
     print("Loaded historical reports")
-    data = list(collection.find({}))  # Get all documents
 
-    # Remove MongoDB's default `_id` field if necessary
-    for doc in data:
+    # Ensure uniqueness before exporting
+    unique_data = []
+    seen_companies = set()
+
+    for doc in collection.find({}):
+        company_name = doc.get("security", "")  # Unique identifier
+        if company_name in seen_companies:
+            continue  # Skip duplicates
+        seen_companies.add(company_name)
+
+        # Convert MongoDB types to JSON serializable format
         doc.pop("_id", None)
+        for key, value in doc.items():
+            if isinstance(value, datetime):
+                doc[key] = value.isoformat()
+            elif isinstance(value, ObjectId):
+                doc[key] = str(value)
 
+        unique_data.append(doc)
+
+    # Write unique data to JSON file
     with open(seed_file, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4)
+        json.dump(unique_data, f, indent=4)
 
-    print(f"Exported {len(data)} documents to {seed_file}")
+    print(f"Exported {len(unique_data)} unique documents to {seed_file}")
 
 def populate_database():
     global is_db_initialized
@@ -159,7 +180,15 @@ def populate_database():
     print("Database loaded successfully: " + is_db_initialized)
     return is_db_initialized
 
+#TODO:
+'''    def get_latest_report():
+        #TODO: Iterate through all documents, check if current year exists
+        #result = crawler.process_company(company_name)
+        #return None
+    #TODO: Use the webdriver to get latest report, if different from previous year add, otherwise skip
+'''
+
 if __name__ == '__main__':
     #mongo.reset_database()
-    #responsibility_reports_seed()
-    populate_database()
+    responsibility_reports_seed()
+    #populate_database()
