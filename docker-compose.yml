@@ -5,11 +5,11 @@ services:
       container_name: mongo_db_cw
       image: mongo:latest
       ports:
-        - 27019:27017
+        - 27020:27020
     postgres_db:
         container_name: postgres_db_cw
-        image: postgres:10.5        
-        environment: 
+        image: postgres:10.5
+        environment:
           - POSTGRES_USER=postgres
           - POSTGRES_PASSWORD=postgres
           - PGUSER=postgres
@@ -25,7 +25,7 @@ services:
           test: ["CMD-SHELL", "pg_isready"]
           interval: 10s
           timeout: 5s
-          retries: 5          
+          retries: 5
     postgres_seed:
       container_name: postgres_seed_cw
       restart: on-failure
@@ -38,7 +38,7 @@ services:
       depends_on:
         postgres_db:
           condition: service_healthy
-      build: 
+      build:
         dockerfile: ./000.Database/SQL/Dockerfile
     pgadmin:
       container_name: pg_admin_cw
@@ -59,8 +59,8 @@ services:
         - MINIO_ROOT_PASSWORD=minio_password
         - MINIO_DOMAIN=miniocw
       ports:
-        - 9001:9001
-        - 9000:9000
+        - 9006:9006
+        - 9005:9005
       command: ["server", "/data", "--console-address", ":9001"]
     minio_client_cw:
       container_name: minio_client_cw
@@ -81,3 +81,24 @@ services:
         mc anonymous set public minio/csreport;
         tail -f /dev/null
         "
+    jenkins:
+      image: jenkins/jenkins:lts
+      container_name: jenkins_cw
+      restart: always
+      user: root
+      ports:
+        - "8080:8080"
+        - "50000:50000"
+      volumes:
+        - ./jenkins_home:/var/jenkins_home
+        - /var/run/docker.sock:/var/run/docker.sock
+      environment:
+        - JENKINS_USER=admin
+        - JENKINS_PASSWORD=admin
+
+
+
+
+networks:
+  iceberg_net:
+    driver: bridge
