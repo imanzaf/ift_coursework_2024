@@ -2,6 +2,40 @@
 
 ## Usage Instructions
 
+### Creating the Jenkins Container
+1. Update the docker compose file to include the Jenkins service.
+```bash
+services:
+    jenkins:
+      image: jenkins/jenkins:lts
+      build:
+        context: team_dogwood/coursework_one/orchestration/jenkins
+        dockerfile: Dockerfile
+      restart: unless-stopped
+      container_name: jenkins
+      ports:
+        - "8080:8080"
+        - "50000:50000"
+      volumes:
+        - jenkins_home:/var/jenkins_home
+      privileged: true
+      user: root  # Need this to handle Docker socket permissions
+      environment:
+        - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+
+volumes:
+  jenkins_home:
+```
+2. Run the following command to build the container.
+```bash
+docker compose up --build -d jenkins
+```
+3. Access the Jenkins UI at `http://localhost:8080`.
+
+### Configuring the Jenkins Pipeline
+Configure the Jenkins pipeline using the UI. (TODO - add instructions!)
+1. Update the Jenkinsfile to include the Google API Key. (OR instructions to add cred to Jenkins UI)
+
 ## Development Instructions
 *Note: Where the instructions mention the 'root directory of the project', this refers to the `team_dogwood/coursework_one` directory.*
 
@@ -44,26 +78,3 @@ To run the unit tests, run the following command in the root directory of the pr
 ```bash
 poetry run pytest
 ```
-
-### Running the Jenkins Container
-<!-- ```bash
-docker run -d --name jenkins \
-  -p 8080:8080 -p 50000:50000 \
-  -v jenkins_home:/var/jenkins_home \
-  jenkins/jenkins:lts
-```
-
-Get the initial admin password from the container logs:
-```bash
-docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword -->
-```
-
-shouldn't need to do this as we have a Dockerfile that sets up the initial admin profile etc.
-create container via docker compose up --build -d jenkins
-launch site and configure pipeline
-
-
-TODO! Add instructions for setting up the Jenkins pipeline. 
-1. How to create and configure a pipeline
-2. How to log on as admin
-3. How to schedule a pipeline
