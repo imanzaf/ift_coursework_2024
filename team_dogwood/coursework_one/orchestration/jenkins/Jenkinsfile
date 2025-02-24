@@ -62,7 +62,9 @@ pipeline {
 
         stage('Run') {
             steps {
-                script {
+                dir('team_dogwood/coursework_one') {
+                    // Activate the virtual environment
+                    sh "/root/.local/bin/poetry env activate"
                     // Run the main script using Poetry
                     echo "Running the main script..."
                 }
