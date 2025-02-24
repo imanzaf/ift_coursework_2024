@@ -46,7 +46,7 @@ poetry run pytest
 ```
 
 ### Running the Jenkins Container
-```bash
+<!-- ```bash
 docker run -d --name jenkins \
   -p 8080:8080 -p 50000:50000 \
   -v jenkins_home:/var/jenkins_home \
@@ -55,8 +55,13 @@ docker run -d --name jenkins \
 
 Get the initial admin password from the container logs:
 ```bash
-docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword -->
 ```
+
+shouldn't need to do this as we have a Dockerfile that sets up the initial admin profile etc.
+create container via docker compose up --build -d jenkins
+launch site and configure pipeline
+
 
 TODO! Add instructions for setting up the Jenkins pipeline. 
 1. How to create and configure a pipeline
