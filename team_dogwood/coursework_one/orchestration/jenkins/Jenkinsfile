@@ -54,8 +54,6 @@ pipeline {
                     sh "/root/.local/bin/poetry run isort ."
                     sh "/root/.local/bin/poetry run flake8 ."
                     sh "/root/.local/bin/poetry run bandit ."
-                    // Run linters using Poetry
-                    sh "/root/.local/bin/poetry run pre-commit ."
                     // Run tests using Poetry
                     sh "/root/.local/bin/poetry run pytest"
                 }
