@@ -40,9 +40,13 @@ pipeline {
                     sh '/root/.local/bin/poetry --version'
                     // Ensure Poetry uses the correct Python version
                     sh "/root/.local/bin/poetry env use /usr/bin/python3"
+                    // Activate the virtual environment
+                    sh "/root/.local/bin/poetry env activate"
                     // Install project dependencies
                     sh "/root/.local/bin/poetry install"
 
+                    // Run black
+                    sh "/root/.local/bin/poetry run black ."
                     // Run linters using Poetry
                     sh "/root/.local/bin/poetry run pre-commit run --all-files"
                     // Run tests using Poetry
