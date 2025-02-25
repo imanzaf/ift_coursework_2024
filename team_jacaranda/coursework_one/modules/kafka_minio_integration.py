@@ -6,39 +6,39 @@ from minio import Minio
 from minio.error import S3Error
 import psycopg2
 
-# Kafka 配置
+# Kafka configuration
 KAFKA_BROKER = 'localhost:9092'
 KAFKA_TOPIC = 'csr-report'
 
-# MinIO 配置
+# MinIO configuration
 MINIO_ENDPOINT = 'localhost:9000'
 MINIO_ACCESS_KEY = 'ift_bigdata'
 MINIO_SECRET_KEY = 'minio_password'
 MINIO_BUCKET = 'csreport'
 
-# PostgreSQL 配置
+# PostgreSQL configuration
 PG_HOST = 'host.docker.internal'
 PG_PORT = 5439
 PG_DB = 'fift'
 PG_USER = 'postgres'
 PG_PASSWORD = 'postgres'
 
-# 初始化 MinIO 客户端
+# Initialize MinIO client
 minio_client = Minio(
     MINIO_ENDPOINT,
     access_key=MINIO_ACCESS_KEY,
     secret_key=MINIO_SECRET_KEY,
-    secure=False  # 如果使用 HTTPS，设置为 True
+    secure=False  # Set to True if using HTTPS
 )
 
-# 初始化 Kafka 消费者
+# Initialize Kafka consumer
 consumer = KafkaConsumer(
     KAFKA_TOPIC,
     bootstrap_servers=KAFKA_BROKER,
     value_deserializer=lambda x: json.loads(x.decode('utf-8'))
 )
 
-# 连接到 PostgreSQL
+# Connect to PostgreSQL
 def connect_to_postgres():
     print("Connecting to PostgreSQL...")
     try:
@@ -55,7 +55,7 @@ def connect_to_postgres():
         print(f"Failed to connect to PostgreSQL: {e}")
         raise
 
-# 下载 PDF 文件
+# Download PDF file
 def download_pdf(url):
     print(f"Downloading PDF from {url}...")
     try:
@@ -69,22 +69,22 @@ def download_pdf(url):
         print(f"Error downloading PDF from {url}: {e}")
         raise
 
-# 上传 PDF 文件到 MinIO
+# Upload PDF file to MinIO
 def upload_to_minio(file_name, file_data):
     print(f"Uploading {file_name} to MinIO...")
     try:
-        # 调试信息：打印 file_data 的类型和长度
+        # Debug information: print file_data type and length
         print(f"File data type: {type(file_data)}")
         print(f"File data length: {len(file_data)}")
 
-        # 将 bytes 对象转换为 BytesIO 对象
+        # Convert bytes object to BytesIO object
         file_stream = io.BytesIO(file_data)
 
-        # 上传文件到 MinIO
+        # Upload file to MinIO
         minio_client.put_object(
             MINIO_BUCKET,
             file_name,
-            file_stream,  # 使用文件流对象
+            file_stream,  # Use file stream object
             length=len(file_data),
             content_type='application/pdf'
         )
@@ -93,7 +93,7 @@ def upload_to_minio(file_name, file_data):
         print(f"Failed to upload {file_name} to MinIO: {e}")
         raise
 
-# 主逻辑
+# Main logic
 def main():
     print("Starting Kafka-MinIO integration script...")
     conn = connect_to_postgres()
@@ -113,17 +113,17 @@ def main():
             try:
                 print(f"\nProcessing URL: {url}")
 
-                # 下载 PDF 文件
+                # Download PDF file
                 pdf_data = download_pdf(url)
 
-                # 生成文件名
+                # Generate file name
                 file_name = f"{company_name}_{url.split('/')[-1]}"
                 print(f"Generated file name: {file_name}")
 
-                # 上传到 MinIO
+                # Upload to MinIO
                 upload_to_minio(file_name, pdf_data)
 
-                # 记录上传状态到 PostgreSQL
+                # Record upload status in PostgreSQL
                 print(f"Recording upload status in PostgreSQL for {file_name}...")
                 cursor.execute(
                     "UPDATE csr_reporting.company_reports SET minio_path = %s WHERE report_url = %s",
