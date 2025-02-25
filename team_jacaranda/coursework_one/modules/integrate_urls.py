@@ -3,19 +3,19 @@ import psycopg2
 import re
 from pathlib import Path
 
-# JSON 文件路径
-# 获取脚本文件的绝对路径
+# JSON file path
+# Get the absolute path of the script file
 script_dir = Path(__file__).resolve().parent
-# 构建数据文件的路径
+# Construct the path to the data file
 json_file_path = script_dir / "../../../team_jacaranda/coursework_one/static/company_pdf_links.json"
-# 解析路径（去除多余的 ../）
+# Resolve the path (remove redundant ../)
 json_file_path = json_file_path.resolve()
 
-# 读取 JSON 文件
+# Read the JSON file
 with open(json_file_path, "r") as file:
     data = json.load(file)
 
-# PostgreSQL 数据库连接配置
+# PostgreSQL database connection configuration
 db_config = {
     "dbname": "fift",
     "user": "postgres",
@@ -24,39 +24,39 @@ db_config = {
     "port": 5439
 }
 
-# 连接 PostgreSQL 数据库
+# Connect to the PostgreSQL database
 try:
     conn = psycopg2.connect(**db_config)
     cursor = conn.cursor()
 
-    # 遍历 JSON 数据
+    # Iterate through the JSON data
     for company_name, urls in data.items():
-        # 检查公司名称是否存在于 company_static 表中
+        # Check if the company name exists in the company_static table
         cursor.execute("SELECT security FROM csr_reporting.company_static WHERE security = %s", (company_name,))
         result = cursor.fetchone()
 
         if result:
-            # 如果公司存在，插入 URL 数据
+            # If the company exists, insert URL data
             for url in urls:
-                # 从 URL 中提取年份
+                # Extract the year from the URL
                 year_match = re.search(r"(\d{4})\.pdf$", url)
                 report_year = int(year_match.group(1)) if year_match else None
 
-                # 插入数据到 company_reports 表
+                # Insert data into the company_reports table
                 insert_query = """
                     INSERT INTO csr_reporting.company_reports (security, report_url, report_year)
                     VALUES (%s, %s, %s)
                 """
                 cursor.execute(insert_query, (company_name, url, report_year))
 
-    # 提交事务
+    # Commit the transaction
     conn.commit()
-    print("数据插入成功！")
+    print("Data inserted successfully!")
 
 except Exception as e:
-    print(f"发生错误：{e}")
+    print(f"An error occurred: {e}")
 finally:
-    # 关闭数据库连接
+    # Close the database connection
     if conn:
         cursor.close()
         conn.close()
