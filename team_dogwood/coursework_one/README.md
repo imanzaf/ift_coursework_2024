@@ -1,7 +1,7 @@
 # IFTE0003 Coursework 1 - Team Dogwood
 
 # Usage Instructions
----
+
 ## Running via Jenkins
 ### Creating the Docker Containers
 1. Update the docker compose file to include the Jenkins service.
@@ -60,7 +60,7 @@ To see the logs of the pipeline:
 1. Click on a build number in the "Builds" section of the pipeline page.
 2. Click on "Console Output" in the left-hand menu.
 
----
+
 ## Running locally
 *Note: Where the instructions mention the 'root directory of the project', this refers to the `team_dogwood/coursework_one` directory.*
 
