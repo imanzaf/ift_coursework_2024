@@ -28,20 +28,20 @@ services:
           interval: 10s
           timeout: 5s
           retries: 5
-  # postgres_seed:
-  #   container_name: postgres_seed_cw
-  #   restart: on-failure
-  #   environment:
-  #     POSTGRES_DATABASE: postgres_feeder
-  #     POSTGRES_HOST: postgres_feeder
-  #     POSTGRES_PORT: 5439
-  #     POSTGRES_USER: postgres_feeder
-  #     POSTGRES_PASSWORD: postgres_feeder
-  #   depends_on:
-  #     postgres_db:
-  #       condition: service_healthy
-  #   build:
-  #     dockerfile: ./000.Database/SQL/Dockerfile
+    postgres_seed:
+      container_name: postgres_seed_cw
+      restart: on-failure
+      environment:
+        POSTGRES_DATABASE: postgres_feeder
+        POSTGRES_HOST: postgres_feeder
+        POSTGRES_PORT: 5439
+        POSTGRES_USER: postgres_feeder
+        POSTGRES_PASSWORD: postgres_feeder
+      depends_on:
+        postgres_db:
+          condition: service_healthy
+      build:
+        dockerfile: ./000.Database/SQL/Dockerfile
 
     pgadmin:
       container_name: pg_admin_cw
@@ -84,6 +84,27 @@ services:
         mc anonymous set public minio/csreport;
         tail -f /dev/null
         "
+    jenkins:
+      container_name: r_jenkins
+      build: 
+        context: ./
+        additional_contexts:
+          assets_jenkins: ./team_adansonia/coursework_one/scheduler/jenkins
+        dockerfile: ./team_adansonia/coursework_one/Dockerfile
+      user: root      
+      command: java -DJENKINS_HOME=/home/.jenkins -jar /home/jenkins/jenkins.jar --httpPort=9899
+      volumes:
+        - type: bind
+          source: ./team_adansonia/coursework_one/a_link_retrieval
+          target: /opt/apps/batched/Python/a_link_retrieval
+        - type: bind
+          source: ./team_adansonia/coursework_one/b_pipeline
+          target: /opt/apps/batched/Python/b_pipeline
+        - type: bind
+          source: ./team_adansonia/coursework_one/c_pipeline
+          target: /opt/apps/batched/Python/c_pipeline
+      ports:
+        - 9999:9899
 
 networks:
   iceberg_net:

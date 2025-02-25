@@ -1,41 +1,43 @@
-FROM python:3.11-bullseye
+FROM python:3.10-bullseye
 
-# Set environment variables for Poetry installation and configuration
-ENV PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1 \
-    POETRY_VERSION=1.6.1 \
-    POETRY_HOME="/opt/poetry" \
-    POETRY_VIRTUALENVS_CREATE=false \
-    POETRY_NO_INTERACTION=1
+RUN apt-get update && \
+        apt-get -y install -y \
+        openjdk-11-jdk 
+# Install R
+RUN apt-get update && apt-get install -y r-base
 
-# Install system dependencies required for Poetry, Ollama, and Python packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl build-essential libffi-dev libssl-dev && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+# get jenkins
+RUN set -eux; \
+        mkdir /home/jenkins/; \
+        wget -O /home/jenkins/jenkins.jar https://get.jenkins.io/war-stable/2.414.3/jenkins.war; \
+        chmod -R 770 /home/jenkins
 
-# Install Poetry
-RUN pip install poetry
+# Install Apache Spark
+ENV APACHE_SPARK_VERSION 3.2.1
+ENV HADOOP_VERSION 3.2
+ENV SPARK_HOME /spark
 
-# Install Ollama CLI (assumes Linux-based installation)
-RUN curl -sSL https://ollama.com/download/linux | bash && mv ollama /usr/local/bin/
+RUN apt-get install -y curl && \
+    curl -sL --retry 3 "https://archive.apache.org/dist/spark/spark-$APACHE_SPARK_VERSION/spark-$APACHE_SPARK_VERSION-bin-hadoop$HADOOP_VERSION.tgz" | \
+    tar -xz -C /opt && \
+    mv /opt/spark-$APACHE_SPARK_VERSION-bin-hadoop$HADOOP_VERSION $SPARK_HOME && \
+    rm -rf /opt/*
 
-# Create a working directory for the application
-WORKDIR /app
+# Set environment variables
+ENV PATH $PATH:$SPARK_HOME/bin
+ENV PYTHONPATH $SPARK_HOME/python:$PYTHONPATH
+ENV PYSPARK_PYTHON python
 
-# Copy Poetry configuration files first to leverage Docker's caching mechanism
-COPY pyproject.toml poetry.lock ./
+# Install necessary R packages (replace these with your required packages)
+# move jenkins configurations
+COPY --chmod=770 --from=assets_jenkins . /home/.jenkins/
 
-# Install Python dependencies using Poetry
-RUN poetry install --no-dev --no-root
-RUN poetry run python -m spacy download en_core_web_sm
-RUN poetry run python -m nltk.downloader stopwords
+# move all R scripts to Container
+COPY --chmod=770 ./team_adansonia/coursework_one/a_link_retrieval/* /opt/apps/batched/Python/a_link_retrieval/
+COPY --chmod=770 ./team_adansonia/coursework_one/b_pipeline/* /opt/apps/batched/Python/b_pipeline/
+COPY --chmod=770 ./team_adansonia/coursework_one/c_pipeline/* /opt/apps/batched/Python/c_pipeline/
 
-
-# Copy the rest of the application code into the container
-COPY . .
-
-# Expose the port used by Ollama (default: 11434)
-EXPOSE 11434
-
-# Set the default command to start a Bash shell (customize as needed)
-CMD ["bash"]
+# install all R packages
+# RUN R -e 'packToInst <- read.csv("/opt/apps/batched/R/requirements.txt"); lapply(packToInst$Packages, function(x) install.packages(x))'
+RUN python -m pip install poetry
+CMD pip3 -v
