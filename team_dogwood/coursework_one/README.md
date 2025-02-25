@@ -1,7 +1,8 @@
 # IFTE0003 Coursework 1 - Team Dogwood
 
 # Usage Instructions
-
+---
+## Running via Jenkins
 ### Creating the Docker Containers
 1. Update the docker compose file to include the Jenkins service.
 ```bash
@@ -60,7 +61,17 @@ To see the logs of the pipeline:
 2. Click on "Console Output" in the left-hand menu.
 
 ---
+## Running locally
+*Note: Where the instructions mention the 'root directory of the project', this refers to the `team_dogwood/coursework_one` directory.*
 
+1. Create a .env file in the root directory of the project.
+2. Copy the contents of the .env.template file into the .env file. Update the SEARCH_GOOGLE_API_KEY variable with your API key.
+3. Run the main script using the following command:
+```bash
+TODO - ADD COMMAND
+```
+
+---
 # Development Instructions
 *Note: Where the instructions mention the 'root directory of the project', this refers to the `team_dogwood/coursework_one` directory.*
 
