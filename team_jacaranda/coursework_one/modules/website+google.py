@@ -12,7 +12,7 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
 
-# 自定义缓存实现
+# Custom cache implementation
 class MemoryCache(Cache):
     _CACHE = {}
 
@@ -23,11 +23,11 @@ class MemoryCache(Cache):
         MemoryCache._CACHE[url] = content
 
 
-# 设置基础URL
+# Set base URL
 BASE_URL = "https://www.responsibilityreports.com"
 
 
-# 创建带有重试策略的Session
+# Create a session with retry strategy
 def create_session():
     session = requests.Session()
     retries = Retry(total=5, backoff_factor=0.5, status_forcelist=[500, 502, 503, 504])
@@ -37,20 +37,20 @@ def create_session():
 
 session = create_session()
 
-# 配置日志
+# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Google 搜索配置
+# Google search configuration
 GOOGLE_API_KEY = "AIzaSyA3VVtTUL8ZsXCyu_es-_V4fHLHtx1cSvE"
 GOOGLE_CSE_ID = "55adbcac3c4f44f3a"
 
-# 结果保存路径
+# Result save path
 RESULTS_FILE = "company_pdf_links.json"
 
 
 def create_google_service():
-    """创建Google搜索服务"""
+    """Create Google search service"""
     service = build(
         "customsearch",
         "v1",
@@ -61,12 +61,12 @@ def create_google_service():
 
 
 def read_companies_from_db(db_path):
-    """从数据库获取列表"""
+    """Get list of companies from the database"""
     conn = None
     try:
         db_path = Path(db_path)
         if not db_path.exists():
-            logger.error(f"数据库文件不存在：{db_path.resolve()}")
+            logger.error(f"Database file does not exist: {db_path.resolve()}")
             return []
         conn = sqlite3.connect(str(db_path))
         cursor = conn.cursor()
@@ -75,14 +75,14 @@ def read_companies_from_db(db_path):
             WHERE type='table' AND name='equity_static'
         """)
         if not cursor.fetchone():
-            logger.error("equity_static表不存在")
+            logger.error("equity_static table does not exist")
             return []
         cursor.execute("SELECT security FROM equity_static")
         companies = [row[0] for row in cursor.fetchall()]
-        logger.info(f"从数据库成功读取 {len(companies)} 家公司")
+        logger.info(f"Successfully read {len(companies)} companies from the database")
         return companies
     except Exception as e:
-        logger.error(f"数据库读取错误: {str(e)}")
+        logger.error(f"Database read error: {str(e)}")
         return []
     finally:
         if conn:
@@ -90,19 +90,19 @@ def read_companies_from_db(db_path):
 
 
 def format_company_name(company_name, use_corporation=False):
-    """格式化公司名称，可选择将company替换为corporation"""
+    """Format company name, optionally replace 'company' with 'corporation'"""
     clean_name = company_name.lower()
     
-    # 先处理corp的情况
-    clean_name = clean_name.replace("corp.", "corporation")  # 处理带点的情况
-    clean_name = clean_name.replace("corp ", "corporation ")  # 处理带空格的情况
-    clean_name = clean_name.replace("corp-", "corporation-")  # 处理带连字符的情况
+    # Handle 'corp' cases first
+    clean_name = clean_name.replace("corp.", "corporation")  # Handle cases with a dot
+    clean_name = clean_name.replace("corp ", "corporation ")  # Handle cases with a space
+    clean_name = clean_name.replace("corp-", "corporation-")  # Handle cases with a hyphen
     
-    # 如果启用corporation替换
+    # If 'corporation' replacement is enabled
     if use_corporation:
         clean_name = clean_name.replace("company", "corporation")
     
-    # 最后处理空格和点
+    # Finally, handle spaces and dots
     clean_name = clean_name.replace(" ", "-")
     clean_name = clean_name.replace(".", "")
     
@@ -110,10 +110,10 @@ def format_company_name(company_name, use_corporation=False):
 
 
 def try_website_search(company_name, use_corporation=False):
-    """尝试在网站上搜索PDF链接"""
+    """Try to search for PDF links on the website"""
     formatted_name = format_company_name(company_name, use_corporation)
     search_url = f"{BASE_URL}/Company/{formatted_name}"
-    logger.info(f"尝试访问URL: {search_url}")
+    logger.info(f"Attempting to access URL: {search_url}")
 
     try:
         response = session.get(search_url, timeout=10)
@@ -131,38 +131,38 @@ def try_website_search(company_name, use_corporation=False):
 
         if pdf_links_set:
             logger.info(
-                f"使用{'corporation' if use_corporation else 'company'}在网站上找到 {len(pdf_links_set)} 个PDF链接")
+                f"Found {len(pdf_links_set)} PDF links on the website using {'corporation' if use_corporation else 'company'}")
             return list(pdf_links_set)
         return None
 
     except Exception as e:
-        logger.error(f"网站搜索失败 ({'corporation' if use_corporation else 'company'}): {str(e)}")
+        logger.error(f"Website search failed ({'corporation' if use_corporation else 'company'}): {str(e)}")
         return None
 
 
 def is_valid_pdf_link(link, title=""):
-    """检查PDF链接是否有效（不包含annual/Annual）"""
+    """Check if the PDF link is valid (does not contain 'annual/Annual')"""
     link_lower = link.lower()
     title_lower = title.lower()
     
-    # 检查URL和标题中是否包含"annual"
+    # Check if the URL or title contains "annual"
     if "annual" in link_lower or "annual" in title_lower:
-        logger.info(f"跳过annual报告: {link}")
+        logger.info(f"Skipping annual report: {link}")
         return False
     return True
 
 
 def google_search_pdf(company_name):
-    """使用Google API搜索PDF文件，过滤掉annual报告"""
+    """Use Google API to search for PDF files, filtering out annual reports"""
     pdf_links_set = set()
 
     try:
         service = create_google_service()
 
-        # 只搜索最近的年份以节省配额
+        # Only search recent years to save quota
         for year in range(2013, 2024):
             query = f"{company_name} {year} responsibility report sustainability report filetype:pdf"
-            logger.info(f"执行Google搜索: {query}")
+            logger.info(f"Executing Google search: {query}")
 
             try:
                 result = service.cse().list(q=query, cx=GOOGLE_CSE_ID, num=10).execute()
@@ -170,117 +170,117 @@ def google_search_pdf(company_name):
                 if "items" in result:
                     for item in result["items"]:
                         link = item["link"].strip().rstrip('/')
-                        title = item.get("title", "")  # 获取搜索结果的标题
+                        title = item.get("title", "")  # Get the title of the search result
                         
                         if link.lower().endswith('.pdf') and is_valid_pdf_link(link, title):
                             pdf_links_set.add(link)
-                            # 每年只获取一个有效的PDF链接
+                            # Only get one valid PDF link per year
                             break
 
-                time.sleep(1)  # 避免触发API限制
+                time.sleep(1)  # Avoid triggering API limits
 
             except Exception as e:
-                logger.error(f"年份 {year} 的Google搜索失败: {str(e)}")
-                # 如果遇到配额限制，立即停止搜索
+                logger.error(f"Google search for year {year} failed: {str(e)}")
+                # If quota is exceeded, stop searching immediately
                 if "Quota exceeded" in str(e):
-                    logger.error("Google API配额已超限，停止搜索")
+                    logger.error("Google API quota exceeded, stopping search")
                     break
 
     except Exception as e:
-        logger.error(f"Google搜索服务创建失败: {str(e)}")
+        logger.error(f"Failed to create Google search service: {str(e)}")
 
     return list(pdf_links_set)
 
 
 def get_pdf_links_for_company(company_name):
-    """获取公司的所有PDF链接，使用多种搜索策略"""
-    logger.info(f"开始处理公司: {company_name}")
+    """Get all PDF links for a company using multiple search strategies"""
+    logger.info(f"Starting to process company: {company_name}")
 
-    # 策略1：使用原始公司名称在网站搜索
+    # Strategy 1: Search on the website using the original company name
     pdf_links = try_website_search(company_name, use_corporation=False)
     if pdf_links:
         return pdf_links
 
-    # 策略2：将company替换为corporation后在网站搜索
+    # Strategy 2: Search on the website after replacing 'company' with 'corporation'
     if "company" in company_name.lower():
-        logger.info("尝试将'company'替换为'corporation'后搜索")
+        logger.info("Attempting to replace 'company' with 'corporation' and search")
         pdf_links = try_website_search(company_name, use_corporation=True)
         if pdf_links:
             return pdf_links
 
-    # 策略3：使用Google API搜索
-    logger.info("网站搜索未找到结果，尝试使用Google API搜索")
+    # Strategy 3: Use Google API search
+    logger.info("No results found on the website, attempting Google API search")
     pdf_links = google_search_pdf(company_name)
 
     return pdf_links
 
 
 def save_results_to_json(results):
-    """将结果保存为JSON文件"""
+    """Save results to a JSON file"""
     try:
         with open(RESULTS_FILE, 'w', encoding='utf-8') as f:
             json.dump(results, f, ensure_ascii=False, indent=4)
-        logger.info(f"结果已保存到 {RESULTS_FILE}")
+        logger.info(f"Results saved to {RESULTS_FILE}")
     except Exception as e:
-        logger.error(f"保存JSON失败: {str(e)}")
+        logger.error(f"Failed to save JSON: {str(e)}")
 
 
 def load_existing_results():
-    """加载现有的结果文件"""
+    """Load existing results file"""
     if os.path.exists(RESULTS_FILE):
         try:
             with open(RESULTS_FILE, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except Exception as e:
-            logger.error(f"加载现有结果失败: {str(e)}")
+            logger.error(f"Failed to load existing results: {str(e)}")
     return {}
 
 
 def main():
-    # 设置数据库路径
-    # 获取脚本文件的绝对路径
+    # Set database path
+    # Get the absolute path of the script file
     script_dir = Path(__file__).resolve().parent
-    # 构建数据文件的路径
+    # Build the path to the data file
     db_path = script_dir / "../../../000.Database/SQL/Equity.db"
-    # 解析路径（去除多余的 ../）
+    # Resolve the path (remove redundant ../)
     db_path = db_path.resolve()
 
-    # 读取公司列表
+    # Read the list of companies
     companies = read_companies_from_db(db_path)
     if not companies:
-        logger.error("未能获取公司列表")
+        logger.error("Failed to retrieve the list of companies")
         return
 
-    logger.info(f"共获取到 {len(companies)} 家公司")
+    logger.info(f"Retrieved {len(companies)} companies")
 
-    # 加载现有结果
+    # Load existing results
     results = load_existing_results()
 
-    # 处理每个公司
+    # Process each company
     for i, company in enumerate(companies, 1):
-        logger.info(f"[{i}/{len(companies)}] 正在处理: {company}")
+        logger.info(f"[{i}/{len(companies)}] Processing: {company}")
 
-        # 如果公司已经处理过，跳过
+        # If the company has already been processed, skip
         if company in results:
-            logger.info(f"{company} 已经处理过，跳过")
+            logger.info(f"{company} has already been processed, skipping")
             continue
 
-        # 获取PDF链接
+        # Get PDF links
         pdf_links = get_pdf_links_for_company(company)
 
-        # 保存结果
+        # Save results
         results[company] = pdf_links
 
-        # 每处理一家公司保存一次结果
+        # Save results after processing each company
         if i % 1 == 0:
             save_results_to_json(results)
 
-        # 避免请求过于频繁
+        # Avoid making requests too frequently
         time.sleep(1)
 
-    # 最终保存结果
+    # Final save of results
     save_results_to_json(results)
-    logger.info("所有公司处理完成")
+    logger.info("All companies processed")
 
 
 if __name__ == "__main__":
