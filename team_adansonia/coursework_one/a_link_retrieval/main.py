@@ -161,6 +161,10 @@ def responsibility_reports_seed():
 def populate_database():
     global is_db_initialized
 
+    ROOT_DIR = os.getenv("ROOT_DIR")
+    seed_folder = os.path.join(ROOT_DIR, "mongo-seed")
+    seed_file = os.path.join(seed_folder, "seed_data.json")
+
     mongo_client = mongo.connect_to_mongo()
     if mongo_client is None:
         exit(1)
@@ -170,19 +174,44 @@ def populate_database():
         exit(1)
     db = mongo_client["csr_reports"]
     # TODO: Initialize responsobility reprost as seed after loading
-    mongo.import_seed_to_mongo()
-    collection = db.companies
-
+    db = mongo_client["csr_reports"]  # Access the MongoDB database
+    collection = db["companies"]
     #TODO: when API keys are out, schedule to run again a day later
     retrieve_and_store_csr_reports(collection)
     upload_csr_reports_to_minio(collection, minio_client, mongo_client)
+    # Ensure uniqueness before exporting
+    unique_data = []
+    seen_companies = set()
+
+    for doc in collection.find({}):
+        company_name = doc.get("security", "")  # Unique identifier
+        if company_name in seen_companies:
+            continue  # Skip duplicates
+        seen_companies.add(company_name)
+
+        # Convert MongoDB types to JSON serializable format
+        doc.pop("_id", None)
+        for key, value in doc.items():
+            if isinstance(value, datetime):
+                doc[key] = value.isoformat()
+            elif isinstance(value, ObjectId):
+                doc[key] = str(value)
+
+        unique_data.append(doc)
+
+    # Write unique data to JSON file
+    with open(seed_file, "w", encoding="utf-8") as f:
+        json.dump(unique_data, f, indent=4)
+
+    print(f"Exported {len(unique_data)} unique documents to {seed_file}")
     is_db_initialized = True
     print("Database loaded successfully: " + is_db_initialized)
+
     return is_db_initialized
 
 
 def get_latest_report():
-    
+
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
 
@@ -218,7 +247,7 @@ def get_latest_report():
                 logger.info(f"No reports found for {company_name}, using current year")
 
             years_to_process = [latest_year]
-                
+
             print(years_to_process)
 
             update_data = {"updated_at": datetime.utcnow()}
@@ -284,14 +313,14 @@ def get_latest_report():
 
         except Exception as e:
             logger.error(f"Error processing {company_name}: {e}")
-    
+
 
     #result = crawler.process_company(company_name)
     #return None
     #Use the webdriver to get latest report, if different from previous year add, otherwise skip
-    return 
+    return
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     mongo.reset_database()
     #responsibility_reports_seed()
     #populate_database()
