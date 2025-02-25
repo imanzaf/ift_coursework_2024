@@ -21,7 +21,7 @@ def retrieve_and_store_csr_reports(collection):
     logger = logging.getLogger(__name__)
     current_year = str(datetime.now().year)
     previous_year = str(datetime.now().year - 1)
-
+    #TODO: remove limit!!!
     for document in collection.find():
         company_name = document["security"]
         ticker = document.get("symbol", "")  # Ensure ticker is present if needed
@@ -98,11 +98,10 @@ def retrieve_and_store_csr_reports(collection):
             logger.error(f"Error processing {company_name}: {e}")
 
 
-def upload_csr_reports_to_minio(db, client, mongo_client):
+def upload_csr_reports_to_minio(collection, client, mongo_client):
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
 
-    collection = db.companies
 
     for document in collection.find():
         try:
@@ -172,13 +171,12 @@ def populate_database():
     minio_client = minio.connect_to_minio()
     if minio_client is None:
         exit(1)
-    db = mongo_client["csr_reports"]
     # TODO: Initialize responsobility reprost as seed after loading
     db = mongo_client["csr_reports"]  # Access the MongoDB database
     collection = db["companies"]
     #TODO: when API keys are out, schedule to run again a day later
     retrieve_and_store_csr_reports(collection)
-    upload_csr_reports_to_minio(collection, minio_client, mongo_client)
+
     # Ensure uniqueness before exporting
     unique_data = []
     seen_companies = set()
@@ -205,8 +203,10 @@ def populate_database():
 
     print(f"Exported {len(unique_data)} unique documents to {seed_file}")
     is_db_initialized = True
-    print("Database loaded successfully: " + is_db_initialized)
-
+    print("Database loaded successfully: " + str(is_db_initialized))
+    #Upload to minio
+    upload_csr_reports_to_minio(collection, minio_client, mongo_client)
+    print("Reports uploaded")
     return is_db_initialized
 
 
@@ -311,6 +311,7 @@ def get_latest_report():
             else:
                 logger.info(f"No updates needed for {company_name}.")
 
+
         except Exception as e:
             logger.error(f"Error processing {company_name}: {e}")
 
@@ -321,7 +322,7 @@ def get_latest_report():
     return
 
 if __name__ == '__main__':
-    mongo.reset_database()
+    #mongo.reset_database()
     #responsibility_reports_seed()
-    #populate_database()
+    populate_database()
     pass
