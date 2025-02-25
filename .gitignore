@@ -210,6 +210,9 @@ __pycache__
 # pycharm settings
 .idea
 
+# poetry lock file
+poetry.lock
+
 # volumes folders docker
 
 postgres-data/
