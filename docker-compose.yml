@@ -49,6 +49,71 @@ services:
         PGADMIN_DEFAULT_PASSWORD: root
       ports:
         - "5051:80"
+    zookeeper:
+      image: confluentinc/cp-zookeeper:7.3.2      
+      container_name: zoo_keeper
+      ports:
+        - 2181:2181
+      environment:
+        ZOOKEEPER_CLIENT_PORT: 2181
+        ZOOKEEPER_SERVER_ID: 1
+        ZOOKEEPER_SERVERS: zoo_keeper:2888:3888
+    
+    kafka:
+      image: confluentinc/cp-kafka:7.3.2
+      container_name: kafka
+      ports:
+        - 9092:9092
+        - 29092:29092
+        - 9991:9999
+      environment:
+        KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:19092,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092,DOCKER://host.docker.internal:29092
+        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
+        KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+        KAFKA_ZOOKEEPER_CONNECT: "zoo_keeper:2181"
+        KAFKA_BROKER_ID: 1
+        KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
+        KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+        KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+        KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+        KAFKA_JMX_PORT: 9999
+        KAFKA_JMX_HOSTNAME: ${DOCKER_HOST_IP:-127.0.0.1}
+        KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+        KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
+      depends_on:
+        - zookeeper
+    kafkaconnect:
+      build:
+        context: .
+        dockerfile: ./DataBases/Kafka/Dockerfile
+      ports:
+        - "35000:35000"
+      hostname: connect
+      container_name: connect
+      depends_on:
+        - zookeeper
+        - kafka
+      environment:
+        KAFKA_JMX_PORT: 35000
+        KAFKA_JMX_HOSTNAME: localhost
+        CONNECT_BOOTSTRAP_SERVERS: "kafka:29092"
+        CONNECT_REST_ADVERTISED_HOST_NAME: connect
+        CONNECT_REST_PORT: 8083
+        CONNECT_GROUP_ID: connect-cluster-group
+        CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-configs
+        CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+        CONNECT_OFFSET_FLUSH_INTERVAL_MS: 10000
+        CONNECT_OFFSET_STORAGE_TOPIC: docker-connect-offsets
+        CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+        CONNECT_STATUS_STORAGE_TOPIC: docker-connect-status
+        CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+        CONNECT_ZOOKEEPER_CONNECT: "zoo_keeper:2181"
+        CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components"
+        CONNECT_CONNECTIONS_MAX_IDLE_MS: 180000
+        CONNECT_METADATA_MAX_AGE_MS: 180000
+        CONNECT_AUTO_CREATE_TOPICS_ENABLE: "true"
+        CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+        CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
     miniocw:
       image: minio/minio
       container_name: miniocw
@@ -76,8 +141,21 @@ services:
       entrypoint: >
         /bin/bash -c "
         until (/usr/bin/mc config host add minio http://miniocw:9000 ift_bigdata minio_password) do echo '...waiting...' && sleep 1; done;
+        echo 'MinIO Ready! Creating csreport bucket...';
         sleep 10 && /usr/bin/mc rm -r --force minio/csreport;
         sleep 10 && /usr/bin/mc mb minio/csreport;
         mc anonymous set public minio/csreport;
         tail -f /dev/null
         "
+    pythonice:
+      container_name: pythonice
+      image: python:3.9
+      working_dir: /app
+      command: tail -f /dev/null
+      depends_on:
+        - miniocw
+
+
+networks:
+  iceberg_net:
+    driver: bridge
