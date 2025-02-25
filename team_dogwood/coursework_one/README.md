@@ -33,8 +33,27 @@ docker compose up --build -d jenkins postgres_db_cw postgres_seed_cw miniocw min
 3. Access the Jenkins UI at `http://localhost:8080`.
 
 ### Configuring the Jenkins Pipeline
-Configure the Jenkins pipeline using the UI. (TODO - add instructions!)
-1. Update the Jenkinsfile to include the Google API Key. (OR instructions to add cred to Jenkins UI)
+1. Add your Google API key to the Jenkins credentials manager.
+    1. Click on "Manage Jenkins" in the Jenkins UI.
+    2. Click on "Credentials".
+    3. Click on "Global" in the left-hand menu.
+    4. Click on "Add Credentials".
+    5. Select "Secret text" as the kind.
+    6. Enter the name `google_api_key` for the secret ID.
+    7. Enter your Google API key as the secret.
+    8. Click "OK".
+2. Configure the Jenkins pipeline using the UI:
+    1. Click on "New Item" in the Jenkins UI.
+    2. Enter a name for the pipeline.
+    3. Select "Pipeline" as the type.
+    4. Click "OK".
+    5. In the 'Pipeline Definition' section of the page, select "Pipeline script from SCM".
+    6. Select "Git" as the SCM.
+    7. Enter the repository URL https://github.com/imanzaf/ift_coursework_2024.
+    8. Enter the branch to your current branch. e.g., feature/coursework_one_dogwood
+    9. Update the script path to `team_dogwood/coursework_one/orchestration/jenkins/Jenkinsfile`.
+    10. Click "Save".
+
 
 ## Development Instructions
 *Note: Where the instructions mention the 'root directory of the project', this refers to the `team_dogwood/coursework_one` directory.*

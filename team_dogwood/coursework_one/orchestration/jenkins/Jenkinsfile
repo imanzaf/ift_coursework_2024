@@ -21,8 +21,7 @@ pipeline {
 
         SEARCH_GOOGLE_API_URL = "https://www.googleapis.com/customsearch/v1"
         SEARCH_GOOGLE_ENGINE_ID = "d607709d07e8d4937"
-        // TODO - store credentials in Jenkins credentials manager
-        SEARCH_GOOGLE_API_KEY = "enter_google_api_key"
+        SEARCH_GOOGLE_API_KEY = credentials('google_api_key')
 
         SEARCH_SUSTAINABILITY_REPORTS_API_URL = "https://www.responsibilityreports.com/"
     }
