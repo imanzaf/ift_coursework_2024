@@ -34,10 +34,7 @@ docker compose up --build -d jenkins postgres_db_cw postgres_seed_cw miniocw min
 
 ### Configuring the Jenkins Pipeline
 1. Add your Google API key to the Jenkins credentials manager.
-    1. Click on "Manage Jenkins" in the Jenkins UI.
-    2. Click on "Credentials".
-    3. Click on "Global" in the left-hand menu.
-    4. Click on "Add Credentials".
+    1. Navigate to: "Manage Jenkins" -> "Credentials" -> "Global" -> "Add Credentials"
     5. Select "Secret text" as the kind.
     6. Enter the name `google_api_key` for the secret ID.
     7. Enter your Google API key as the secret.
@@ -53,6 +50,14 @@ docker compose up --build -d jenkins postgres_db_cw postgres_seed_cw miniocw min
     8. Enter the branch to your current branch. e.g., feature/coursework_one_dogwood
     9. Update the script path to `team_dogwood/coursework_one/orchestration/jenkins/Jenkinsfile`.
     10. Click "Save".
+
+### Runnning the Jenkins Pipeline
+1. Click on the pipeline you created in the previous step.
+2. Click on "Build Now".
+
+To see the logs of the pipeline:
+1. Click on a build number in the "Builds" section of the pipeline page.
+2. Click on "Console Output" in the left-hand menu.
 
 
 ## Development Instructions
