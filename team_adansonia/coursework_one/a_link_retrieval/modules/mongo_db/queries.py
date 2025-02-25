@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from src.modules.mongo_db.company_data import CompanyDatabase
+from modules.mongo_db.company_data import CompanyDatabase
 
 
 def connect_to_mongo():

@@ -180,15 +180,119 @@ def populate_database():
     print("Database loaded successfully: " + is_db_initialized)
     return is_db_initialized
 
-#TODO:
-'''    def get_latest_report():
-        #TODO: Iterate through all documents, check if current year exists
-        #result = crawler.process_company(company_name)
-        #return None
-    #TODO: Use the webdriver to get latest report, if different from previous year add, otherwise skip
-'''
 
-if __name__ == '__main__':
+def get_latest_report():
+    
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    logger = logging.getLogger(__name__)
+
+    mongo_client = mongo.connect_to_mongo()
+    if mongo_client is None:
+        exit(1)
+        logger.error("Failed to connect to MongoDB")
+        return
+    else:
+        logger.info("Connected to MongoDB")
+
+    db = mongo_client["csr_reports"]
+    collection = db.companies
+    #Iterate through all documents, check if current year exists
+
+    current_year = str(datetime.now().year)
+
+
+    for document in collection.find():
+        company_name = document["security"]
+        ticker = document.get("symbol", "")  # Ensure ticker is present if needed
+        logger.info(f"Processing company: {company_name}")
+
+        try:
+            existing_reports = document.get("csr_reports", {})
+
+            # Find the earliest year from existing reports or default to the current year
+            if existing_reports:
+                latest_year = max(existing_reports.keys())
+                logger.info(f"Latest year for {company_name} is {latest_year}")
+            else:
+                latest_year = current_year
+                logger.info(f"No reports found for {company_name}, using current year")
+
+            years_to_process = [latest_year]
+                
+            print(years_to_process)
+
+            update_data = {"updated_at": datetime.utcnow()}
+            csr_reports = existing_reports.copy()  # Copy existing CSR reports to preserve them
+
+            for year in years_to_process:
+                year_str = str(year)
+
+                # Skip if the year already has a CSR report URL
+                if year_str in csr_reports and csr_reports[year_str]:
+                    logger.info(f"Skipping {company_name} for year {year}, report already exists.")
+                    continue
+
+                # Process for current year
+                if year_str == current_year:
+                    try:
+                        result = crawler.process_company(company_name)
+
+                        if result == (None, None):
+                            logger.warning(f"No valid result found for {company_name} for year {year}")
+                            result = google_api_combined_crawler._get_report_search_results(company_name, ticker, year_str)
+
+                        # If still no results, continue to next year
+                        if result == (None, None):
+                            continue
+                        else:
+                            logger.info(f"Crawler:Valid result found for {company_name} for year {year}")
+                        #TODO: If the year is current year, compare the pdfs with previous year
+                        webpage_url, pdf_url = result
+                        csr_reports[year_str] = pdf_url
+                        update_data["website_url"] = webpage_url
+                    except Exception as e:
+                        logger.warning(f"No valid result found for {company_name} for year {year}")
+                        result = google_api_combined_crawler._get_report_search_results(company_name, ticker, year_str)
+
+                        if result is None:
+                            logger.info(f"GoogleAPI Crawler:No valid result found for {company_name} for year {year}")
+                            continue
+                        else:
+                            logger.info(f"GoogleAPI Crawler:Valid result found for {company_name} for year {year}")
+
+                        webpage_url, pdf_url = result
+                        csr_reports[year_str] = pdf_url
+                        update_data["website_url"] = webpage_url
+
+                else:
+                    pdf_url = google_api_combined_crawler._get_report_search_results(company_name, ticker, year_str)
+
+                    if pdf_url:
+                        csr_reports[year_str] = pdf_url
+                        logger.info(f"GoogleAPI Crawler:Valid result found for {company_name} for year {year}")
+                    else:
+                        csr_reports[year_str] = ""  # Mark as empty if no report found
+                        logger.info(f"GoogleAPI Crawler:No valid result found for {company_name} for year {year}")
+
+            # Update only if there are changes in the csr_reports
+            if csr_reports != existing_reports:  # Avoid unnecessary updates if no data changed
+                update_data["csr_reports"] = csr_reports  # Update csr_reports field
+                collection.update_one({"_id": document["_id"]}, {"$set": update_data})
+                logger.info(f"Updated CSR report URLs for {company_name}")
+            else:
+                logger.info(f"No updates needed for {company_name}.")
+
+        except Exception as e:
+            logger.error(f"Error processing {company_name}: {e}")
+    
+
+    #result = crawler.process_company(company_name)
+    #return None
+    #Use the webdriver to get latest report, if different from previous year add, otherwise skip
+    return 
+
+if __name__ == '__main__': 
     mongo.reset_database()
     #responsibility_reports_seed()
     #populate_database()
+    pass
