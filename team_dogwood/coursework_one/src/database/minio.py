@@ -1,8 +1,3 @@
-"""
-TODO -
-    - Methods for writing and reading pdf object from minio database.
-"""
-
 from ift_global import MinioFileSystemRepo
 from pydantic import BaseModel
 
