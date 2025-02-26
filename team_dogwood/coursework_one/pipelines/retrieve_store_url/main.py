@@ -1,11 +1,11 @@
 import os
 import sys
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
-
 from loguru import logger
 
-from src.data_models.company import Company  # ESGReport, SearchResult
+sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
+
+from src.data_models.company import Company, ESGReport
 from src.database.postgres import PostgreSQLDB
 from src.esg_reports.search import Search
 from src.esg_reports.validate import SearchResultValidator
@@ -31,7 +31,7 @@ def get_all_companies(db: PostgreSQLDB) -> list[Company]:
     return companies_list
 
 
-def get_validated_results(company: Company):
+def get_validated_results(company: Company) -> Company:
     """
     Get validated search results for each company.
     """
@@ -39,7 +39,7 @@ def get_validated_results(company: Company):
     search_instance = Search(company=company)
     company_name = company.security
     google_results = search_instance.google()
-    sustainability_result = search_instance.sustainability_reports_dot_com()
+    sust_report_result = search_instance.sustainability_reports_dot_com()
 
     # Validate the google search results.
     if google_results:
@@ -48,50 +48,82 @@ def get_validated_results(company: Company):
         )
         valid_google_results = validator.validated_results
         if valid_google_results:
-            google_best = valid_google_results[0]
+            google_result = valid_google_results[0]
         else:
-            google_best = None
+            google_result = ESGReport(url=None, year=None)
             logger.warning(f"[{company_name}] No valid Google search results found.")
     else:
-        google_best = None
+        google_result = ESGReport(url=None, year=None)
         logger.warning(f"[{company_name}] No Google search results were found.")
-
-    google_url = google_best.link if google_best else None
-    sust_report_url = sustainability_result.url if sustainability_result else None
 
     # Log the search results.
     logger.debug(f"\n=== {company_name} ESG report search results ===\n")
-    if google_url:
-        logger.debug(f"[Google API] Latest ESG report link: {google_url}")
+    if google_result:
+        logger.debug(f"[Google API] Latest ESG report: {google_result}")
     else:
         logger.debug("[Google API] No ESG report link found that meets the criteria.")
-    if sust_report_url:
+    if sust_report_result:
         logger.debug(
-            f"[SustainabilityReports.com] Latest ESG report link: {sust_report_url} (Year: {sustainability_result.year})"
+            f"[SustainabilityReports.com] Latest ESG report: {sust_report_result})"
         )
     else:
         logger.debug("[SustainabilityReports.com] No valid ESG report link found.")
 
-    return google_url, sust_report_url
+    company.esg_reports = [google_result, sust_report_result]
+    return company
 
 
-def update_db(
-    db: PostgreSQLDB, company: Company, google_url: str, sust_report_url: str
-):
+def update_db(db: PostgreSQLDB, company: Company):
     """
     Update the database with the latest ESG report links.
-    Currently assumes google API will return link for 2024 and sustainabilityreports.com will return link for 2023.
-    This will be made more dynamic in the next iteration.
     """
+    urls = {}
+    esg_reports = company.esg_reports
+    if esg_reports[0].year == esg_reports[1].year:
+        urls.update(
+            {
+                (
+                    esg_reports[0].year if esg_reports[0].year is not None else "Other"
+                ): esg_reports[0].url
+            }
+        )
+    else:
+        urls.update(
+            {
+                (
+                    esg_reports[0].year if esg_reports[0].year is not None else "Other"
+                ): esg_reports[0].url
+            }
+        )
+        urls.update(
+            {
+                (
+                    esg_reports[1].year if esg_reports[1].year is not None else "Other"
+                ): esg_reports[1].url
+            }
+        )
+
     update_query = """
-    INSERT INTO company_data (company_name, "2024", "2023")
-    VALUES (:company_name, :google_url, :sust_url)
+    INSERT INTO company_data (company_name, ":year")
+    VALUES (:company_name, :url)
     ON CONFLICT (company_name)
-    DO UPDATE SET "2024" = EXCLUDED."2024", "2023" = EXCLUDED."2023";
+    DO UPDATE SET ":year" = EXCLUDED.":year";
     """
     db.execute(
         update_query,
-        {"company_name": company.security, "2024": google_url, "2023": sust_report_url},
+        {
+            "company_name": company.security,
+            "year": esg_reports[0].year,
+            "url": esg_reports[0].url,
+        },
+    )
+    db.execute(
+        update_query,
+        {
+            "company_name": company.security,
+            "year": esg_reports[1].year,
+            "url": esg_reports[1].url,
+        },
     )
     logger.info(
         f"[{company.security}] The retrieved links have been written to the database."
@@ -104,9 +136,11 @@ def main():
         query = """
         CREATE TABLE IF NOT EXISTS scr_reporting.company_urls (
         company_name VARCHAR(255) NOT NULL,
+        "2025" STRING
         "2024" STRING,
         "2023" STRING,
-        "2022" STRING
+        "2022" STRING,
+        "Other" STRING
         );
         """
         db.execute(query)
@@ -115,8 +149,8 @@ def main():
         companies = get_all_companies(db)
         logger.info(f"Retrieved {len(companies)} companies from the database.")
         for company in companies:
-            google_url, sust_report_url = get_validated_results(company)
-            update_db(db, company, google_url, sust_report_url)
+            company = get_validated_results(company)
+            update_db(db, company)
             logger.info(
                 f"[{company.security}] Updated the database with the latest ESG report links."
             )

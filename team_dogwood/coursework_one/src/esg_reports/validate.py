@@ -5,14 +5,14 @@ Methods to validate that URLs retrieved from the Google API contains the correct
 import os
 import sys
 from datetime import datetime
-from typing import List
+from typing import List, Union
 
 from loguru import logger
 from pydantic import BaseModel, Field, PrivateAttr
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
-from src.data_models.company import Company, SearchResult
+from src.data_models.company import Company, ESGReport, SearchResult
 from src.utils.search import clean_company_name
 
 
@@ -63,50 +63,44 @@ class SearchResultValidator(BaseModel):
         return name
 
     @property
-    def validated_results(self) -> List[SearchResult]:
+    def validated_results(self) -> List[ESGReport]:
         """
         Validate search results based on presence of year,company name and keywords.
 
         Returns
-            validated_results (list[SearchResult]): List of validated search results
+            validated_results (list[ESGReport]): List of validated search results
         """
         valid_results = []
         for result in self.search_results:
-            if all(
-                [self._year_in_result(result), self._company_name_in_result(result)]
-            ) or all(
+            result_year = self._year_in_result(result)
+            if result_year is not None and self._company_name_in_result(result):
+                valid_results.append(ESGReport(url=result.link, year=result_year))
+            elif all(
                 [self._company_name_in_result(result), self._keywords_in_result(result)]
             ):
-                valid_results.append(result)
+                valid_results.append(ESGReport(url=result.link, year=None))
 
         return valid_results
 
-    def _year_in_result(self, result: SearchResult) -> bool:
+    def _year_in_result(self, result: SearchResult) -> Union[str, None]:
         """
         Check that current or previous year is in the title, snippet or link
         """
-        if (
-            any(
-                [
-                    year in result.title
-                    for year in [self._current_year, self._previous_year]
-                ]
-            )
-            or any(
-                [
-                    year in result.snippet
-                    for year in [self._current_year, self._previous_year]
-                ]
-            )
-            or any(
-                [
-                    year in result.link
-                    for year in [self._current_year, self._previous_year]
-                ]
-            )
+        if any(
+            [
+                self._current_year in text
+                for text in [result.title, result.snippet, result.link]
+            ]
         ):
-            return True
-        return False
+            return self._current_year
+        elif any(
+            [
+                self._previous_year in text
+                for text in [result.title, result.snippet, result.link]
+            ]
+        ):
+            return self._previous_year
+        return None
 
     def _company_name_in_result(self, result: SearchResult) -> bool:
         """

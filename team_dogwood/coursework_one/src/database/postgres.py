@@ -112,8 +112,8 @@ class PostgreSQLDB(BaseModel):
         """
         query = """
         SELECT *
-        FROM csr_reporting.company_csr_reports
-        WHERE company_id = %s
+        FROM csr_reporting.company_urls
+        WHERE company_name = %s
         ORDER BY report_year DESC
         """
         return self.execute(query, (company_id,))
