@@ -37,19 +37,27 @@ class PostgresManager:
         return count > 0  # 如果 count > 0，说明已存在
     
     def insert_pdf_record(self, record: Dict):
-        query = "SELECT COUNT(*) FROM pdf_records WHERE file_hash = %s;"
-        self.cur.execute(query, (record['file_hash'],))
-        count = self.cur.fetchone()[0]
+    # 检查数据库是否已存在 (company, year)
+        query = "SELECT 1 FROM pdf_records WHERE company = %s AND year = %s;"
+        self.cur.execute(query, (record['company'], record['year']))
+        exists = self.cur.fetchone()
 
-        if count == 0:  # 只有当文件不存在时才插入
+        if exists:  # 如果已经存在该公司该年的记录，就跳过
+            logger.info(f"[Postgres] Skipping {record['company']} {record['year']}, already exists.")
+            return
+    
+    # 插入数据
+        try:
             self.cur.execute("""
             INSERT INTO pdf_records (company, url, year, file_hash, filename)
             VALUES (%s, %s, %s, %s, %s);
-        """, (record['company'], record['url'], record['year'], record['file_hash'],record['filename']))
+            """, (record['company'], record['url'], record['year'], record['file_hash'], record['filename']))
             self.conn.commit()
             logger.info(f"[Postgres] Inserted record for {record['company']} - {record['year']}")
-        else:
-            logger.info(f"[Postgres] Skipped {record['filename']}, already exists.")
+        except Exception as e:
+            self.conn.rollback()  # 事务回滚
+            logger.error(f"[Postgres] Insert failed: {str(e)}")
+
    
     def close(self):
         self.cur.close()

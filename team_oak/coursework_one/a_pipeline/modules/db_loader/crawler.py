@@ -5,6 +5,7 @@ import os
 import random
 import threading
 import time
+import sys
 import urllib
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, List, Set
@@ -35,7 +36,7 @@ class Config:
     ]
     SEARCH_YEARS = (2019, 2020, 2021, 2022, 2023, 2024)
     MAX_PAGES_PER_YEAR = 2
-    CSV_PATH = "C:/Users/赵小蕊/Desktop/ift_coursework_2024_Wisteria/nasdaq.csv"
+    CSV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../static/nasdaq.csv"))
     RETRY_DELAY = (1, 5)
     MAX_RETRIES = 3
     BROWSER_TIMEOUT = 600
@@ -72,7 +73,11 @@ class PDFScraper:
             access_key="ift_bigdata",
             secret_key="minio_password",
             secure=False)
-        from reports.database import PostgresManager
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.abspath(os.path.join(current_dir, "..", "..", "..", "..", ".."))
+        sys.path.append(project_root)
+
+        from team_oak.coursework_one.a_pipeline.modules.url_parser.database import PostgresManager
         self.pg_manager = PostgresManager(host="localhost", port="5439")
         self.minio_client = Minio(
             Config.MINIO_ENDPOINT,
@@ -183,9 +188,9 @@ class PDFScraper:
                         logger.info(f"Skipping {filename}, already in DB (file_hash={content_hash})")
                         return False
 
-                    if self.file_exists_in_minio(filename):
-                        logger.info(f"Skipping {filename}, already in MinIO.")
-                        return False
+                    # if self.file_exists_in_minio(filename):
+                    #     logger.info(f"Skipping {filename}, already in MinIO.")
+                    #     return False
 
 
                 
@@ -198,17 +203,17 @@ class PDFScraper:
                     # Year-specific filename
                     filename = f"{company}_{year}.pdf"
                     #  #  MinIO
-                    try:
-                        self.minio_client.put_object(
-                            Config.MINIO_BUCKET,
-                            filename,
-                            data=BytesIO(response.content),
-                            length=len(response.content),
-                            content_type="application/pdf"
-                        )
-                    except S3Error as e:
-                        logger.error(f"MinIO upload failed: {str(e)}")
-                        return False
+                    # try:
+                    #     self.minio_client.put_object(
+                    #         Config.MINIO_BUCKET,
+                    #         filename,
+                    #         data=BytesIO(response.content),
+                    #         length=len(response.content),
+                    #         content_type="application/pdf"
+                    #     )
+                    # except S3Error as e:
+                    #     logger.error(f"MinIO upload failed: {str(e)}")
+                    #     return False
                     # 插入数据库
                     record = {
                     "company": company,
@@ -292,7 +297,7 @@ class PDFScraper:
             logger.info(f"Loaded {len(companies)} companies")
 
             with ThreadPoolExecutor(max_workers=Config.MAX_WORKERS) as executor:
-                futures = {executor.submit(self.process_company, co): co for co in companies}
+                futures = {executor.submit(self.process_company, co): co for co in companies[1:4]}
 
                 for future in as_completed(futures):
                     company = futures[future]
