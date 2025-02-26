@@ -78,13 +78,21 @@ def get_validated_results(company: Company):
 def update_db(
     db: PostgreSQLDB, company: Company, google_url: str, sust_report_url: str
 ):
-    update_query = """
-    UPDATE csr_reporting.company_static
-    SET google_url = %s,
-        responsibilityreport_url = %s
-    WHERE security = %s
     """
-    db.execute(update_query, (google_url, sust_report_url, company.security))
+    Update the database with the latest ESG report links.
+    Currently assumes google API will return link for 2024 and sustainabilityreports.com will return link for 2023.
+    This will be made more dynamic in the next iteration.
+    """
+    update_query = """
+    INSERT INTO company_data (company_name, "2024", "2023")
+    VALUES (:company_name, :google_url, :sust_url)
+    ON CONFLICT (company_name)
+    DO UPDATE SET "2024" = EXCLUDED."2024", "2023" = EXCLUDED."2023";
+    """
+    db.execute(
+        update_query,
+        {"company_name": company.security, "2024": google_url, "2023": sust_report_url},
+    )
     logger.info(
         f"[{company.security}] The retrieved links have been written to the database."
     )
@@ -92,6 +100,18 @@ def update_db(
 
 def main():
     with PostgreSQLDB() as db:
+        # Create new table
+        query = """
+        CREATE TABLE IF NOT EXISTS scr_reporting.company_urls (
+        company_name VARCHAR(255) NOT NULL,
+        "2024" STRING,
+        "2023" STRING,
+        "2022" STRING
+        );
+        """
+        db.execute(query)
+        logger.info("Created the company_urls table.")
+
         companies = get_all_companies(db)
         logger.info(f"Retrieved {len(companies)} companies from the database.")
         for company in companies:
