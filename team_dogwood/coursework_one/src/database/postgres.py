@@ -10,7 +10,11 @@ from loguru import logger
 from psycopg2.extras import RealDictCursor
 from pydantic import BaseModel
 from sqlalchemy import create_engine, engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.orm import sessionmaker, scoped_session
+from src.data_models.company import Company
+from sqlalchemy.sql import text
+
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 

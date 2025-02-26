@@ -2667,6 +2667,25 @@ lint = ["betterproto (==2.0.0b6)", "mypy (==1.15.0)", "pypi-attestations (==0.0.
 test = ["cython (>=3.0)", "defusedxml (>=0.7.1)", "pytest (>=8.0)", "pytest-xdist[psutil] (>=3.4)", "setuptools (>=70.0)", "typing_extensions (>=4.9)"]
 
 [[package]]
+name = "sphinx-copybutton"
+version = "0.5.2"
+description = "Add a copy button to each of your code cells."
+optional = false
+python-versions = ">=3.7"
+groups = ["main"]
+files = [
+    {file = "sphinx-copybutton-0.5.2.tar.gz", hash = "sha256:4cf17c82fb9646d1bc9ca92ac280813a3b605d8c421225fd9913154103ee1fbd"},
+    {file = "sphinx_copybutton-0.5.2-py3-none-any.whl", hash = "sha256:fb543fd386d917746c9a2c50360c7905b605726b9355cd26e9974857afeae06e"},
+]
+
+[package.dependencies]
+sphinx = ">=1.8"
+
+[package.extras]
+code-style = ["pre-commit (==2.12.1)"]
+rtd = ["ipython", "myst-nb", "sphinx", "sphinx-book-theme", "sphinx-examples"]
+
+[[package]]
 name = "sphinx-design"
 version = "0.6.1"
 description = "A sphinx extension for designing beautiful, view size responsive web components."
@@ -2724,6 +2743,21 @@ files = [
 [package.dependencies]
 pydantic = "*"
 sphinx-jsonschema = "*"
+
+[[package]]
+name = "sphinx-wagtail-theme"
+version = "6.5.0"
+description = "Sphinx Wagtail theme"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "sphinx_wagtail_theme-6.5.0-py3-none-any.whl", hash = "sha256:92502a420843e89e52680c2a27c3c8373b3b170037ad46e42f8266c1b682618b"},
+    {file = "sphinx_wagtail_theme-6.5.0.tar.gz", hash = "sha256:d3d57240d5fab5628de3ea79605e361e0822f601c0e42300620cce43eeeccbbe"},
+]
+
+[package.dependencies]
+sphinx-copybutton = "*"
 
 [[package]]
 name = "sphinxcontrib-applehelp"
@@ -3197,4 +3231,4 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "e514e8438260377235a7b97438ffa69e2005de3013f88336e5dd12a00fa50138"
+content-hash = "daa133ada8c3b36865e8b6fb77af310a186ba54a896c750c53f9ee7ffd3c5336"

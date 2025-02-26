@@ -173,9 +173,17 @@
 <li class="toctree-l2"><a class="reference internal" href="src.database.html#module-src.database.minio">Database Minio Module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="src.database.html#src.database.minio.MinioFileSystem"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.minio.MinioFileSystem.bucket_name"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.bucket_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.minio.MinioFileSystem.client"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.client</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.minio.MinioFileSystem.create_bucket"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.create_bucket()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.minio.MinioFileSystem.download_file"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.download_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.minio.MinioFileSystem.endpoint_url"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.endpoint_url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.minio.MinioFileSystem.list_files_by_company"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.list_files_by_company()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.minio.MinioFileSystem.model_config"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.model_config</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.minio.MinioFileSystem.read_file"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.read_file()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.minio.MinioFileSystem.write_file"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.write_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.minio.MinioFileSystem.password"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.password</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.minio.MinioFileSystem.upload_pdf"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.upload_pdf()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.minio.MinioFileSystem.user"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.user</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.minio.MinioFileSystem.view_pdf"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.view_pdf()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.minio.MinioFileSystem.write_pdf_bytes"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.write_pdf_bytes()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -185,11 +193,18 @@
 <li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.postgres.PostgreSQLDB.__enter__"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.__enter__()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.postgres.PostgreSQLDB.__exit__"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.__exit__()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.postgres.PostgreSQLDB._conn_postgres"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB._conn_postgres()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.postgres.PostgreSQLDB._conn_postgres_psycopg2"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB._conn_postgres_psycopg2()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.postgres.PostgreSQLDB.close"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.close()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.postgres.PostgreSQLDB.commit"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.commit()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.postgres.PostgreSQLDB.connection"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.connection</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.postgres.PostgreSQLDB.delete_csr_report"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.delete_csr_report()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.postgres.PostgreSQLDB.execute"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.execute()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.postgres.PostgreSQLDB.fetch"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.fetch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.postgres.PostgreSQLDB.get_csr_report_by_id"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.get_csr_report_by_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.postgres.PostgreSQLDB.get_csr_reports_by_company"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.get_csr_reports_by_company()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.postgres.PostgreSQLDB.model_config"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.postgres.PostgreSQLDB.store_csr_report"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.store_csr_report()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.database.html#src.database.postgres.PostgreSQLDB.update_csr_report"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.update_csr_report()</span></code></a></li>
 </ul>
 </li>
 </ul>

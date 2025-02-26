@@ -130,6 +130,7 @@
 <p>This package contains modules for interacting with databases and storage services, including <strong>PostgreSQL</strong> for relational data and <strong>MinIO</strong> for object storage.</p>
 <section id="module-src.database.minio">
 <span id="database-minio-module"></span><h2>Database Minio Module<a class="headerlink" href="#module-src.database.minio" title="Link to this heading">¶</a></h2>
+<p>Methods for interacting with minio database.</p>
 <p class="rubric"><strong>Overview</strong></p>
 <p>The <cite>minio</cite> module provides functionality for interacting with <strong>MinIO</strong>, an open-source object storage service. It includes methods for uploading, downloading, and managing files stored in MinIO buckets.</p>
 <p class="rubric"><strong>Key Features</strong></p>
@@ -140,13 +141,11 @@
 </ul>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.database.minio.MinioFileSystem">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.database.minio.</span></span><span class="sig-name descname"><span class="pre">MinioFileSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.database.minio.</span></span><span class="sig-name descname"><span class="pre">MinioFileSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ift_bigdata'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'minio_password'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'localhost:9000'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MinioFileSystemRepo</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
 <p>Overwrite file read and file write methods in MinioFileSystemRepo to add functionality to process pdf files.</p>
 <dl class="simple">
 <dt>Useful methods from parent class:</dt><dd><ul class="simple">
-<li><p>upload_file</p></li>
-<li><p>download_file</p></li>
 <li><p>list_dir</p></li>
 <li><p>list_files</p></li>
 <li><p>dir_exists</p></li>
@@ -159,22 +158,125 @@
 <span class="sig-name descname"><span class="pre">bucket_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.database.minio.MinioFileSystem.bucket_name" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.client">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Minio</span></em><a class="headerlink" href="#src.database.minio.MinioFileSystem.client" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize Minio Client.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.create_bucket">
+<span class="sig-name descname"><span class="pre">create_bucket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.create_bucket" title="Link to this definition">¶</a></dt>
+<dd><p>Ensure the bucket exists. Creates it if it doesn’t exist.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.download_file">
+<span class="sig-name descname"><span class="pre">download_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.download_file" title="Link to this definition">¶</a></dt>
+<dd><p>Download a file from MinIO to a local path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> – Name of the file in the bucket (same as ‘upload_file’).</p></li>
+<li><p><strong>dest_path</strong> – Local path to save the file (e.g., “./downloaded.pdf”).</p></li>
+<li><p><strong>bucket_name</strong> – MinIO bucket name.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.endpoint_url">
+<span class="sig-name descname"><span class="pre">endpoint_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.database.minio.MinioFileSystem.endpoint_url" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.list_files_by_company">
+<span class="sig-name descname"><span class="pre">list_files_by_company</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">company_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.list_files_by_company" title="Link to this definition">¶</a></dt>
+<dd><p>List all files for a specific company by prefix ‘company_id/’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>company_id</strong> – The company ID (integer or string).</p></li>
+<li><p><strong>bucket_name</strong> – MinIO bucket name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of object names belonging to that company’s folder.</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#src.database.minio.MinioFileSystem.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.password">
+<span class="sig-name descname"><span class="pre">password</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.database.minio.MinioFileSystem.password" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
-<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.read_file">
-<span class="sig-name descname"><span class="pre">read_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.read_file" title="Link to this definition">¶</a></dt>
-<dd><p>Read a pdf file from the minio database.</p>
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.upload_pdf">
+<span class="sig-name descname"><span class="pre">upload_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">company_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report_year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.upload_pdf" title="Link to this definition">¶</a></dt>
+<dd><p>Writes (uploads) a PDF into a subfolder structure: company_id/year/filename.pdf.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>local_file_path</strong> – Path to the local PDF file.</p></li>
+<li><p><strong>company_id</strong> – The ID of the company for which the PDF is being uploaded.</p></li>
+<li><p><strong>report_year</strong> – The year of the CSR report.</p></li>
+<li><p><strong>bucket_name</strong> – MinIO bucket name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The object name (MinIO path), e.g. “123/2024/report.pdf”</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.user">
+<span class="sig-name descname"><span class="pre">user</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.database.minio.MinioFileSystem.user" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.view_pdf">
+<span class="sig-name descname"><span class="pre">view_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expiry_hours</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.view_pdf" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a presigned URL to view the PDF in a web browser.
+Users can open the link in their browser without explicitly downloading.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_name</strong> – The MinIO path (e.g. “123/2024/report.pdf”).</p></li>
+<li><p><strong>bucket_name</strong> – MinIO bucket name.</p></li>
+<li><p><strong>expiry_hours</strong> – The expiry time for the presigned URL.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A presigned URL string.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.write_file">
-<span class="sig-name descname"><span class="pre">write_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.write_file" title="Link to this definition">¶</a></dt>
-<dd><p>Write a pdf file to the minio database.</p>
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.write_pdf_bytes">
+<span class="sig-name descname"><span class="pre">write_pdf_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf_bytes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">company_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report_year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.write_pdf_bytes" title="Link to this definition">¶</a></dt>
+<dd><p>Writes (uploads) a PDF into a subfolder structure: company_id/year/filename.pdf.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdf_bytes</strong> – The PDF file as bytes.</p></li>
+<li><p><strong>company_id</strong> – The ID of the company for which the PDF is being uploaded.</p></li>
+<li><p><strong>report_year</strong> – The year of the CSR report.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The object name (MinIO path), e.g. “123/2024/report.pdf”</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -182,6 +284,7 @@
 </section>
 <section id="module-src.database.postgres">
 <span id="database-postgres-module"></span><h2>Database Postgres Module<a class="headerlink" href="#module-src.database.postgres" title="Link to this heading">¶</a></h2>
+<p>Methods for interacting with postgres database.</p>
 <p class="rubric"><strong>Overview</strong></p>
 <p>The <cite>postgres</cite> module provides functionality for interacting with <strong>PostgreSQL</strong>, a powerful open-source relational database. It includes methods for querying, inserting, updating, and deleting data in PostgreSQL tables.</p>
 <p class="rubric"><strong>Key Features</strong></p>
@@ -257,6 +360,12 @@ and managing database sessions. It supports both read and upsert (update/insert)
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB._conn_postgres_psycopg2">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_conn_postgres_psycopg2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB._conn_postgres_psycopg2" title="Link to this definition">¶</a></dt>
+<dd><p>Establishes a raw psycopg2 connection to PostgreSQL.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.close">
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">commit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.close" title="Link to this definition">¶</a></dt>
 <dd><p>Close the database connection.</p>
@@ -288,33 +397,55 @@ and managing database sessions. It supports both read and upsert (update/insert)
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.delete_csr_report">
+<span class="sig-name descname"><span class="pre">delete_csr_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">report_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.delete_csr_report" title="Link to this definition">¶</a></dt>
+<dd><p>Deletes a CSR report record from the database by report_id.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.execute">
-<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ops_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sql_statement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_load</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.execute" title="Link to this definition">¶</a></dt>
-<dd><p>Execute a database operation (read or upsert).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ops_type</strong> (<em>str</em>) – The type of operation to perform. Supported values are “read” and “upsert”.</p></li>
-<li><p><strong>sql_statement</strong> (<em>str</em><em>, </em><em>optional</em>) – The SQL statement to execute (required for “read” operations).</p></li>
-<li><p><strong>data_load</strong> (<em>dict</em><em>, </em><em>optional</em>) – The data to upsert into the database (required for “upsert” operations).</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>For “read” operations, returns the query results. For “upsert” operations, returns whether the operation was an insert.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list or bool</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>TypeError</strong> – If the operation type is not supported.</p>
-</dd>
-</dl>
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.execute" title="Link to this definition">¶</a></dt>
+<dd><p>Executes an SQL command (INSERT, UPDATE, DELETE).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.fetch">
+<span class="sig-name descname"><span class="pre">fetch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.fetch" title="Link to this definition">¶</a></dt>
+<dd><p>Fetches data (SELECT) and returns a list of dictionaries.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.get_csr_report_by_id">
+<span class="sig-name descname"><span class="pre">get_csr_report_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">report_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.get_csr_report_by_id" title="Link to this definition">¶</a></dt>
+<dd><p>Fetch a single CSR report by its primary key (report_id).
+(Assumes you have a ‘report_id’ column in your table.)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.get_csr_reports_by_company">
+<span class="sig-name descname"><span class="pre">get_csr_reports_by_company</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">company_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.get_csr_reports_by_company" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve all CSR reports for a specific company, ordered by year desc.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.store_csr_report">
+<span class="sig-name descname"><span class="pre">store_csr_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">company_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report_year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.store_csr_report" title="Link to this definition">¶</a></dt>
+<dd><p>Inserts a new CSR report record into the database.
+If (company_id, report_year) is unique, we use ON CONFLICT to avoid duplicates.
+Adjust if you have a primary key like ‘report_id serial primary key’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.update_csr_report">
+<span class="sig-name descname"><span class="pre">update_csr_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">report_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.update_csr_report" title="Link to this definition">¶</a></dt>
+<dd><p>Updates a CSR report’s URL and/or year based on report_id.
+Only updates fields that are provided.</p>
 </dd></dl>
 
 </dd></dl>
@@ -341,9 +472,17 @@ and managing database sessions. It supports both read and upsert (update/insert)
 <li><a class="reference internal" href="#module-src.database.minio">Database Minio Module</a><ul>
 <li><a class="reference internal" href="#src.database.minio.MinioFileSystem"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem</span></code></a><ul>
 <li><a class="reference internal" href="#src.database.minio.MinioFileSystem.bucket_name"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.bucket_name</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.client"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.client</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.create_bucket"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.create_bucket()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.download_file"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.download_file()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.endpoint_url"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.endpoint_url</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.list_files_by_company"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.list_files_by_company()</span></code></a></li>
 <li><a class="reference internal" href="#src.database.minio.MinioFileSystem.model_config"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.model_config</span></code></a></li>
-<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.read_file"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.read_file()</span></code></a></li>
-<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.write_file"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.write_file()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.password"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.password</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.upload_pdf"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.upload_pdf()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.user"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.user</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.view_pdf"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.view_pdf()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.write_pdf_bytes"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.write_pdf_bytes()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -353,11 +492,18 @@ and managing database sessions. It supports both read and upsert (update/insert)
 <li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.__enter__"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.__enter__()</span></code></a></li>
 <li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.__exit__"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.__exit__()</span></code></a></li>
 <li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB._conn_postgres"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB._conn_postgres()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB._conn_postgres_psycopg2"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB._conn_postgres_psycopg2()</span></code></a></li>
 <li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.close"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.close()</span></code></a></li>
 <li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.commit"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.commit()</span></code></a></li>
 <li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.connection"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.connection</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.delete_csr_report"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.delete_csr_report()</span></code></a></li>
 <li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.execute"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.execute()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.fetch"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.fetch()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.get_csr_report_by_id"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.get_csr_report_by_id()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.get_csr_reports_by_company"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.get_csr_reports_by_company()</span></code></a></li>
 <li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.model_config"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.model_config</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.store_csr_report"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.store_csr_report()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.update_csr_report"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.update_csr_report()</span></code></a></li>
 </ul>
 </li>
 </ul>
