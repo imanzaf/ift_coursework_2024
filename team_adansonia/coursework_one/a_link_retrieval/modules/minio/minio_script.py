@@ -1,6 +1,6 @@
 from minio import Minio
 from minio.error import S3Error
-from team_adansonia.coursework_one.a_link_retrieval.modules.mongo_db.company_data import connect_to_mongo, CompanyData
+from modules.mongo_db.company_data import connect_to_mongo, CompanyData
 import tempfile
 import os
 import requests

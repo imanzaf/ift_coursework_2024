@@ -2,7 +2,7 @@ import re
 from datetime import datetime, time
 import fitz
 from Crypto.SelfTest.Hash.test_cSHAKE import descr
-from jsonref import requests
+#from jsonref import requests
 import requests
 import fitz  # PyMuPDF
 import urllib3
