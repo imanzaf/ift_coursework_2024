@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en" data-content_root="./">
+<head>
+    <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>Database Package &mdash; Team Dogwood 1 documentation</title>
+    
+    <link rel="stylesheet" type="text/css" href="_static/dist/fontawesome.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dist/theme.css?v=310cf088" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+            <link rel="index" title="Index" href="genindex.html" />
+            <link rel="search" title="Search" href="search.html" />
+            <link rel="top" title="Team Dogwood 1 documentation" href="#" />
+            <link rel="up" title="Modules Packages" href="src.html" />
+            <link rel="next" title="ESG Reports Package" href="src.esg_reports.html" />
+            <link rel="prev" title="Data Models Package" href="src.data_models.html" />
+    </head>
+<body>
+    <script type="text/javascript" src="_static/dist/blocking.js"></script>
+    <header class="container-fluid bg-primary">
+        <a class="btn btn-sm btn-light skip-to-content-link" href="#main">Skip to content</a>
+        <div class="container-fluid">
+            <div class="navbar navbar-expand-lg navbar-dark font-weight-bold">
+                    <a href="index.html"
+                        title="Wagtail"
+                        class="logo navbar-brand"
+                    >
+                        <img src="_static/img/wagtail-logo-circle.svg" width="45" height="59" alt="Wagtail"
+                            class="logo-img"
+                        />
+                        Team Dogwood
+                    </a>
+                
+                
+                <button class="navbar-toggler btn btn-primary d-lg-none" type="button" data-toggle="collapse" data-target="#collapseSidebar" aria-expanded="false" aria-controls="collapseExample">
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="sr-only">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-12 col-lg-3 sidebar-container">
+                <div id="collapseSidebar" class="collapse sticky-top d-lg-block pt-5 pr-lg-4">
+<div id="searchbox" class="searchbox mb-6 px-1" role="search">
+    <form id="search-form" action="search.html" autocomplete="off" method="get" role="search">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text border-right-0 bg-white py-3 pl-3 pr-2"><span class="fas fa-search"></span></div>
+            </div>
+            <input class="form-control py-3 pr-3 pl-1 h-100 border-left-0" type="search" name="q" placeholder="Search documentation" aria-label="Search documentation" id="searchinput" />
+        </div>
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+    </form>
+</div><div class="site-toc">
+    <nav class="toc mt-3" aria-label="Main menu">
+        <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="src.html">Modules Packages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="src.data_models.html">Data Models Package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Database Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.esg_reports.html">ESG Reports Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.utils.html">Utils Package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+</ul>
+
+    </nav>
+    <template data-toggle-item-template>
+        <button class="btn btn-sm btn-link toctree-expand" type="button">
+            <span class="sr-only">Toggle menu contents</span>
+        </button>
+    </template>
+</div>
+                    <div class="d-lg-none border-bottom">
+                        
+                    </div>
+                </div>
+            </aside>
+            <div class="col-12 col-lg-9 pt-5">
+                <header class="row align-items-baseline">
+                    <div class="col">
+                        <nav aria-label="breadcrumb">
+    <ol class="breadcrumb m-0 p-0 bg-transparent">
+        <li class="breadcrumb-item"><a href="index.html">Docs</a></li>
+            <li class="breadcrumb-item"><a href="modules.html">Modules</a></li>
+            <li class="breadcrumb-item"><a href="src.html">Modules Packages</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Database Package</li>
+    </ol>
+</nav>
+                    </div>
+                    <div class="col-sm-12 col-lg-auto mt-3 mt-lg-3">
+                        <noscript>
+                            <p>JavaScript is required to toggle light/dark mode..</p>
+                        </noscript>
+                        <button id="wagtail-theme" class="btn btn-sm btn-light text-decoration-none" type="button">
+                            <span class="dark-only"><i class="fas fa-sun"></i> Light mode</span>
+                            <span class="light-only"><i class="fas fa-moon"></i> Dark mode</span>
+                        </button>
+    <a class="btn btn-sm btn-light text-decoration-none" href="https://github.com/wagtail/sphinx_wagtail_theme/blob/main/docs/src.database.rst" rel="nofollow">
+        <span class="btn-icon"><span class="fab fa-github"></span></span>
+        <span class="btn-text">Edit on GitHub</span>
+    </a>
+    <a class="btn btn-sm btn-light text-decoration-none" href="_sources/src.database.rst.txt" rel="nofollow">
+        <span class="btn-icon"><span class="fas fa-code"></span></span>
+        <span class="btn-text">View source</span>
+    </a>
+                        
+                    </div>
+                </header>
+                <div class="row" >
+                    <div class="col-12">
+                        <hr class="w-100 my-4">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-lg-9 order-last order-lg-first rst-content">
+                        <main role="main" id="main">
+    <section id="database-package">
+<h1>Database Package<a class="headerlink" href="#database-package" title="Link to this heading">¶</a></h1>
+<p>This package contains modules for interacting with databases and storage services, including <strong>PostgreSQL</strong> for relational data and <strong>MinIO</strong> for object storage.</p>
+<section id="module-src.database.minio">
+<span id="database-minio-module"></span><h2>Database Minio Module<a class="headerlink" href="#module-src.database.minio" title="Link to this heading">¶</a></h2>
+<p class="rubric"><strong>Overview</strong></p>
+<p>The <cite>minio</cite> module provides functionality for interacting with <strong>MinIO</strong>, an open-source object storage service. It includes methods for uploading, downloading, and managing files stored in MinIO buckets.</p>
+<p class="rubric"><strong>Key Features</strong></p>
+<ul class="simple">
+<li><p>Upload files to MinIO buckets.</p></li>
+<li><p>Download files from MinIO buckets.</p></li>
+<li><p>Manage bucket policies and configurations.</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.database.minio.</span></span><span class="sig-name descname"><span class="pre">MinioFileSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MinioFileSystemRepo</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Overwrite file read and file write methods in MinioFileSystemRepo to add functionality to process pdf files.</p>
+<dl class="simple">
+<dt>Useful methods from parent class:</dt><dd><ul class="simple">
+<li><p>upload_file</p></li>
+<li><p>download_file</p></li>
+<li><p>list_dir</p></li>
+<li><p>list_files</p></li>
+<li><p>dir_exists</p></li>
+<li><p>file_exists</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.bucket_name">
+<span class="sig-name descname"><span class="pre">bucket_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.database.minio.MinioFileSystem.bucket_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#src.database.minio.MinioFileSystem.model_config" title="Link to this definition">¶</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.read_file">
+<span class="sig-name descname"><span class="pre">read_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.read_file" title="Link to this definition">¶</a></dt>
+<dd><p>Read a pdf file from the minio database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.write_file">
+<span class="sig-name descname"><span class="pre">write_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.write_file" title="Link to this definition">¶</a></dt>
+<dd><p>Write a pdf file to the minio database.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.database.postgres">
+<span id="database-postgres-module"></span><h2>Database Postgres Module<a class="headerlink" href="#module-src.database.postgres" title="Link to this heading">¶</a></h2>
+<p class="rubric"><strong>Overview</strong></p>
+<p>The <cite>postgres</cite> module provides functionality for interacting with <strong>PostgreSQL</strong>, a powerful open-source relational database. It includes methods for querying, inserting, updating, and deleting data in PostgreSQL tables.</p>
+<p class="rubric"><strong>Key Features</strong></p>
+<ul class="simple">
+<li><p>Execute SQL queries.</p></li>
+<li><p>Insert, update, and delete records.</p></li>
+<li><p>Manage database connections and transactions.</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.database.postgres.</span></span><span class="sig-name descname"><span class="pre">PostgreSQLDB</span></span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Methods for connecting to and interacting with the PostgreSQL database.</p>
+<p>This class provides methods for connecting to a PostgreSQL database, executing SQL operations,
+and managing database sessions. It supports both read and upsert (update/insert) operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>BaseModel</strong> – Inherits from Pydantic’s BaseModel for data validation and settings management.</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">PostgreSQLDB</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">db</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;read&quot;</span><span class="p">,</span> <span class="n">sql_statement</span><span class="o">=</span><span class="s2">&quot;SELECT * FROM companies&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.__enter__">
+<span class="sig-name descname"><span class="pre">__enter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.__enter__" title="Link to this definition">¶</a></dt>
+<dd><p>Enter the runtime context related to this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The instance of the PostgreSQLDB class.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#src.database.postgres.PostgreSQLDB" title="src.database.postgres.PostgreSQLDB">PostgreSQLDB</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.__exit__">
+<span class="sig-name descname"><span class="pre">__exit__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.__exit__" title="Link to this definition">¶</a></dt>
+<dd><p>Exit the runtime context and close the database connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>exc_type</strong> – The exception type (if any).</p></li>
+<li><p><strong>exc_val</strong> – The exception value (if any).</p></li>
+<li><p><strong>exc_tb</strong> – The traceback (if any).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB._conn_postgres">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_conn_postgres</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB._conn_postgres" title="Link to this definition">¶</a></dt>
+<dd><p>Create a connection engine for PostgreSQL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A SQLAlchemy engine object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>sqlalchemy.engine.Engine</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If an error occurs while creating the engine.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">commit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.close" title="Link to this definition">¶</a></dt>
+<dd><p>Close the database connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>commit</strong> (<em>bool</em>) – Whether to commit the transaction before closing. Defaults to True.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.commit">
+<span class="sig-name descname"><span class="pre">commit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.commit" title="Link to this definition">¶</a></dt>
+<dd><p>Commit the current transaction.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.connection">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">connection</span></span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.connection" title="Link to this definition">¶</a></dt>
+<dd><p>Create and return a SQLAlchemy session for database interactions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A SQLAlchemy sessionmaker object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>sqlalchemy.orm.sessionmaker</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ops_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sql_statement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_load</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.execute" title="Link to this definition">¶</a></dt>
+<dd><p>Execute a database operation (read or upsert).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ops_type</strong> (<em>str</em>) – The type of operation to perform. Supported values are “read” and “upsert”.</p></li>
+<li><p><strong>sql_statement</strong> (<em>str</em><em>, </em><em>optional</em>) – The SQL statement to execute (required for “read” operations).</p></li>
+<li><p><strong>data_load</strong> (<em>dict</em><em>, </em><em>optional</em>) – The data to upsert into the database (required for “upsert” operations).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>For “read” operations, returns the query results. For “upsert” operations, returns whether the operation was an insert.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list or bool</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If the operation type is not supported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.model_config" title="Link to this definition">¶</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+</main>
+                        <nav aria-label="Page navigation" class="py-4 my-5 clearfix font-weight-bold border-top">
+    <a class="float-left" href="src.data_models.html" title="Previous">
+        <span aria-hidden="true">←&nbsp;</span>Data Models Package
+    </a>
+    <a class="float-right" href="src.esg_reports.html" title="Next">
+        ESG Reports Package <span aria-hidden="true">&nbsp;→</span>
+    </a>
+</nav>
+                    </div>
+                    
+                    <nav class="col-12 col-lg-3 pb-4">
+                        <div class="sticky-top toc page-toc" aria-labelledby="page-toc-heading">
+                            <p class="font-weight-bold" id="page-toc-heading">Page contents</p>
+                            <ul>
+<li><a class="reference internal" href="#">Database Package</a><ul>
+<li><a class="reference internal" href="#module-src.database.minio">Database Minio Module</a><ul>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem</span></code></a><ul>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.bucket_name"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.bucket_name</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.model_config"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.model_config</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.read_file"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.read_file()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.write_file"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.write_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.database.postgres">Database Postgres Module</a><ul>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB</span></code></a><ul>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.__enter__"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.__enter__()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.__exit__"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.__exit__()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB._conn_postgres"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB._conn_postgres()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.close"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.close()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.commit"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.commit()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.connection"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.connection</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.execute"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.execute()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.model_config"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.model_config</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                        </div>
+                    </nav>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="container-fluid bg-primary text-light">
+        <div class="container">
+            <div class="row">
+        <div class="col p-4">
+            
+                <nav aria-label="Footer">
+                    <ul class="nav justify-content-center mb-2">
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/features/">Features</a></li>
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/about-wagtail/"> About Wagtail</a></li>
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/services/"> Services</a></li>
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/blog/"> Blog</a></li>
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/packages/"> Packages</a></li>
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/developers/"> Developers</a></li>
+                        
+                    </ul>
+                </nav>
+            
+            <div class="text-center">
+                    &copy; Copyright 2025, Gabriella Larrisa
+            </div>
+            <div class="text-center text-white-50 font-italic mt-3">
+                <small>
+                    Created using
+                    <a class="text-white" href="https://github.com/wagtail/sphinx_wagtail_theme" rel="nofollow" target="_blank">
+                        Sphinx Wagtail Theme 6.5.0
+                    </a>
+                    and
+                    <a class="text-white" href="https://www.sphinx-doc.org/" rel="nofollow" target="_blank">
+                        Sphinx 8.2.0
+                    </a>
+                </small>
+            </div>
+        </div>
+    </div>
+        </div>
+    </footer>
+        <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="_static/doctools.js?v=9bcbadda"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+        <script type="text/javascript" src="_static/dist/theme.js"></script>
+        <script type="text/javascript" src="_static/dist/vendor.js"></script>
+        <script type="text/javascript" src="_static/searchtools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() { Search.loadIndex("searchindex.js"); });
+        </script>
+        <script type="text/javascript" id="searchindexloader"></script>
+    </body>
+</html>
