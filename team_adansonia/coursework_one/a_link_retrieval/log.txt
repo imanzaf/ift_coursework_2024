@@ -10562,3 +10562,12 @@ Stacktrace:
 [2025-02-24 23:16:43] Adobe Systems Inc: Found 0 PDF on webpage.
 [2025-02-24 23:16:43] Adobe Systems Inc: No valid PDF found in webpage https://www.adobe.com/corporate-responsibility/corporate-responsibility-reports.html
 [2025-02-24 23:16:43] Adobe Systems Inc: Searching PDF in Webpage | URL: https://www.adobe.com/corporate-responsibility/sustainability.html
+[2025-02-25 12:15:08] 3M Company: Searching Webpage in Bing | URL: https://www.bing.com/search?q=3M%20Company%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-25 12:15:09] 3M Company: Searching PDF in Webpage | URL: https://www.3m.com/3M/en_US/sustainability-us/
+[2025-02-25 12:15:13] 3M Company: Found 1 PDF on webpage.
+[2025-02-25 12:27:09] 3M Company: Searching Webpage in Bing | URL: https://www.bing.com/search?q=3M%20Company%20sustainability%20website%20-responsibilityreports&first=1&form=QBRE
+[2025-02-25 12:27:10] 3M Company: Searching PDF in Webpage | URL: https://www.3m.com/3M/en_US/sustainability-us/reports/
+[2025-02-25 12:27:18] 3M Company: Found 0 PDF on webpage.
+[2025-02-25 12:27:18] 3M Company: No valid PDF found in webpage https://www.3m.com/3M/en_US/sustainability-us/reports/
+[2025-02-25 12:27:18] 3M Company: Searching PDF in Webpage | URL: https://www.3m.co.uk/3M/en_GB/sustainability-uk/
+[2025-02-25 12:27:22] 3M Company: Found 1 PDF on webpage.
