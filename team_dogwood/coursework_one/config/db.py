@@ -39,6 +39,7 @@ class DataBaseSettings(BaseSettings):
 
     MINIO_USERNAME: str
     MINIO_PASSWORD: str
+    MINIO_HOST: str
     MINIO_PORT: str
     MINIO_BUCKET_NAME: str
 
