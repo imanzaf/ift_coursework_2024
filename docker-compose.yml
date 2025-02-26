@@ -5,7 +5,7 @@ services:
       container_name: mongo_db_cw
       image: mongo:latest
       ports:
-        - 27020:27020
+        - 27020:27017
     postgres_db:
         container_name: postgres_db_cw
         image: postgres:10.5
@@ -59,8 +59,8 @@ services:
         - MINIO_ROOT_PASSWORD=minio_password
         - MINIO_DOMAIN=miniocw
       ports:
-        - 9006:9006
-        - 9005:9005
+        - 9002:9000
+
       command: ["server", "/data", "--console-address", ":9001"]
     minio_client_cw:
       container_name: minio_client_cw
@@ -88,7 +88,7 @@ services:
       user: root
       ports:
         - "8080:8080"
-        - "50000:50000"
+        - "50010:50010"
       volumes:
         - ./jenkins_home:/var/jenkins_home
         - /var/run/docker.sock:/var/run/docker.sock
