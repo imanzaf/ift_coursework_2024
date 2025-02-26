@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 import urllib.parse
 import threading
-from enum import nonmember
+#from enum import nonmember
 
 #from concurrent.futures import ThreadPoolExecutor, wait
 
@@ -15,7 +15,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from team_adansonia.coursework_one.a_link_retrieval.modules.validation.validation import is_valid_esg_report_from_url
+from validation.validation import is_valid_esg_report_from_url
 
 # Disable warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)

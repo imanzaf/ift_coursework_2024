@@ -3,14 +3,13 @@ import os
 
 from bson import ObjectId
 
-from team_adansonia.coursework_one.a_link_retrieval.modules.mongo_db import company_data as mongo
-from team_adansonia.coursework_one.a_link_retrieval.modules.minio import minio_script as minio
-from team_adansonia.coursework_one.a_link_retrieval.modules.crawler import crawler as crawler, \
-    sustainability_reports_beautifulsoup
-from team_adansonia.coursework_one.a_link_retrieval.modules.crawler import google_api_combined_crawler as google_api_combined_crawler
+from modules.mongo_db import company_data as mongo
+from modules.minio import minio_script as minio
+from modules.crawler import crawler as crawler, sustainability_reports_beautifulsoup
+from modules.crawler import google_api_combined_crawler as google_api_combined_crawler
 from datetime import datetime
 import logging
-from team_adansonia.coursework_one.a_link_retrieval.modules.mongo_db.company_data import ROOT_DIR
+from modules.mongo_db.company_data import ROOT_DIR
 
 #Variable to check database statues
 is_db_initialized = False
@@ -20,8 +19,8 @@ def retrieve_and_store_csr_reports(collection):
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
     current_year = str(datetime.now().year)
-    previous_year = str(datetime.now().year - 1)
-
+    
+    #TODO: Remove limit after testing
     for document in collection.find():
         company_name = document["security"]
         ticker = document.get("symbol", "")  # Ensure ticker is present if needed
@@ -59,6 +58,7 @@ def retrieve_and_store_csr_reports(collection):
                         if result == (None, None):
                             logger.warning(f"No valid result found for {company_name} for year {year}")
                             result = google_api_combined_crawler._get_report_search_results(company_name, ticker, year_str)
+                            
 
                         # If still no results, continue to next year
                         if result == (None, None):
@@ -79,7 +79,12 @@ def retrieve_and_store_csr_reports(collection):
                         update_data["website_url"] = webpage_url
 
                 else:
-                    pdf_url = google_api_combined_crawler._get_report_search_results(company_name, ticker, year_str)
+                    try:
+                        pdf_url = google_api_combined_crawler._get_report_search_results(company_name, ticker, year_str)
+                    except Exception as e:
+                        logger.error(f"Error retrieving and storing CSR reports: {e}")
+                        #schedule it to run again tmr
+                        continue
 
                     if pdf_url:
                         csr_reports[year_str] = pdf_url
@@ -136,7 +141,7 @@ def responsibility_reports_seed():
     unique_data = []
     seen_companies = set()
 
-    for doc in collection.find({}):
+    for doc in collection.find({}).limit(10):
         company_name = doc.get("security", "")  # Unique identifier
         if company_name in seen_companies:
             continue  # Skip duplicates
@@ -174,15 +179,23 @@ def populate_database():
     collection = db.companies
 
     #TODO: when API keys are out, schedule to run again a day later
-    retrieve_and_store_csr_reports(collection)
+    try:
+        retrieve_and_store_csr_reports(collection)
+    except Exception as e:
+        #schedule it to run again tmr
+        pass
+
+
+    
     upload_csr_reports_to_minio(collection, minio_client, mongo_client)
     is_db_initialized = True
-    print("Database loaded successfully: " + is_db_initialized)
+    print("Database loaded successfully: " + str(is_db_initialized))
+    upload_csr_reports_to_minio(db, minio_client, mongo_client)
     return is_db_initialized
 
 
 def get_latest_report():
-    
+
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
 
@@ -292,7 +305,7 @@ def get_latest_report():
     return 
 
 if __name__ == '__main__': 
-    mongo.reset_database()
+    #mongo.reset_database()
     #responsibility_reports_seed()
     #populate_database()
     pass

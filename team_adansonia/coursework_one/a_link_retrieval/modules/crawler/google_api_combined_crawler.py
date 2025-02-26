@@ -8,7 +8,7 @@ import fitz  # PyMuPDF for PDF parsing
 from dotenv import load_dotenv
 from loguru import logger
 from typing import List
-import team_adansonia.coursework_one.a_link_retrieval.modules.validation.validation as validation
+import modules.validation.validation as validation
 # Load environment variables
 load_dotenv()
 
@@ -101,7 +101,8 @@ def _get_report_search_results(company_name: str, ticker: str, year: str) -> str
             continue
 
     logger.error("All API keys exhausted or failed. Please check API limits.")
-    return None
+    #throw error
+    raise Exception("All API keys exhausted or failed. Please check API limits.")
 
 
 def _score_search(result, company_name: str, target_year: str) -> int:
