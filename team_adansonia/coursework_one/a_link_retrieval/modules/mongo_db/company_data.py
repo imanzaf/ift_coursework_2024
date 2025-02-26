@@ -8,10 +8,13 @@ import datetime
 import sqlite3
 import pandas as pd
 import dotenv
-
+from modules.utils.dockercheck import is_running_in_docker
 load_dotenv()
-ROOT_DIR = os.getenv("ROOT_DIR")
 
+if is_running_in_docker():
+    ROOT_DIR = os.getenv("ROOT_DIR_DOCKER")
+else:
+    ROOT_DIR = os.getenv("ROOT_DIR_LOCAL")
 
 class CompanyData:
     """
@@ -131,7 +134,11 @@ class CompanyDatabase:
 def connect_to_mongo():
     try:
         # MongoDB Connection URI
-        mongo_uri = "mongodb://localhost:27019/"
+        if is_running_in_docker():
+            mongo_uri = "mongodb://mongo_db_cw:27017"
+        else:
+            mongo_uri = "mongodb://localhost:27019"
+
         mongo_client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
 
         # Attempt to connect to MongoDB
@@ -147,6 +154,11 @@ def load_sql_to_pandas():
 
 
     # Debugging: Check if ROOT_DIR is set correctly
+    if is_running_in_docker():
+        ROOT_DIR = os.getenv("ROOT_DIR_DOCKER")
+    else:
+        ROOT_DIR = os.getenv("ROOT_DIR_LOCAL")
+        
     if ROOT_DIR is None:
         raise ValueError("ROOT_DIR is not set. Check your .env file.")
 

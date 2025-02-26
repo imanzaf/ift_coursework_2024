@@ -10,7 +10,7 @@ from modules.crawler import google_api_combined_crawler as google_api_combined_c
 from datetime import datetime
 import logging
 from modules.mongo_db.company_data import ROOT_DIR
-
+from modules.utils.dockercheck import is_running_in_docker
 #Variable to check database statues
 is_db_initialized = False
 
@@ -224,7 +224,11 @@ def responsibility_reports_seed():
 def populate_database(rate_limit=10):
     global is_db_initialized
 
-    ROOT_DIR = os.getenv("ROOT_DIR")
+    if is_running_in_docker():
+        ROOT_DIR = os.getenv("ROOT_DIR_DOCKER")
+    else:
+        ROOT_DIR = os.getenv("ROOT_DIR_LOCAL")
+
     seed_folder = os.path.join(ROOT_DIR, "mongo-seed")
     seed_file = os.path.join(seed_folder, "seed_data.json")
 
@@ -410,12 +414,36 @@ def get_latest_report(rate_limit=10):
     #Use the webdriver to get latest report, if different from previous year add, otherwise skip
     return
 
-if __name__ == '__main__':
+def populate_database_jenkins(rate_limit=0):
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
-    logger.info("Starting the script on " + str(datetime.now()))
-    logger.info("Populating database")
-    populate_database(rate_limit=1)
-    logger.info("Getting latest report")
-    get_latest_report(rate_limit=1)
-    logger.info("Script completed on " + str(datetime.now()))
+    logger.info("populate database: Starting the script on " + str(datetime.now()))
+    if rate_limit == 0:
+        rate_limit = 100
+    logger.info("populate database: Populating database with rate limit " + str(rate_limit))
+    populate_database(rate_limit)
+    logger.info("populate database: Script completed on " + str(datetime.now()))
+
+def get_latest_report_jenkins(rate_limit=0):
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    logger = logging.getLogger(__name__)
+    logger.info("get latest report: Starting the script on " + str(datetime.now()))
+    logger.info("get latest report: Getting latest report with rate limit " + str(rate_limit))
+    mongo_client = mongo.connect_to_mongo()
+    if mongo_client is None:
+        logger.error("get latest report: Failed to connect to MongoDB")
+        exit(1)
+    db = mongo_client["csr_reports"]
+    collection = db.companies
+    limit = collection.count_documents({})
+    if rate_limit == 0:
+        rate_limit = limit
+    get_latest_report(rate_limit)
+    logger.info("get latest report: Script completed on " + str(datetime.now()))
+
+def test_jenkins():
+    date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print("this is from jenkins_test.py at " + date_str)
+
+if __name__ == '__main__':
+    populate_database_jenkins(3)
