@@ -197,7 +197,7 @@ class PDFScraper:
 
                     # Year-specific filename
                     filename = f"{company}_{year}.pdf"
-                     #  MinIO
+                    #  #  MinIO
                     try:
                         self.minio_client.put_object(
                             Config.MINIO_BUCKET,
@@ -292,7 +292,7 @@ class PDFScraper:
             logger.info(f"Loaded {len(companies)} companies")
 
             with ThreadPoolExecutor(max_workers=Config.MAX_WORKERS) as executor:
-                futures = {executor.submit(self.process_company, co): co for co in companies[1:4]}
+                futures = {executor.submit(self.process_company, co): co for co in companies}
 
                 for future in as_completed(futures):
                     company = futures[future]

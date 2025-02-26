@@ -19,6 +19,3 @@ test_record = {
     "filename": "test.pdf"
 }
 
-pg = PostgresManager(host="localhost", port="5439")
-pg.insert_pdf_record(test_record)  # 第一次插入，应该成功
-pg.insert_pdf_record(test_record)  # 第二次插入，相同 file_hash，应该被拦截

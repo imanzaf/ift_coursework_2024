@@ -23,8 +23,9 @@ class PostgresManager:
                 url TEXT,
                 year INT,
                 file_hash VARCHAR(64) UNIQUE,
-                filename TEXT UNIQUE, -- filename 字段，UNIQUE 避免重复
-                created_at TIMESTAMP DEFAULT NOW()
+                filename TEXT UNIQUE, 
+                created_at TIMESTAMP DEFAULT NOW(),
+                CONSTRAINT unique_company_year UNIQUE (company, year)
             );
         """)
         self.conn.commit()
@@ -44,7 +45,7 @@ class PostgresManager:
             self.cur.execute("""
             INSERT INTO pdf_records (company, url, year, file_hash, filename)
             VALUES (%s, %s, %s, %s, %s);
-        """, (record['company'], record['url'], record['year'], record['file_hash'], record['filename']))
+        """, (record['company'], record['url'], record['year'], record['file_hash'],record['filename']))
             self.conn.commit()
             logger.info(f"[Postgres] Inserted record for {record['company']} - {record['year']}")
         else:
