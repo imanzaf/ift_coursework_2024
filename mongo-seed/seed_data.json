@@ -6,15 +6,18 @@
         "gics_industry": "Industrial Conglomerates",
         "country": "US",
         "region": "North America",
-        "website_url": null,
+        "website_url": "https://www.3m.com/3M/en_US/sustainability-us/",
         "csr_reports": {
             "2019": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/c/NYSE_CPE_2019.pdf",
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/c/NYSE_CPE_2020.pdf",
             "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/c/NYSE_CPE_2021.pdf",
-            "2022": "https://www.responsibilityreports.com/Click/2346"
+            "2022": "https://www.responsibilityreports.com/Click/2346",
+            "2023": "https://multimedia.3m.com/mws/media/2292786O/3m-2023-global-impact-report.pdf",
+            "2024": "https://multimedia.3m.com/mws/media/2418918O/3m-india-business-responsibility-and-sustainability-report-2023-2024.pdf",
+            "2025": null
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:48.230000"
+        "updated_at": "2025-02-25T16:48:10.697000"
     },
     {
         "symbol": "ABT",
@@ -23,7 +26,7 @@
         "gics_industry": "Health Care Equipment",
         "country": "US",
         "region": "North America",
-        "website_url": null,
+        "website_url": "https://www.abbott.com/responsibility/sustainability/sustainability-reporting/current-reports.html",
         "csr_reports": {
             "2012": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABT_2012.pdf",
             "2013": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABT_2013.pdf",
@@ -35,10 +38,13 @@
             "2019": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABT_2019.pdf",
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABT_2020.pdf",
             "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABT_2021.pdf",
-            "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABT_2022.pdf"
+            "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABT_2022.pdf",
+            "2023": "https://www.abbott.com/content/dam/corp/abbott/en-us/documents/pdfs/abbott-citizenship/2023-Abbott-CDP-Climate-Change.pdf",
+            "2024": "https://gov.texas.gov/uploads/files/press/2024_Report_to_the_People_of_Texas.pdf",
+            "2025": null
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:48.890000"
+        "updated_at": "2025-02-25T16:49:02.336000"
     },
     {
         "symbol": "ABBV",
@@ -47,16 +53,19 @@
         "gics_industry": "Pharmaceuticals",
         "country": "US",
         "region": "North America",
-        "website_url": null,
+        "website_url": "https://www.abbvie.com/sustainability/environmental-social-and-governance.html",
         "csr_reports": {
             "2018": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABBV_2018.pdf",
             "2019": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABBV_2019.pdf",
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABBV_2020.pdf",
             "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABBV_2021.pdf",
-            "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABBV_2022.pdf"
+            "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABBV_2022.pdf",
+            "2023": "",
+            "2024": "https://accesstomedicinefoundation.org/medialibrary/companies/241113_01-04-atmi24_rc-v5-abv-1731574844.pdf",
+            "2025": null
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:49.508000"
+        "updated_at": "2025-02-25T16:51:41.262000"
     },
     {
         "symbol": "ABMD",
@@ -67,10 +76,13 @@
         "region": "North America",
         "website_url": null,
         "csr_reports": {
-            "2021": "https://www.responsibilityreports.com/Click/3495"
+            "2021": "https://www.responsibilityreports.com/Click/3495",
+            "2022": "",
+            "2023": "",
+            "2024": "https://s203.q4cdn.com/636242992/files/doc_downloads/Annual_meeting/2024/Johnson-Johnson-2023-Annual-Report.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:50.535000"
+        "updated_at": "2025-02-25T17:35:15.116000"
     },
     {
         "symbol": "ACN",
@@ -79,7 +91,7 @@
         "gics_industry": "IT Consulting & Other Services",
         "country": "US",
         "region": "North America",
-        "website_url": null,
+        "website_url": "https://www.accenture.com/us-en/about/company/reporting-approach-esg-disclosures",
         "csr_reports": {
             "2011": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ACN_2011.pdf",
             "2013": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ACN_2013.pdf",
@@ -88,10 +100,17 @@
             "2017": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ACN_2017.pdf",
             "2018": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ACN_2018.pdf",
             "2019": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ACN_2019.pdf",
-            "2020": "https://www.responsibilityreports.com/Click/3496"
+            "2020": "https://www.responsibilityreports.com/Click/3496",
+            "2012": "",
+            "2015": "",
+            "2021": "",
+            "2022": "",
+            "2023": "https://www.accenture.com/content/dam/accenture/final/corporate/corporate-initiatives/sustainability/document/360-Value-Report-2023.pdf",
+            "2024": "https://www.accenture.com/content/dam/accenture/final/corporate/company-information/document/Accenture-360-Value-Report-2024.pdf",
+            "2025": null
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:51.212000"
+        "updated_at": "2025-02-25T17:37:15.124000"
     },
     {
         "symbol": "ATVI",
@@ -4002,7 +4021,6 @@
     },
     {
         "symbol": "FMC",
-
         "security": "FMC Corporation",
         "gics_sector": "Materials",
         "gics_industry": "Fertilizers & Agricultural Chemicals",

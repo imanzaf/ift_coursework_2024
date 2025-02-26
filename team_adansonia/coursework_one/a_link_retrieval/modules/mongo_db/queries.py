@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from modules.mongo_db.company_data import CompanyDatabase
+from team_adansonia.coursework_one.a_link_retrieval.modules.mongo_db.company_data import CompanyDatabase
 
 
 def connect_to_mongo():
@@ -17,26 +17,45 @@ def connect_to_mongo():
 def search_by_name(company_db, name):
     """Search for companies by name."""
     results = company_db.collection.find({"security": {"$regex": name, "$options": "i"}}, {"_id": 0})
-    return list(results)
+    return results
 
 
 def search_by_sector(company_db, sector):
     """Search for companies by sector."""
     results = company_db.collection.find({"gics_sector": {"$regex": sector, "$options": "i"}}, {"_id": 0})
-    return list(results)
+    return results
 
 
-def search_by_csr_report(company_db):
-    """Find companies that have CSR reports."""
-    results = company_db.collection.find({"csr_reports": {"$ne": []}}, {"_id": 0})
-    return list(results)
+def get_crs_report_link(csr_reports, year):
+    # Look for the specific year in the csr_reports dictionary
+    return csr_reports.get(str(year), None)
 
 
-def search_by_website(company_db, website_url):
-    """Find a company by its website URL."""
-    results = company_db.collection.find({"website_url": website_url}, {"_id": 0})
-    return list(results)
+def get_company_info(company_db, company_name, year):
+    # Search for the company by name in the database
+    company_data = list(search_by_name(company_db, company_name))
 
+    # Check if data was found
+    if company_data:
+        # Assuming we only expect one company, get the first result
+        company_data = company_data[0]
+
+        company_symbol = company_data.get('symbol', 'Not Available')
+
+        # Retrieve the Minio link if available (only if 'minio_urls' exists)
+        minio_url = company_data.get('minio_urls', None)
+
+        # Retrieve the CRS report link if available for the given year
+        csr_report_link = get_crs_report_link(company_data.get('csr_reports', {}), year)
+
+        return {
+            'Company Name': company_name,
+            'Symbol': company_symbol,
+            'Minio Link': minio_url if minio_url else 'Not Available',
+            'CRS Report Link': csr_report_link if csr_report_link else 'Not Available'
+        }
+    else:
+        return f"No data found for {company_name} in {year}."
 
 def main():
     mongo_client = connect_to_mongo()
@@ -48,30 +67,26 @@ def main():
 
     while True:
         print("\n🔍 Company Search Menu:")
+        print("0. Search by company name for given year")
         print("1. Search by company name")
         print("2. Search by sector")
-        print("3. Search for companies with CSR reports")
-        print("4. Search by website URL")
-        print("5. Exit")
+        print("3. Exit")
 
         choice = input("Enter your choice: ")
-
-        if choice == "1":
+        if choice == "0":
+            company_name = input("Enter company name: ")
+            year = input("Enter company year: ")
+            results = get_company_info(company_db, company_name, year)
+            print(results)
+        elif choice == "1":
             name = input("Enter company name: ")
             results = search_by_name(company_db, name)
-            print(results)
+            print(list(results))
         elif choice == "2":
             sector = input("Enter sector: ")
             results = search_by_sector(company_db, sector)
-            print(results)
+            print(list(results))
         elif choice == "3":
-            results = search_by_csr_report(company_db)
-            print(results)
-        elif choice == "4":
-            website_url = input("Enter website URL: ")
-            results = search_by_website(company_db, website_url)
-            print(results)
-        elif choice == "5":
             print("Exiting...")
             break
         else:

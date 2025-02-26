@@ -320,7 +320,6 @@ LOG_FILENAME = "log.txt"
 
 
 if __name__ == "__main__":
-    
     # Single company
     company_name = "3M Company"
     webpage_url, pdf_url = process_company(company_name)

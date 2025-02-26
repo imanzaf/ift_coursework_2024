@@ -216,8 +216,10 @@ def reset_database():
         db.companies.update_many({}, {"$set": {"csr_reports": {}}})
         print("✅ csr_reports field reset to empty dictionary for all records.")
 
+
 def import_seed_to_mongo():
     """Automatically import the seed data from the generated JSON file into MongoDB."""
+    # Step 1: Connect to MongoDB
     mongo_client = connect_to_mongo()  # Connect to MongoDB
     if mongo_client is None:
         return  # Exit if MongoDB connection failed
@@ -225,16 +227,29 @@ def import_seed_to_mongo():
     db = mongo_client["csr_reports"]  # Access the MongoDB database
     collection = db["companies"]  # Access the "companies" collection
 
-    # Load the seed file into MongoDB
+    # Step 2: Delete all existing documents in the collection
+    collection.delete_many({})  # Removes all documents in the collection
+    print("⚠️ All existing documents in the collection have been deleted.")
+
+    # Step 3: Load the seed file into MongoDB
     seed_file = os.path.join(ROOT_DIR, "mongo-seed", "seed_data.json")
     if os.path.exists(seed_file):  # Check if the seed file exists
         with open(seed_file, "r") as f:
-            companies = json.load(f)  # Read JSON data from the seed file
-            collection.insert_many(companies)  # Insert data into MongoDB
-            print(f"✅ Seed data successfully imported into MongoDB!")
+            try:
+                companies = json.load(f)  # Read JSON data from the seed file
+                if isinstance(companies, list):  # Ensure the data is a list of documents
+                    collection.insert_many(companies)  # Insert data into MongoDB
+                    print(f"✅ Seed data successfully imported into MongoDB!")
+                else:
+                    print(f"⚠️ Seed data should be a list of documents, found {type(companies)}.")
+            except json.JSONDecodeError as e:
+                print(f"⚠️ Error reading the seed file: {e}")
+            except Exception as e:
+                print(f"⚠️ An error occurred while importing seed data: {e}")
     else:
         print(f"⚠️ Seed file not found: {seed_file}")
 
+    return collection
 # --- Main Function for Testing ---
 def main():
     df = load_sql_to_pandas()
