@@ -68,53 +68,7 @@ class CompanyDatabase:
         self.collection.insert_one(company.to_dict())
         print(f"✅ Company {company.security} added!")
 
-    def add_csr_report(self, symbol, report_link):
-        """
-        Add a CSR report link to an existing company.
-        :param symbol: Ticker symbol of the company.
-        :param report_link: URL of the CSR report.
-        """
-        result = self.collection.update_one(
-            {"symbol": symbol},
-            {
-                "$push": {"csr_reports": report_link},  # Append to array
-                "$set": {"updated_at": datetime.datetime.utcnow()}
-            }
-        )
-        if result.modified_count > 0:
-            print(f"✅ CSR Report added for {symbol}")
-        else:
-            print(f"⚠️ No company found with symbol {symbol}")
 
-    def get_company(self, symbol):
-        """
-        Retrieve a company's details by symbol.
-        :param symbol: Ticker symbol of the company.
-        :return: CompanyData object or None if not found.
-        """
-        company_doc = self.collection.find_one({"symbol": symbol}, {"_id": 0})
-        if company_doc:
-            return CompanyData(**company_doc)
-        else:
-            print(f"⚠️ No company found with symbol {symbol}")
-            return None
-
-    def update_gics_sector(self, symbol, new_gics_sector):
-        """
-        Update the gics_sector of a company.
-        :param symbol: Ticker symbol of the company.
-        :param new_gics_sector: New gics_sector security.
-        """
-        result = self.collection.update_one(
-            {"symbol": symbol},
-            {
-                "$set": {"gics_sector": new_gics_sector, "updated_at": datetime.datetime.utcnow()}
-            }
-        )
-        if result.modified_count > 0:
-            print(f"✅ gics_sector updated for {symbol}")
-        else:
-            print(f"⚠️ No company found with symbol {symbol}")
 
     def delete_company(self, symbol):
         """

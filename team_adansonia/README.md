@@ -67,9 +67,17 @@ To run the entire project, execute the following command:
 
 4. Run Main
 ```bash
+poetry run python team_adansonia/coursework_one/a_link_retrieval/main.py
 
-poetry run python -m main
 ```
+
+### Running queries
+Please run the command below and follow the terminal instructions:
+```bash
+poetry run python team_adansonia/coursework_one/a_link_retrieval/modules/mongo_db/queries.py
+
+```
+Please run the command below and follow the terminal instructions:
 
 ### Running Tests
 To run the tests for the entire project, use the following command:
