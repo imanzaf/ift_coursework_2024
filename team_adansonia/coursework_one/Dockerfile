@@ -37,6 +37,9 @@ COPY --chmod=770 ./team_adansonia/coursework_one/a_link_retrieval/* /opt/apps/ba
 COPY --chmod=770 ./team_adansonia/coursework_one/b_pipeline/* /opt/apps/batched/Python/b_pipeline/
 COPY --chmod=770 ./team_adansonia/coursework_one/c_pipeline/* /opt/apps/batched/Python/c_pipeline/
 
+#move poetry requirements
+COPY --chmod=770 ./team_adansonia/coursework_one/pyproject.toml /opt/apps/batched/Python/pyproject.toml
+
 # install all R packages
 # RUN R -e 'packToInst <- read.csv("/opt/apps/batched/R/requirements.txt"); lapply(packToInst$Packages, function(x) install.packages(x))'
 RUN python -m pip install poetry
