@@ -1,6 +1,7 @@
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../..'))
+
+sys.path.insert(0, os.path.abspath("../.."))
 
 # Configuration file for the Sphinx documentation builder.
 #
@@ -10,20 +11,20 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Team Dogwood'
-copyright = '2025, Gabriella Larrisa'
-author = 'Gabriella Larrisa'
-release = '1'
+project = "Team Dogwood"
+copyright = "2025, Gabriella Larrisa"
+author = "Gabriella Larrisa"
+release = "1"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon"]
 
-templates_path = ['_templates']
+templates_path = ["_templates"]
 exclude_patterns = []
 
-language = 'en'
+language = "en"
 
 # Napoleon settings
 napoleon_google_docstring = True  # Enable Google-style docstrings
@@ -39,20 +40,19 @@ napoleon_use_param = True  # Use "param" for parameters
 napoleon_use_rtype = True  # Use "rtype" for return types
 
 
-
 autodoc_default_options = {
-    'members': True,          # Document all members (methods, attributes, etc.)
-    'undoc-members': False,    # Include members without docstrings
-    'show-inheritance': False, # Show class inheritance
-    'private-members': False,
+    "members": True,  # Document all members (methods, attributes, etc.)
+    "undoc-members": False,  # Include members without docstrings
+    "show-inheritance": False,  # Show class inheritance
+    "private-members": False,
 }
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 extensions.append("sphinx_wagtail_theme")
-html_theme = 'sphinx_wagtail_theme'
+html_theme = "sphinx_wagtail_theme"
 html_theme_options = dict(
-    project_name = "Team Dogwood",
+    project_name="Team Dogwood",
 )
-html_static_path = ['_static']
+html_static_path = ["_static"]

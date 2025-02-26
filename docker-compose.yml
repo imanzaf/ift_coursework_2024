@@ -81,6 +81,25 @@ services:
         mc anonymous set public minio/csreport;
         tail -f /dev/null
         "
+    jenkins:
+      image: jenkins/jenkins:lts
+      build:
+        context: team_dogwood/coursework_one/orchestration/jenkins
+        dockerfile: Dockerfile
+      restart: unless-stopped
+      container_name: jenkins
+      ports:
+        - "8080:8080"
+        - "50000:50000"
+      volumes:
+        - jenkins_home:/var/jenkins_home
+      privileged: true
+      user: root  # Need this to handle Docker socket permissions
+      environment:
+        - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+
+volumes:
+  jenkins_home:
 
 networks:
   iceberg_net:

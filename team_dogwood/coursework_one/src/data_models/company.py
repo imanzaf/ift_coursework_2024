@@ -38,12 +38,21 @@ class Company(BaseModel):
         >>> print(company.symbol)
         AAPL
     """
-    symbol: str = Field(..., description="The stock symbol of the company")
+
+    symbol: Optional[str] = Field(None, description="The stock symbol of the company")
     security: str = Field(..., description="The name of the company")
-    gics_sector: str = Field(..., description="The GICS sector of the company")
-    gics_industry: str = Field(..., description="The GICS industry of the company")
-    country: str = Field(..., description="The country company is headquartered in")
-    region: str = Field(..., description="The region the company is headquartered in")
+    gics_sector: Optional[str] = Field(
+        None, description="The GICS sector of the company"
+    )
+    gics_industry: Optional[str] = Field(
+        None, description="The GICS industry of the company"
+    )
+    country: Optional[str] = Field(
+        None, description="The country company is headquartered in"
+    )
+    region: Optional[str] = Field(
+        None, description="The region the company is headquartered in"
+    )
     esg_reports: List["ESGReport"] = Field(
         None, description="The ESG reports of the company"
     )
@@ -68,6 +77,7 @@ class ESGReport(BaseModel):
         >>> print(report.url)
         https://example.com/esg-report-2023.pdf
     """
+
     url: Optional[str] = Field(None, description="The URL of the ESG report")
     year: Optional[str] = Field(
         None, description="The year the ESG report was published"
@@ -102,6 +112,7 @@ class SearchResult(BaseModel):
         >>> print(result.title)
         Example Search Result
     """
+
     title: str = Field(..., description="The title of the search result")
     metatag_title: Optional[str] = Field(
         None, description="The metatag title of the search result"

@@ -10,11 +10,12 @@ from loguru import logger
 from psycopg2.extras import RealDictCursor
 from pydantic import BaseModel
 from sqlalchemy import create_engine, engine
-from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.orm import sessionmaker, scoped_session
-from src.data_models.company import Company
-from sqlalchemy.sql import text
 
+# from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.orm import sessionmaker  # scoped_session
+
+# from src.data_models.company import Company
+from sqlalchemy.sql import text
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
@@ -47,7 +48,7 @@ class PostgreSQLDB(BaseModel):
         """
         return self
 
-    def __exit__(self):
+    def __exit__(self, exc_type, exc_value, traceback):
         """
         Exit the runtime context and close the database connection.
 
@@ -55,100 +56,40 @@ class PostgreSQLDB(BaseModel):
         :param exc_val: The exception value (if any).
         :param exc_tb: The traceback (if any).
         """
-        self.close()
+        if exc_type is None:  # No exceptions → commit the transaction
+            self.session.commit()
+        else:
+            self.session.rollback()  # Rollback on error
+        self.session.close()
 
     @property
-    def connection(self):
+    def session(self):
         """
         Create and return a SQLAlchemy session for database interactions.
 
         :return: A SQLAlchemy sessionmaker object.
         :rtype: sqlalchemy.orm.sessionmaker
         """
-        engine = self._conn_postgres()
-        return sessionmaker(bind=engine, autocommit=False, autoflush=False)
+        Session = self._conn_postgres()
+        logger.debug("Connection to PostgreSQL database established.")
+        return Session()
 
-    def commit(self):
-        """
-        Commit the current transaction.
-        """
-        self.connection.commit()
-
-    def close(self, commit=True):
-        """
-        Close the database connection.
-
-        :param commit: Whether to commit the transaction before closing. Defaults to True.
-        :type commit: bool
-        """
-        if commit:
-            self.connection.commit()
-        self.connection.close()
-
-    def execute(self, ops_type, sql_statement=None, data_load=None):
-        """
-        Execute a database operation (read or upsert).
-
-        :param ops_type: The type of operation to perform. Supported values are "read" and "upsert".
-        :type ops_type: str
-        :param sql_statement: The SQL statement to execute (required for "read" operations).
-        :type sql_statement: str, optional
-        :param data_load: The data to upsert into the database (required for "upsert" operations).
-        :type data_load: dict, optional
-        :return: For "read" operations, returns the query results. For "upsert" operations, returns whether the operation was an insert.
-        :rtype: list or bool
-        :raises TypeError: If the operation type is not supported.
-        """
-        Session = scoped_session(self._conn)
-        s = Session()
-        if ops_type == "upsert":
-            stmt = insert(Company).values(data_load)
-            stmt = stmt.on_conflict_do_update(
-                index_elements=["pos_id"],
-                set_=dict(
-                    {
-                        "net_amount": stmt.excluded.net_amount,
-                        "net_quantity": stmt.excluded.net_quantity,
-                    }
-                ),
-            )
-            output = s.execute(stmt)
-            self.commit()
-            return output.is_insert
-        elif ops_type == "read":
-            output = self.execute(text(sql_statement))
-            return output.mappings().all()
-        else:
-            raise TypeError("Database method not supported. Only read and write.")
     def execute(self, query, params=None):
-        """Executes an SQL command (INSERT, UPDATE, DELETE)."""
-        if self.connection is None:
-            logger.error(
-                f"No connection to the database {database_settings.POSTGRES_DB_NAME}."
-            )
-            return None
-        try:
-            cursor = self.connection.cursor()
-            cursor.execute(query, params or ())
-            self.connection.commit()
-            cursor.close()
-        except psycopg2.Error as e:
-            logger.error(f"Database error: {e}")
-
-    def fetch(self, query, params=None):
         """Fetches data (SELECT) and returns a list of dictionaries."""
-        if self.connection is None:
+        if self.session is None:
             logger.error(
                 f"No connection to the database {database_settings.POSTGRES_DB_NAME}."
             )
             return []
         try:
-            cursor = self.connection.cursor()
-            cursor.execute(query, params or ())
-            results = cursor.fetchall()
-            cursor.close()
-            return results
-        except psycopg2.Error as e:
+            logger.info(f"Executing query: {query}...")
+            logger.debug(f"Connected to DataBase: {self.session.bind.url.database}")
+            result = self.session.execute(text(query), params or {})
+            rows = result.fetchall()
+            self.session.commit()
+            logger.debug(f"Fetched data: {rows}")
+            return rows
+        except Exception as e:
             logger.error(f"Database error: {e}")
             return []
 
@@ -175,7 +116,7 @@ class PostgreSQLDB(BaseModel):
         WHERE company_id = %s
         ORDER BY report_year DESC
         """
-        return self.fetch(query, (company_id,))
+        return self.execute(query, (company_id,))
 
     def get_csr_report_by_id(self, report_id):
         """
@@ -187,7 +128,7 @@ class PostgreSQLDB(BaseModel):
         FROM csr_reporting.company_csr_reports
         WHERE report_id = %s
         """
-        results = self.fetch(query, (report_id,))
+        results = self.execute(query, (report_id,))
         return results[0] if results else None
 
     def update_csr_report(self, report_id, new_url=None, new_year=None):
@@ -250,6 +191,7 @@ class PostgreSQLDB(BaseModel):
             port=database_settings.POSTGRES_PORT,
         )
         try:
+            logger.debug("Connecting to the PostgreSQL database...")
             connection_engine = create_engine(
                 url_object, pool_size=20, max_overflow=0
             ).execution_options(autocommit=True)
@@ -266,6 +208,7 @@ class PostgreSQLDB(BaseModel):
     def _conn_postgres_psycopg2():
         """Establishes a raw psycopg2 connection to PostgreSQL."""
         try:
+            logger.debug("Connecting to the PostgreSQL database...")
             conn = psycopg2.connect(
                 host=database_settings.POSTGRES_HOST,
                 database=database_settings.POSTGRES_DB_NAME,

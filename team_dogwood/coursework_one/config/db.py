@@ -30,6 +30,7 @@ class DataBaseSettings(BaseSettings):
         >>> print(database_settings.POSTGRES_HOST)
         localhost
     """
+
     POSTGRES_DRIVER: str
     POSTGRES_USERNAME: str
     POSTGRES_PASSWORD: str
