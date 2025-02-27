@@ -38,7 +38,7 @@ else
   poetry sync
 fi
 
-PYTHONPATH=team_adansonia/coursework_one/a_link_retrieval poetry run python -c "from main import populate_database_jenkins; populate_database_jenkins(3)"
+PYTHONPATH=team_adansonia/coursework_one/a_link_retrieval poetry run python -c "from main import populate_database_jenkins; populate_database_jenkins(1)"
       </command>
       <configuredLocalRules/>
     </hudson.tasks.Shell>

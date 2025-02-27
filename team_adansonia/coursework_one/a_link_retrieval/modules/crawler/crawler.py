@@ -12,10 +12,12 @@ from PyPDF2 import PdfReader
 import requests
 import urllib3
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from modules.validation.validation import is_valid_esg_report_from_url
+from modules.utils.dockercheck import is_running_in_docker
 
 # Disable warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -29,8 +31,10 @@ def write_log(message):
 
 # Helper Function: Initialize Selenium WebDriver
 def init_driver():
+    print("init driver() entered")
     """Initialize Selenium WebDriver"""
     options = webdriver.ChromeOptions()
+    print('still not fucking up here')
     options.add_argument('--headless')
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     options.add_argument('--disable-gpu')
@@ -39,8 +43,31 @@ def init_driver():
     options.add_argument('--log-level=3')
     options.add_argument('--disable-blink-features=AutomationControlled') 
     options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
-    return webdriver.Chrome(options=options)
+    print('still not fucking up here')
 
+    if not is_running_in_docker():
+        print('running d = webdriver.Chrome(options=options)')
+        d = webdriver.Chrome(options=options)
+
+        #check if the driver is initialized
+        if not d:
+            print("Initialing locally: Failed to initialize WebDriver.")
+            return None
+        else: print('local: driver initialized internally')
+
+        return d
+    else:
+        print('running d = webdriver.Chrome(executable_path="/usr/bin/chromedriver", options=options)')
+        service = Service(executable_path="/usr/bin/chromedriver")
+        d = webdriver.Chrome(options=options, service=service)
+
+        #check if the driver is initialized
+        if not d:
+            print("Initialing in docker: Failed to initialize WebDriver.")
+            return None
+        else: print('docker: driver initialized internally')
+
+        return d
 # Helper Function: Get search results using selenium
 def get_search_results(driver, company_name, search_url, search_query, max_trials=3):
     for trial in range(max_trials): # Try up to 3 times
@@ -311,6 +338,7 @@ def process_company(company_name):
                         return webpage_url, None
         driver.quit()
     except Exception as e:
+        print(e)
         write_log(f"{company_name}: No report found for {company_name}")
         return (None, None)
 
@@ -318,10 +346,11 @@ def process_company(company_name):
 # Initialize global variables
 LOG_FILENAME = "log.txt"
 
+#to test: run PYTHONPATH=team_adansonia/coursework_one/a_link_retrieval/modules poetry run python team_adansonia/coursework_one/a_link_retrieval/modules/crawler/crawler.py
 
 if __name__ == "__main__":
     # Single company
-    company_name = "3M Company"
+    company_name = "Apple Inc"
     webpage_url, pdf_url = process_company(company_name)
     print(f"Webpage URL: {webpage_url}")
     print(f"PDF URL: {pdf_url}")

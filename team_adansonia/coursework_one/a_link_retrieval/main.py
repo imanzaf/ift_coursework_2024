@@ -34,7 +34,7 @@ def get_processing_list(collection, populated_data, api_limit):
 
     return processing_list
 
-def retrieve_and_store_csr_reports(collection, populated_data, api_limit=10):
+def retrieve_and_store_csr_reports(collection, populated_data, api_limit=10, bypass=True):
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
     current_year = str(datetime.now().year)
@@ -68,7 +68,12 @@ def retrieve_and_store_csr_reports(collection, populated_data, api_limit=10):
                 populate_status["earliest_report"] = earliest_year
 
             # Generate all years from earliest found to current year (inclusive)
-            years_to_process = list(range(int(earliest_year), int(current_year)+1))
+            
+            if bypass:
+                years_to_process = list(range(int(earliest_year), int(current_year)))
+            else:
+                years_to_process = list(range(int(earliest_year), int(current_year)+1))
+
             print(years_to_process)
 
             update_data = {"updated_at": populate_status["date_init"]}
@@ -86,12 +91,15 @@ def retrieve_and_store_csr_reports(collection, populated_data, api_limit=10):
                 # Process for current year
                 if year_str == current_year:
                     try:
+                        logger.info(f"Crawler: Processing {company_name} for year {year}")
                         result = crawler.process_company(company_name)
+                        logger.info(f"Crawler: Finished processing {company_name} for year {year}")
 
                         if result == (None, None):
                             logger.warning(f"Crawler:No valid result found for {company_name} for year {year}")
+                            logger.info(f"Google API Crawler: Processing {company_name} for year {year}")
                             result = google_api_combined_crawler._get_report_search_results(company_name, ticker, year_str)
-                            
+                            logger.info(f"Google API Crawler: Finished processing {company_name} for year {year}")
                         # If still no results, continue to next year
                         if result == (None, None):
                             #TODO: If the year is current year, compare the pdfs with previous year
@@ -107,8 +115,9 @@ def retrieve_and_store_csr_reports(collection, populated_data, api_limit=10):
                         update_data["website_url"] = webpage_url
                     except Exception as e:
                         logger.warning(f"Crawler:No valid result found for {company_name} for year {year}")
+                        logger.info(f"Google API Crawler: Processing {company_name} for year {year}")
                         result = google_api_combined_crawler._get_report_search_results(company_name, ticker, year_str)
-
+                        logger.info(f"Google API Crawler: Finished processing {company_name} for year {year}")
                         if result is None:
                             populate_status["missing_reports"].append(year)
                             logger.warning(f"Google API Crawler:No valid result found for {company_name} for year {year}")
@@ -120,7 +129,9 @@ def retrieve_and_store_csr_reports(collection, populated_data, api_limit=10):
                         populate_status["latest_report"] = year_str
                 else:
                     try:
+                        logger.info(f"Google API Crawler get PDF: Processing {company_name} for year {year}")
                         pdf_url = google_api_combined_crawler._get_report_search_results(company_name, ticker, year_str)
+                        logger.info(f"Google API Crawler get PDF: Finished processing {company_name} for year {year}")
                     except Exception as e:
                         logger.error(f"Error retrieving and storing CSR reports: {e}")
                         #schedule it to run again tmr
@@ -332,14 +343,14 @@ def get_latest_report(rate_limit=10):
             existing_reports = document.get("csr_reports", {})
 
             # Find the earliest year from existing reports or default to the current year
-            if existing_reports:
-                latest_year = max(existing_reports.keys())
-                logger.info(f"Latest year for {company_name} is {latest_year}")
-            else:
-                latest_year = current_year
-                logger.info(f"No reports found for {company_name}, using current year")
+            #if existing_reports:
+            #    latest_year = max(existing_reports.keys()) + 1
+            #    logger.info(f"Latest year for {company_name} is {latest_year}")
+            #else:
+            #    latest_year = current_year
+            #    logger.info(f"No reports found for {company_name}, using current year")
 
-            years_to_process = [latest_year]
+            years_to_process = [current_year]
 
             print(years_to_process)
 
@@ -446,4 +457,5 @@ def test_jenkins():
     print("this is from jenkins_test.py at " + date_str)
 
 if __name__ == '__main__':
-    populate_database_jenkins(3)
+    #populate_database_jenkins(1)
+    get_latest_report_jenkins(5)
