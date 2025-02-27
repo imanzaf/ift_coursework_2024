@@ -6,14 +6,18 @@ from pathlib import Path
 # JSON file path
 # Get the absolute path of the script file
 script_dir = Path(__file__).resolve().parent
+print(f"Script directory: {script_dir}")
+
 # Construct the path to the data file
 json_file_path = script_dir / "../../../team_jacaranda/coursework_one/static/company_pdf_links.json"
 # Resolve the path (remove redundant ../)
 json_file_path = json_file_path.resolve()
+print(f"JSON file path: {json_file_path}")
 
 # Read the JSON file
 with open(json_file_path, "r") as file:
     data = json.load(file)
+print("JSON file read successfully")
 
 # PostgreSQL database connection configuration
 db_config = {
@@ -43,11 +47,14 @@ def extract_year(url):
 
 # Connect to the PostgreSQL database
 try:
+    print("Connecting to the PostgreSQL database...")
     conn = psycopg2.connect(**db_config)
     cursor = conn.cursor()
+    print("Connected to the database")
 
     # Iterate through the JSON data
     for company_name, urls in data.items():
+        print(f"Processing company: {company_name}")
         # Check if the company name exists in the company_static table
         cursor.execute("SELECT security FROM csr_reporting.company_static WHERE security = %s", (company_name,))
         result = cursor.fetchone()
@@ -55,8 +62,10 @@ try:
         if result:
             # If the company exists, insert URL data
             for url in urls:
+                print(f"Processing URL: {url}")
                 # Extract the year from the URL
                 report_year = extract_year(url)
+                print(f"Extracted year: {report_year}")
 
                 # Insert data into the company_reports table
                 insert_query = """
@@ -64,10 +73,11 @@ try:
                     VALUES (%s, %s, %s)
                 """
                 cursor.execute(insert_query, (company_name, url, report_year))
+                print("Data inserted successfully")
 
     # Commit the transaction
     conn.commit()
-    print("Data inserted successfully!")
+    print("Transaction committed successfully")
 
 except Exception as e:
     print(f"An error occurred: {e}")
@@ -76,3 +86,4 @@ finally:
     if conn:
         cursor.close()
         conn.close()
+        print("Database connection closed")
