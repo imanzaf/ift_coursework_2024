@@ -12,7 +12,7 @@ db_config = {
 
 # SQL query to create a new table with foreign key constraint
 create_table_query = """
-CREATE TABLE IF NOT EXISTS csr_reporting.csr_reports (
+CREATE TABLE IF NOT EXISTS csr_reporting.company_reports (
     id SERIAL PRIMARY KEY,
     security TEXT,
     report_url VARCHAR(255),
