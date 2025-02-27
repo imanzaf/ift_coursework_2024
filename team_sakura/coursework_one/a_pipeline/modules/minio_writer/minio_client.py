@@ -1,27 +1,24 @@
 from minio import Minio
 import yaml
 import os
+from minio.error import S3Error
 
-# Get the current working directory
-script_dir = os.path.dirname(os.path.abspath(__file__))
-config_path = os.path.join(script_dir, 'config', 'conf.yaml')
-
-# Load config file
-try:
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-except FileNotFoundError:
-    print(f"Config file not found at {config_path}. Please ensure it's in the correct directory.")
-    raise
+config_path = os.getenv("CONF_PATH", "/app/config/conf.yaml")  # Default path for Docker
+with open(config_path, "r") as file:
+    config = yaml.safe_load(file)
 
 
 def get_minio_client():
-    """Connect to MinIO and return the client."""
+    # Ensure the service name "miniocw" is used inside the Docker network
+    minio_host = os.getenv("MINIO_HOST", "miniocw:9000")  # Update this!
+    access_key = os.getenv("AWS_ACCESS_KEY_ID", "ift_bigdata")
+    secret_key = os.getenv("AWS_SECRET_ACCESS_KEY", "minio_password")
+
     minio_client = Minio(
-        config["minio"]["endpoint"],
-        access_key=config["minio"]["access_key"],
-        secret_key=config["minio"]["secret_key"],
-        secure=False
+        minio_host,
+        access_key=access_key,
+        secret_key=secret_key,
+        secure=False  # Set to False if using HTTP
     )
 
     bucket_name = config["minio"]["bucket_name"]
@@ -42,6 +39,23 @@ BUCKET_NAME = MINIO_CONFIG["bucket_name"]
 # Ensure bucket exists
 if not minio_client.bucket_exists(BUCKET_NAME):
     minio_client.make_bucket(BUCKET_NAME)
+
+
+def delete_all_files_from_minio():
+    try:
+        # List all objects in the bucket
+        objects = minio_client.list_objects(BUCKET_NAME, recursive=True)
+
+        for obj in objects:
+            minio_client.remove_object(BUCKET_NAME, obj.object_name)
+            print(f"Deleted {obj.object_name}")
+
+    except S3Error as e:
+        print(f"Error while deleting from Minio: {e}")
+
+
+# delete_all_files_from_minio() to call if you want to delete all files from minio
+
 
 def upload_to_minio(local_pdf_path, company_symbol, report_year):
     """Uploads a file to MinIO with a structured path."""

@@ -2,20 +2,10 @@ from fastapi import FastAPI, Query
 from pymongo import MongoClient
 import yaml
 import os
-# Load config
 
-# Get the current working directory or the script's directory
-script_dir = os.path.dirname(os.path.abspath(__file__))
-config_path = os.path.join(script_dir, 'config', 'conf.yaml')
-
-# Load config file
-try:
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-except FileNotFoundError:
-    print(f"Config file not found at {config_path}. Please ensure it's in the correct directory.")
-    raise
-
+config_path = os.getenv("CONF_PATH", "/app/config/conf.yaml")  # Default path for Docker
+with open(config_path, "r") as file:
+    config = yaml.safe_load(file)
 
 # MongoDB connection
 MONGO_CLIENT = MongoClient(config["database"]["mongo_uri"])
@@ -50,7 +40,11 @@ def get_reports(
         query["region"] = {"$regex": region, "$options": "i"}
 
     results = list(collection.find(query, {"_id": 0}))  # Exclude MongoDB's default _id field
-    collection.update_many({}, {"$set": {"company_name": company_name.lower()}})
+    if company_name:
+        collection.update_many({}, {"$set": {"company_name": company_name.lower()}})
+    else:
+        print("Error: company_name is None")
+
     return {"count": len(results), "reports": results}
 
 

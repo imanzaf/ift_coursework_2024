@@ -12,25 +12,15 @@ from modules.db_loader.mongo_db import get_mongo_collection
 
 load_dotenv()
 
+config_path = os.getenv("CONF_PATH", "/app/config/conf.yaml")  # Default path for Docker
+with open(config_path, "r") as file:
+    config = yaml.safe_load(file)
 
-# Get the current working directory or the script's directory
-script_dir = os.path.dirname(os.path.abspath(__file__))
-config_path = os.path.join(script_dir, 'config', 'conf.yaml')
-
-# Load config file
-try:
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-except FileNotFoundError:
-    print(f"Config file not found at {config_path}. Please ensure it's in the correct directory.")
-    raise
 
 API_KEY = os.getenv("GOOGLE_API_KEY")
 SEARCH_ENGINE_ID = os.getenv("GOOGLE_SEARCH_ENGINE_ID")
 
 collection = get_mongo_collection()
-
-
 
 os.makedirs('CSR_Reports', exist_ok=True)
 
