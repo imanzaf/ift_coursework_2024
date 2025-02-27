@@ -4,6 +4,8 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
 import yaml
+from flask import Flask
+import sys
 from team_sakura.coursework_one.a_pipeline.modules.db_loader.mongo_db import get_mongo_collection
 
 load_dotenv()
@@ -11,18 +13,18 @@ load_dotenv()
 app = Flask(__name__)
 
 
-config_path = os.getenv("CONF_PATH", "/app/config/conf.yaml")  # Default path for Docker
+config_path = os.getenv("CONF_PATH", "a_pipeline/config/conf.yaml")  # Default path for Docker
 with open(config_path, "r") as file:
     config = yaml.safe_load(file)
 
+mongo_config = config["databaselocal"]
 
 # Connect to MongoDB
-client = MongoClient(os.getenv("MONGO_URI"))
+client = MongoClient(mongo_config["mongo_uri"])
 collection = get_mongo_collection()
 
 # SQLite Connection
-SQLITE_DB_PATH = "/Users/estheragossa/PycharmProjects/ift_coursework_2024/000.Database/SQL/Equity.db"
-
+SQLITE_DB_PATH = mongo_config["sqlite_path"]
 def get_company_names():
     """Fetch unique company names from equity.db."""
     conn = sqlite3.connect(SQLITE_DB_PATH)
