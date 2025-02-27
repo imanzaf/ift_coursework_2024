@@ -87,8 +87,8 @@ services:
         additional_contexts:
           assets_jenkins: ./team_adansonia/coursework_one/scheduler/jenkins
         dockerfile: ./team_adansonia/coursework_one/Dockerfile
-      user: root      
-      command: java -DJENKINS_HOME=/home/.jenkins -jar /home/jenkins/jenkins.jar --httpPort=9899
+      user: root
+      command: java -Xms512m -Xmx2g -DJENKINS_HOME=/home/.jenkins -jar /home/jenkins/jenkins.jar --httpPort=9899
       volumes:
         - type: bind
           source: ./
