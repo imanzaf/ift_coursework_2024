@@ -1,0 +1,10 @@
+[
+    {
+        "symbol": "MMM",
+        "security": "3M Company",
+        "date_init": "2025-02-24T15:36:33.173419",
+        "earliest_report": 2019,
+        "latest_report": 2024,
+        "missing_reports": []
+    }
+]

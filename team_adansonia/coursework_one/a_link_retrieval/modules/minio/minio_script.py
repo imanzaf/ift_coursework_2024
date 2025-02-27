@@ -1,6 +1,7 @@
 from minio import Minio
 from minio.error import S3Error
 from modules.mongo_db.company_data import connect_to_mongo, CompanyData
+from modules.utils.dockercheck import is_running_in_docker
 import tempfile
 import os
 import requests
@@ -9,8 +10,15 @@ import requests
 def connect_to_minio():
     """Connect to the MinIO server."""
     try:
+        if is_running_in_docker():
+            minio_endpoint = "miniocw:9000"
+        else:
+            minio_endpoint = "localhost:9000"
+
+        print(f"Connecting to MinIO at {minio_endpoint}")
+        
         client = Minio(
-            "localhost:9000",  # MinIO server endpoint
+            minio_endpoint,  # MinIO server endpoint
             access_key="ift_bigdata",
             secret_key="minio_password",
             secure=False  # Set to True if you use HTTPS

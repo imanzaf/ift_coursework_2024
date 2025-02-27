@@ -1,10 +1,16 @@
 from pymongo import MongoClient
-from team_adansonia.coursework_one.a_link_retrieval.modules.mongo_db.company_data import CompanyData
+
+from team_adansonia.coursework_one.a_link_retrieval.modules.mongo_db.company_data import CompanyDatabase
+from modules.utils.dockercheck import is_running_in_docker
 
 
 def connect_to_mongo():
     try:
-        mongo_uri = "mongodb://localhost:27019/"
+        if is_running_in_docker():
+            mongo_uri = "mongodb://mongo_db_cw:27017"
+        else:
+            mongo_uri = "mongodb://localhost:27019"
+
         mongo_client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
         mongo_client.server_info()
         print("✅ Connected to MongoDB!")

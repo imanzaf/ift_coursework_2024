@@ -8,23 +8,51 @@ from modules.crawler import google_api_combined_crawler as google_api_combined_c
 from datetime import datetime
 import logging
 from modules.mongo_db.company_data import ROOT_DIR
-
+from modules.utils.dockercheck import is_running_in_docker
 #Variable to check database statues
 is_db_initialized = False
 
+def get_processing_list(collection, populated_data, api_limit):
+    # Create a set of tuples for quick lookup of existing entries in populated_data
+    populated_set = {(entry['symbol'], entry['security']) for entry in populated_data}
 
-def retrieve_and_store_csr_reports(collection):
+    # Initialize the processing list
+    processing_list = []
+
+    # Iterate over the collection to find documents not in populated_data
+    for document in collection.find():
+        symbol = document.get('symbol')
+        security = document.get('security')
+
+        # Check if the (symbol, security) tuple is not in the populated_set
+        if (symbol, security) not in populated_set:
+            processing_list.append(document)
+        if len(processing_list) == api_limit:
+            break
+
+    return processing_list
+
+def retrieve_and_store_csr_reports(collection, populated_data, api_limit=10):
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
     current_year = str(datetime.now().year)
 
-    previous_year = str(datetime.now().year - 1)
-    #TODO: remove limit!!!
-
-    for document in collection.find():
+    #initiate processing list as empty list
+    processing_list = get_processing_list(collection, populated_data, api_limit)
+    
+    porocessing_result = []
+    for document in processing_list:
         company_name = document["security"]
         ticker = document.get("symbol", "")  # Ensure ticker is present if needed
         logger.info(f"Processing company: {company_name}")
+        
+        populate_status = {}
+        populate_status["symbol"] = document["symbol"]
+        populate_status["security"] = document["security"]
+        populate_status["date_init"] = str(datetime.utcnow())
+        populate_status["missing_reports"] = []
+        populate_status["earliest_report"] = None
+        populate_status["latest_report"] = None
 
         try:
             existing_reports = document.get("csr_reports", {})
@@ -32,14 +60,16 @@ def retrieve_and_store_csr_reports(collection):
             # Find the earliest year from existing reports or default to the current year
             if existing_reports:
                 earliest_year = str(min(map(int, existing_reports.keys())))  # Find the lowest year
+                populate_status["earliest_report"] = earliest_year
             else:
                 earliest_year = str(int(current_year) -2)  # Default to current year if no reports exist
+                populate_status["earliest_report"] = earliest_year
 
             # Generate all years from earliest found to current year (inclusive)
             years_to_process = list(range(int(earliest_year), int(current_year)+1))
             print(years_to_process)
 
-            update_data = {"updated_at": datetime.utcnow()}
+            update_data = {"updated_at": populate_status["date_init"]}
             csr_reports = existing_reports.copy()  # Copy existing CSR reports to preserve them
 
             for year in years_to_process:
@@ -48,6 +78,7 @@ def retrieve_and_store_csr_reports(collection):
                 # Skip if the year already has a CSR report URL
                 if year_str in csr_reports and csr_reports[year_str]:
                     logger.info(f"Skipping {company_name} for year {year}, report already exists.")
+                    populate_status["latest_report"] = year_str
                     continue
 
                 # Process for current year
@@ -56,28 +87,35 @@ def retrieve_and_store_csr_reports(collection):
                         result = crawler.process_company(company_name)
 
                         if result == (None, None):
-                            logger.warning(f"No valid result found for {company_name} for year {year}")
+                            logger.warning(f"Crawler:No valid result found for {company_name} for year {year}")
                             result = google_api_combined_crawler._get_report_search_results(company_name, ticker, year_str)
                             
-
                         # If still no results, continue to next year
                         if result == (None, None):
+                            #TODO: If the year is current year, compare the pdfs with previous year
+                            populate_status["missing_reports"].append(year)
+                            logger.warning(f"Google API Crawler:No valid result found for {company_name} for year {year}")
                             continue
-                        #TODO: If the year is current year, compare the pdfs with previous year
+                        else:
+                            logger.info(f"Google API Crawler:Valid result found for {company_name} for year {year}")
+                            populate_status["latest_report"] = year_str
+
                         webpage_url, pdf_url = result
                         csr_reports[year_str] = pdf_url
                         update_data["website_url"] = webpage_url
                     except Exception as e:
-                        logger.warning(f"No valid result found for {company_name} for year {year}")
+                        logger.warning(f"Crawler:No valid result found for {company_name} for year {year}")
                         result = google_api_combined_crawler._get_report_search_results(company_name, ticker, year_str)
 
                         if result is None:
+                            populate_status["missing_reports"].append(year)
+                            logger.warning(f"Google API Crawler:No valid result found for {company_name} for year {year}")
                             continue
 
                         webpage_url, pdf_url = result
                         csr_reports[year_str] = pdf_url
                         update_data["website_url"] = webpage_url
-
+                        populate_status["latest_report"] = year_str
                 else:
                     try:
                         pdf_url = google_api_combined_crawler._get_report_search_results(company_name, ticker, year_str)
@@ -88,27 +126,46 @@ def retrieve_and_store_csr_reports(collection):
 
                     if pdf_url:
                         csr_reports[year_str] = pdf_url
+                        logger.info(f"Google API Crawler:Valid result found for {company_name} for year {year}")
+                        populate_status["latest_report"] = year_str
                     else:
                         csr_reports[year_str] = ""  # Mark as empty if no report found
+                        logger.info(f"Google API Crawler:No valid result found for {company_name} for year {year}")
+                        populate_status["missing_reports"].append(year)
 
             # Update only if there are changes in the csr_reports
             if csr_reports != existing_reports:  # Avoid unnecessary updates if no data changed
                 update_data["csr_reports"] = csr_reports  # Update csr_reports field
                 collection.update_one({"_id": document["_id"]}, {"$set": update_data})
                 logger.info(f"Updated CSR report URLs for {company_name}")
+                
             else:
                 logger.info(f"No updates needed for {company_name}.")
+            
+            if populate_status["missing_reports"] == []:
+                populate_status["status"] = "processed"
+            else:
+                populate_status["status"] = "processed with some missing reports"
+
+            populate_status["latest_report"] = max(int(year) for year in update_data["csr_reports"].keys() if update_data["csr_reports"][year] != "")
 
         except Exception as e:
             logger.error(f"Error processing {company_name}: {e}")
 
+        if populate_status["earliest_report"] is None and populate_status["latest_report"] is None:
+            populate_status["status"] = "Error during processing"
 
-def upload_csr_reports_to_minio(collection, client, mongo_client):
+        porocessing_result.append(populate_status)
+
+    return porocessing_result
+
+def upload_csr_reports_to_minio(collection, populated_status, client, mongo_client):
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
 
 
-    for document in collection.find():
+    for entry in populated_status:
+        document = collection.find_one({"symbol": entry["symbol"], "security": entry["security"]})
         try:
             minio.upload_report_to_minio(document, client, mongo_client)
             logger.info(f"Uploaded report for {document.get('security')} to MinIO")
@@ -162,10 +219,14 @@ def responsibility_reports_seed():
 
     print(f"Exported {len(unique_data)} unique documents to {seed_file}")
 
-def populate_database():
+def populate_database(rate_limit=10):
     global is_db_initialized
 
-    ROOT_DIR = os.getenv("ROOT_DIR")
+    if is_running_in_docker():
+        ROOT_DIR = os.getenv("ROOT_DIR_DOCKER")
+    else:
+        ROOT_DIR = os.getenv("ROOT_DIR_LOCAL")
+
     seed_folder = os.path.join(ROOT_DIR, "mongo-seed")
     seed_file = os.path.join(seed_folder, "seed_data.json")
 
@@ -180,8 +241,27 @@ def populate_database():
     db = mongo_client["csr_reports"]  # Access the MongoDB database
     collection = db["companies"]
     #TODO: when API keys are out, schedule to run again a day later
+    #load populated.json as a dictionary
+    with open("team_adansonia/coursework_one/a_link_retrieval/populated_tracking.json", "r") as f:
+        populated_data = json.load(f)
 
-    retrieve_and_store_csr_reports(collection)
+    #if there exist key in populated_data that's not in collection, drop from populated_data
+    for entry in populated_data:
+        symbol = entry["symbol"]
+        security = entry["security"]
+        if collection.find_one({"symbol": symbol, "security": security}) is None:
+            populated_data.remove(entry)
+
+    print("total companies in collection: " + str(collection.count_documents({})))
+    if collection.count_documents({}) - len(populated_data) == 0:
+        print("No company pending for past report processing")
+        exit()
+    else:
+        print("processed companies count: " + str(len(populated_data)))
+        print("Company pending for past report processing: " + str(collection.count_documents({}) - len(populated_data)))
+    
+    #populate status is dictionary containing the processing result of n unprocessed companies
+    populate_status = retrieve_and_store_csr_reports(collection, populated_data, api_limit=rate_limit)
 
     # Ensure uniqueness before exporting
     unique_data = []
@@ -207,17 +287,21 @@ def populate_database():
     with open(seed_file, "w", encoding="utf-8") as f:
         json.dump(unique_data, f, indent=4)
 
+    populated_data = populated_data + populate_status
+    with open("team_adansonia/coursework_one/a_link_retrieval/populated_tracking.json", "w", encoding="utf-8") as f:
+        json.dump(populated_data, f, indent=4)
+
     print(f"Exported {len(unique_data)} unique documents to {seed_file}")
     is_db_initialized = True
     print("Database loaded successfully: " + str(is_db_initialized))
     #Upload to minio
-    upload_csr_reports_to_minio(collection, minio_client, mongo_client)
+    upload_csr_reports_to_minio(collection, populate_status, minio_client, mongo_client)
     print("Reports uploaded")
 
     return is_db_initialized
 
 
-def get_latest_report():
+def get_latest_report(rate_limit=10):
 
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
@@ -237,7 +321,7 @@ def get_latest_report():
     current_year = str(datetime.now().year)
 
 
-    for document in collection.find():
+    for document in collection.find().limit(rate_limit):
         company_name = document["security"]
         ticker = document.get("symbol", "")  # Ensure ticker is present if needed
         logger.info(f"Processing company: {company_name}")
@@ -328,9 +412,36 @@ def get_latest_report():
     #Use the webdriver to get latest report, if different from previous year add, otherwise skip
     return
 
-if __name__ == '__main__':
+def populate_database_jenkins(rate_limit=0):
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    logger = logging.getLogger(__name__)
+    logger.info("populate database: Starting the script on " + str(datetime.now()))
+    if rate_limit == 0:
+        rate_limit = 100
+    logger.info("populate database: Populating database with rate limit " + str(rate_limit))
+    populate_database(rate_limit)
+    logger.info("populate database: Script completed on " + str(datetime.now()))
 
-    #mongo.reset_database()
-    #responsibility_reports_seed()
-    populate_database()
-    pass
+def get_latest_report_jenkins(rate_limit=0):
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    logger = logging.getLogger(__name__)
+    logger.info("get latest report: Starting the script on " + str(datetime.now()))
+    logger.info("get latest report: Getting latest report with rate limit " + str(rate_limit))
+    mongo_client = mongo.connect_to_mongo()
+    if mongo_client is None:
+        logger.error("get latest report: Failed to connect to MongoDB")
+        exit(1)
+    db = mongo_client["csr_reports"]
+    collection = db.companies
+    limit = collection.count_documents({})
+    if rate_limit == 0:
+        rate_limit = limit
+    get_latest_report(rate_limit)
+    logger.info("get latest report: Script completed on " + str(datetime.now()))
+
+def test_jenkins():
+    date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print("this is from jenkins_test.py at " + date_str)
+
+if __name__ == '__main__':
+    populate_database_jenkins(3)
