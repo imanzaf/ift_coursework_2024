@@ -1,6 +1,3 @@
-# TODO - add method for returning older reports with a year param
-# if report not present, return None
-
 import os
 import re
 import sys
@@ -177,7 +174,7 @@ class Search(BaseModel):
             ...     print("No report found.")
         """
         # strip company name
-        company_name = self.company.security.strip()
+        company_name = self.company.symbol
         driver = webdriver.Chrome()
         wait = WebDriverWait(driver, 10)
         try:

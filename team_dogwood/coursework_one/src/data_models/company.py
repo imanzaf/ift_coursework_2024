@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -79,7 +79,7 @@ class ESGReport(BaseModel):
     """
 
     url: Optional[str] = Field(None, description="The URL of the ESG report")
-    year: Optional[str] = Field(
+    year: Optional[Union[str, int]] = Field(
         None, description="The year the ESG report was published"
     )
 

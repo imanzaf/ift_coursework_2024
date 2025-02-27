@@ -5,14 +5,13 @@ from datetime import timedelta
 from ift_global import MinioFileSystemRepo
 from loguru import logger
 from minio import Minio
-from pydantic import BaseModel
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
 from config.db import database_settings
 
 
-class MinioFileSystem(MinioFileSystemRepo, BaseModel):
+class MinioFileSystem(MinioFileSystemRepo):
     """Overwrite file read and file write methods in MinioFileSystemRepo to add functionality to process PDF files.
 
     Attributes:
@@ -22,25 +21,14 @@ class MinioFileSystem(MinioFileSystemRepo, BaseModel):
         endpoint_url (str): The endpoint URL used to connect to MinIO, consisting of the MinIO host address and port.
     """
 
-    bucket_name: str = database_settings.MINIO_BUCKET_NAME
-    user: str = database_settings.MINIO_USERNAME
-    password: str = database_settings.MINIO_PASSWORD
-    endpoint_url: str = f"{database_settings.MINIO_HOST}:{database_settings.MINIO_PORT}"
-
-    @property
-    def client(self) -> Minio:
-        """Initializes and returns a Minio client.
-
-        Returns:
-            Minio: A Minio client instance.
-        """
-        minio_client = Minio(
-            self.endpoint_url,
-            access_key=self.user,
-            secret_key=self.password,
+    def __init__(self):
+        self.bucket_name = database_settings.MINIO_BUCKET_NAME
+        self.client = Minio(
+            f"{database_settings.MINIO_HOST}:{database_settings.MINIO_PORT}",
+            access_key=database_settings.MINIO_USERNAME,
+            secret_key=database_settings.MINIO_PASSWORD,
             secure=False,  # Change to True if using HTTPS
         )
-        return minio_client
 
     def create_bucket(self, bucket_name: str):
         """Ensures the bucket exists. Creates it if it doesn't exist.
@@ -129,7 +117,12 @@ class MinioFileSystem(MinioFileSystemRepo, BaseModel):
         return object_name
 
     def write_pdf_bytes(
-        self, pdf_bytes: bytes, company_id: str, report_year: str, file_name: str
+        self,
+        pdf_bytes: bytes,
+        file_size: int,
+        company_id: str,
+        report_year: str,
+        file_name: str,
     ):
         """Uploads a PDF (as bytes) into a subfolder structure: company_id/year/filename.pdf.
 
@@ -151,7 +144,7 @@ class MinioFileSystem(MinioFileSystemRepo, BaseModel):
             bucket_name=self.bucket_name,
             object_name=object_name,
             data=pdf_bytes,
-            length=len(pdf_bytes),
+            length=file_size,
         )
 
         return object_name
