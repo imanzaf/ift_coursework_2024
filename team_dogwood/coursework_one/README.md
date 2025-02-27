@@ -66,9 +66,20 @@ To see the logs of the pipeline:
 
 1. Create a .env file in the root directory of the project.
 2. Copy the contents of the .env.template file into the .env file. Update the SEARCH_GOOGLE_API_KEY variable with your API key.
-3. Run the main script using the following command:
+3. Run the main script using the following commands:
 ```bash
-TODO - ADD COMMAND
+# To run the script for retrieving ESG report URLS
+poetry run python pipelines/retrieve_store_url/main.py
+```
+```bash
+# To run the script for storing ESG reports in Minio
+poetry run python pipelines/retrieve_store_pdf/main.py
+```
+```bash
+# To run the script for updating the postgres database
+# Make sure to also pass the required CLI arguments and command as instructed in the file.
+# For example:
+poetry run python pipelines/manage_companies/main.py remove --symbol AAPL
 ```
 
 ---
