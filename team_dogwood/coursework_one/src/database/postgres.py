@@ -8,7 +8,6 @@ import sys
 import psycopg2
 from loguru import logger
 from psycopg2.extras import RealDictCursor
-from pydantic import BaseModel
 from sqlalchemy import create_engine, engine
 from sqlalchemy.orm import sessionmaker
 
@@ -19,7 +18,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 from config.db import database_settings
 
 
-class PostgreSQLDB(BaseModel):
+class PostgreSQLDB:
     """
     Methods for connecting to and interacting with the PostgreSQL database.
 
@@ -33,6 +32,9 @@ class PostgreSQLDB(BaseModel):
         >>> with db:
         ...     db.execute("read", sql_statement="SELECT * FROM companies")
     """
+
+    def __init__(self):
+        self.conn = self._conn_postgres_psycopg2()
 
     def __enter__(self):
         """
@@ -57,19 +59,12 @@ class PostgreSQLDB(BaseModel):
             self.conn.rollback()  # Rollback on error
         self.conn.close()
 
-    @property
-    def conn(self):
-        """
-        Create and return a connection to the PostgreSQL database.
-        """
-        return self._conn_postgres_psycopg2()
-
     def execute(self, query, params=None):
         """Fetches data (SELECT) and returns a list of dictionaries."""
         try:
             logger.info(f"Executing query: {query}...")
             cursor = self.conn.cursor(cursor_factory=RealDictCursor)
-            cursor.execute(query, params or {})
+            cursor.execute(query, params or ())
             self.conn.commit()
             cursor.close()
             return []
@@ -207,3 +202,15 @@ class PostgreSQLDB(BaseModel):
         except psycopg2.Error as e:
             logger.error(f"Error connecting to the database: {e}")
             return None
+
+
+if __name__ == "__main__":
+    with PostgreSQLDB() as db:
+        db.execute(
+            "CREATE TABLE IF NOT EXISTS csr_reporting.test_table (company_name VARCHAR(255))"
+        )
+        db.execute(
+            "INSERT INTO csr_reporting.test_table (company_name) VALUES ('Apple')"
+        )
+        rows = db.fetch("SELECT * FROM csr_reporting.test_table")
+        logger.info(f"Rows: {rows}")

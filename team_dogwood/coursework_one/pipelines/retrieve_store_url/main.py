@@ -24,7 +24,7 @@ def get_all_companies(db: PostgreSQLDB) -> list[Company]:
         exit()
 
     companies_list = []
-    for company_data in companies[:1]:  # Limit to 1 company for testing
+    for company_data in companies:  # Limit to 1 company for testing
         logger.info(f"Processing company: {company_data['security']}")
         company = Company(**company_data)
         companies_list.append(company)
@@ -82,50 +82,22 @@ def update_db(db: PostgreSQLDB, company: Company):
     """
     urls = {}
     esg_reports = company.esg_reports
-    if esg_reports[0].year == esg_reports[1].year:
-        urls.update(
-            {
-                (
-                    esg_reports[0].year
-                    if esg_reports[0].year is not None
-                    else "Unknown"
-                ): esg_reports[0].url
-            }
-        )
+    if esg_reports[0].year == esg_reports[1].year and esg_reports[0].url is not None:
+        urls.update({(esg_reports[0].year): esg_reports[0].url})
     else:
-        urls.update(
-            {
-                (
-                    esg_reports[0].year
-                    if esg_reports[0].year is not None
-                    else "Unknown"
-                ): esg_reports[0].url
-            }
-        )
-        urls.update(
-            {
-                (
-                    esg_reports[1].year
-                    if esg_reports[1].year is not None
-                    else "Unknown"
-                ): esg_reports[1].url
-            }
-        )
+        if esg_reports[0].url is not None:
+            urls.update({(esg_reports[0].year): esg_reports[0].url})
+        if esg_reports[1].url is not None:
+            urls.update({(esg_reports[1].year): esg_reports[1].url})
 
     update_query = """
     INSERT INTO csr_reporting.company_csr_reports (company_name, report_url, report_year, retrieved_at)
-    VALUES ($1, $2, $3, NOW())
+    VALUES (%s, %s, %s, NOW())
     ON CONFLICT (company_name, report_year)
     DO UPDATE SET "report_url" = EXCLUDED.report_url, "retrieved_at" = NOW();
     """
-    db.execute(
-        update_query,
-        (company.security, esg_reports[0].year, esg_reports[0].url),
-    )
-    db.execute(
-        update_query,
-        (company.security, esg_reports[0].year, esg_reports[0].url),
-    )
+    for item in urls.items():
+        db.execute(update_query, (company.security, item[1], item[0]))
     logger.info(
         f"[{company.security}] The retrieved links have been written to the database."
     )
@@ -135,10 +107,10 @@ def main():
     with PostgreSQLDB() as db:
         # Create new table
         query = """
-        CREATE TABLE csr_reporting.company_csr_reports (
+        CREATE TABLE IF NOT EXISTS csr_reporting.company_csr_reports (
         company_name VARCHAR(255) NOT NULL,
         report_url VARCHAR(255) NOT NULL,
-        report_year INT NOT NULL,
+        report_year INT,
         retrieved_at TIMESTAMP DEFAULT NOW(),
         PRIMARY KEY (company_name, report_year)
         );
@@ -158,5 +130,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
-    pass
+    main()
