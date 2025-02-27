@@ -12,40 +12,54 @@ This is the official documentation for **Team Dogwood's** project. Here, you'll 
    This documentation is written using ``reStructuredText`` (reST). For more details on reST syntax, refer to the
    `reStructuredText documentation <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_.
 
-Getting Started
----------------
+Installation Guide
+-------------------
 
 To get started with the project, follow these steps:
 
-1. **Install Poetry**: If you don't have Poetry installed, follow the
-   `official Poetry installation guide <https://python-poetry.org/docs/#installation>`_.
+1. **Clone the Repository**: If you haven't already, clone the repository using Git.
 
-2. **Install Dependencies**: Use Poetry to install the project dependencies.
+   .. code-block:: bash
+
+      git clone https://github.com/imanzaf/ift_coursework_2024.git
+
+2. **Install Python and Poetry**:  
+   - Ensure you have Python installed. You can download it from `python.org <https://www.python.org/downloads/>`_.
+   - Install Poetry by following the `official Poetry installation guide <https://python-poetry.org/docs/#installation>`_.
+
+3. **Navigate to the Project Directory**: Move into the cloned repository directory.
+
+   .. code-block:: bash
+
+      cd team_dogwood/coursework_one
+
+4. **Install Dependencies**: Use Poetry to install the project dependencies.
 
    .. code-block:: bash
 
       poetry install
 
-3. **Set Up Environment Variables**: Create a `.env` file in the root directory and populate it with the required environment variables.
+5. **Set Up Environment Variables**: Create a `.env` file in the root directory and populate it with the required environment variables.
 
-4. **Run the Project**: Use Poetry to run the main script.
+6. **Run the Project**: Use Poetry to run the main script.
 
    .. code-block:: bash
 
       poetry run python main.py
+
 
 Project Structure
 -------------------
 
 The project is organized into the following modules:
 
-- **`Config`**: Contains configuration settings for the project.
-- **`Modules`**: Contains the main source code, including data models, database interactions, and utility functions.
+- **`config`**: Contains configuration settings for the project.
+- **`src`**: Contains the main source code, including data models, database interactions, and utility functions.
 
 For more details, refer to the :ref:`modules` section.
 
-Contents
---------
+API Reference
+--------------
 
 .. toctree::
    :maxdepth: 2

@@ -1,0 +1,137 @@
+\begin{sphinxtheindex}
+\let\bigletter\sphinxstyleindexlettergroup
+\let\spxpagem \sphinxstyleindexpagemain
+\let\spxentry \sphinxstyleindexentry
+\let\spxextra \sphinxstyleindexextra
+
+  \bigletter {\sphinxsymbolsname}
+  \item \spxentry{\_\_enter\_\_()}\spxextra{src.database.postgres.PostgreSQLDB method}, 
+		\hyperpage{12}
+  \item \spxentry{\_\_exit\_\_()}\spxextra{src.database.postgres.PostgreSQLDB method}, 
+		\hyperpage{12}
+  \item \spxentry{\_company\_name\_in\_result()}\spxextra{src.esg\_reports.validate.SearchResultValidator method}, 
+		\hyperpage{16}
+  \item \spxentry{\_conn\_postgres()}\spxextra{src.database.postgres.PostgreSQLDB static method}, 
+		\hyperpage{13}
+  \item \spxentry{\_conn\_postgres\_psycopg2()}\spxextra{src.database.postgres.PostgreSQLDB static method}, 
+		\hyperpage{13}
+  \item \spxentry{\_format\_google\_results()}\spxextra{src.esg\_reports.search.Search static method}, 
+		\hyperpage{14}
+  \item \spxentry{\_keywords\_in\_result()}\spxextra{src.esg\_reports.validate.SearchResultValidator method}, 
+		\hyperpage{17}
+  \item \spxentry{\_match\_score()}\spxextra{src.esg\_reports.search.Search static method}, 
+		\hyperpage{14}
+  \item \spxentry{\_year\_in\_result()}\spxextra{src.esg\_reports.validate.SearchResultValidator method}, 
+		\hyperpage{17}
+
+  \indexspace
+  \bigletter C
+  \item \spxentry{clean\_company\_name}\spxextra{src.esg\_reports.validate.SearchResultValidator property}, 
+		\hyperpage{18}
+  \item \spxentry{clean\_company\_name()}\spxextra{in module src.utils.search}, \hyperpage{20}
+  \item \spxentry{client}\spxextra{src.database.minio.MinioFileSystem property}, \hyperpage{10}
+  \item \spxentry{Company}\spxextra{class in src.data\_models.company}, \hyperpage{8}
+  \item \spxentry{config.db}
+    \subitem \spxentry{module}, \hyperpage{21}
+  \item \spxentry{config.search}
+    \subitem \spxentry{module}, \hyperpage{22}
+  \item \spxentry{create\_bucket()}\spxextra{src.database.minio.MinioFileSystem method}, 
+		\hyperpage{10}
+
+  \indexspace
+  \bigletter D
+  \item \spxentry{DataBaseSettings}\spxextra{class in config.db}, \hyperpage{21}
+  \item \spxentry{delete\_csr\_report()}\spxextra{src.database.postgres.PostgreSQLDB method}, 
+		\hyperpage{13}
+  \item \spxentry{download\_file()}\spxextra{src.database.minio.MinioFileSystem method}, 
+		\hyperpage{10}
+  \item \spxentry{download\_pdf\_from\_urls()}\spxextra{in module src.utils.data}, \hyperpage{19}
+
+  \indexspace
+  \bigletter E
+  \item \spxentry{ESGReport}\spxextra{class in src.data\_models.company}, \hyperpage{9}
+  \item \spxentry{execute()}\spxextra{src.database.postgres.PostgreSQLDB method}, \hyperpage{13}
+
+  \indexspace
+  \bigletter G
+  \item \spxentry{get\_csr\_report\_by\_id()}\spxextra{src.database.postgres.PostgreSQLDB method}, 
+		\hyperpage{13}
+  \item \spxentry{get\_csr\_reports\_by\_company()}\spxextra{src.database.postgres.PostgreSQLDB method}, 
+		\hyperpage{13}
+  \item \spxentry{google()}\spxextra{src.esg\_reports.search.Search method}, \hyperpage{15}
+
+  \indexspace
+  \bigletter L
+  \item \spxentry{list\_files\_by\_company()}\spxextra{src.database.minio.MinioFileSystem method}, 
+		\hyperpage{11}
+
+  \indexspace
+  \bigletter M
+  \item \spxentry{MinioFileSystem}\spxextra{class in src.database.minio}, \hyperpage{10}
+  \item \spxentry{model\_post\_init()}\spxextra{src.esg\_reports.search.Search method}, 
+		\hyperpage{15}
+  \item \spxentry{model\_post\_init()}\spxextra{src.esg\_reports.validate.SearchResultValidator method}, 
+		\hyperpage{18}
+  \item \spxentry{module}
+    \subitem \spxentry{config.db}, \hyperpage{21}
+    \subitem \spxentry{config.search}, \hyperpage{22}
+    \subitem \spxentry{src.data\_models.company}, \hyperpage{8}
+    \subitem \spxentry{src.database.minio}, \hyperpage{10}
+    \subitem \spxentry{src.database.postgres}, \hyperpage{12}
+    \subitem \spxentry{src.esg\_reports.search}, \hyperpage{14}
+    \subitem \spxentry{src.esg\_reports.validate}, \hyperpage{16}
+    \subitem \spxentry{src.utils.data}, \hyperpage{19}
+    \subitem \spxentry{src.utils.search}, \hyperpage{20}
+
+  \indexspace
+  \bigletter P
+  \item \spxentry{PostgreSQLDB}\spxextra{class in src.database.postgres}, \hyperpage{12}
+
+  \indexspace
+  \bigletter S
+  \item \spxentry{Search}\spxextra{class in src.esg\_reports.search}, \hyperpage{14}
+  \item \spxentry{search\_results}\spxextra{src.esg\_reports.validate.SearchResultValidator attribute}, 
+		\hyperpage{18}
+  \item \spxentry{SearchResult}\spxextra{class in src.data\_models.company}, \hyperpage{9}
+  \item \spxentry{SearchResultValidator}\spxextra{class in src.esg\_reports.validate}, 
+		\hyperpage{16}
+  \item \spxentry{SearchSettings}\spxextra{class in config.search}, \hyperpage{22}
+  \item \spxentry{session}\spxextra{src.database.postgres.PostgreSQLDB property}, \hyperpage{13}
+  \item \spxentry{src.data\_models.company}
+    \subitem \spxentry{module}, \hyperpage{8}
+  \item \spxentry{src.database.minio}
+    \subitem \spxentry{module}, \hyperpage{10}
+  \item \spxentry{src.database.postgres}
+    \subitem \spxentry{module}, \hyperpage{12}
+  \item \spxentry{src.esg\_reports.search}
+    \subitem \spxentry{module}, \hyperpage{14}
+  \item \spxentry{src.esg\_reports.validate}
+    \subitem \spxentry{module}, \hyperpage{16}
+  \item \spxentry{src.utils.data}
+    \subitem \spxentry{module}, \hyperpage{19}
+  \item \spxentry{src.utils.search}
+    \subitem \spxentry{module}, \hyperpage{20}
+  \item \spxentry{store\_csr\_report()}\spxextra{src.database.postgres.PostgreSQLDB method}, 
+		\hyperpage{13}
+  \item \spxentry{sustainability\_reports\_dot\_com()}\spxextra{src.esg\_reports.search.Search method}, 
+		\hyperpage{15}
+
+  \indexspace
+  \bigletter U
+  \item \spxentry{update\_csr\_report()}\spxextra{src.database.postgres.PostgreSQLDB method}, 
+		\hyperpage{13}
+  \item \spxentry{upload\_pdf()}\spxextra{src.database.minio.MinioFileSystem method}, 
+		\hyperpage{11}
+
+  \indexspace
+  \bigletter V
+  \item \spxentry{validated\_results}\spxextra{src.esg\_reports.validate.SearchResultValidator property}, 
+		\hyperpage{18}
+  \item \spxentry{view\_pdf()}\spxextra{src.database.minio.MinioFileSystem method}, \hyperpage{11}
+
+  \indexspace
+  \bigletter W
+  \item \spxentry{write\_pdf\_bytes()}\spxextra{src.database.minio.MinioFileSystem method}, 
+		\hyperpage{11}
+
+\end{sphinxtheindex}

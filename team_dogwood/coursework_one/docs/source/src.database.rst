@@ -10,6 +10,7 @@ Database Minio Module
    :members:
    :show-inheritance:
    :undoc-members:
+   :exclude-members: bucket_name, endpoint_url, model_config, password, user, 
 
    .. rubric:: **Overview**
 
@@ -28,6 +29,7 @@ Database Postgres Module
    :members:
    :show-inheritance:
    :undoc-members:
+   :exclude-members: model_config
 
    .. rubric:: **Overview**
 

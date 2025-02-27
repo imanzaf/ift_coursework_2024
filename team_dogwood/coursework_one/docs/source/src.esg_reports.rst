@@ -18,6 +18,7 @@ ESG Reports Search Module
    :members:
    :show-inheritance:
    :undoc-members:
+   :exclude-members: company, model_config
 
    .. rubric:: **Overview**
 
@@ -36,6 +37,7 @@ ESG Reports Validate Module
    :members:
    :show-inheritance:
    :undoc-members:
+   :exclude-members: company, model_config
 
    .. rubric:: **Overview**
 

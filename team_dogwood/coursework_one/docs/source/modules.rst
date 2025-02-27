@@ -1,6 +1,6 @@
 .. _modules:
 
-Modules
+src
 =======
 
 .. rubric:: **Overview**
