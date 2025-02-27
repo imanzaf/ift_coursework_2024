@@ -1,18 +1,21 @@
-import json
-import logging
 import os
-import sqlite3
-import time
-from pathlib import Path
 import requests
+import hashlib
+import re
+import json
+import time
 from bs4 import BeautifulSoup
-from googleapiclient.discovery import build
-from googleapiclient.discovery_cache.base import Cache
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+import sqlite3
+import logging
+from pathlib import Path
+from googleapiclient.discovery import build
+from googleapiclient.discovery_cache.base import Cache
+import tempfile
+from googleapiclient.http import set_user_agent
 
-
-# Custom cache implementation
+# Custom Cache Implementation
 class MemoryCache(Cache):
     _CACHE = {}
 
@@ -23,11 +26,11 @@ class MemoryCache(Cache):
         MemoryCache._CACHE[url] = content
 
 
-# Set base URL
+# Setting the base URL
 BASE_URL = "https://www.responsibilityreports.com"
 
 
-# Create a session with retry strategy
+# Creating a Session with a Retry Policy
 def create_session():
     session = requests.Session()
     retries = Retry(total=5, backoff_factor=0.5, status_forcelist=[500, 502, 503, 504])
@@ -37,20 +40,22 @@ def create_session():
 
 session = create_session()
 
-# Configure logging
+# Configuration log
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Google search configuration
+# Google Search
 GOOGLE_API_KEY = "AIzaSyA3VVtTUL8ZsXCyu_es-_V4fHLHtx1cSvE"
 GOOGLE_CSE_ID = "55adbcac3c4f44f3a"
 
-# Result save path
-RESULTS_FILE = "company_pdf_links.json"
-
+# Result Save Path
+script_dir = Path(__file__).resolve().parent
+RESULTS_FILE = script_dir / "../../../team_jacaranda/coursework_one/modules/db/company_pdf_links.json"
+# Resolve the path (remove redundant ../)
+RESULTS_FILE = RESULTS_FILE.resolve()
 
 def create_google_service():
-    """Create Google search service"""
+    """Creating Google Search Service"""
     service = build(
         "customsearch",
         "v1",
@@ -61,12 +66,12 @@ def create_google_service():
 
 
 def read_companies_from_db(db_path):
-    """Get list of companies from the database"""
+    """Get List from Database"""
     conn = None
     try:
         db_path = Path(db_path)
         if not db_path.exists():
-            logger.error(f"Database file does not exist: {db_path.resolve()}")
+            logger.error(f"Database file does not exist：{db_path.resolve()}")
             return []
         conn = sqlite3.connect(str(db_path))
         cursor = conn.cursor()
@@ -75,7 +80,7 @@ def read_companies_from_db(db_path):
             WHERE type='table' AND name='equity_static'
         """)
         if not cursor.fetchone():
-            logger.error("equity_static table does not exist")
+            logger.error("equity_static doesn't exist")
             return []
         cursor.execute("SELECT security FROM equity_static")
         companies = [row[0] for row in cursor.fetchall()]
@@ -90,19 +95,18 @@ def read_companies_from_db(db_path):
 
 
 def format_company_name(company_name, use_corporation=False):
-    """Format company name, optionally replace 'company' with 'corporation'"""
+    """Format the company name, optionally replacing company with corporation"""
     clean_name = company_name.lower()
     
-    # Handle 'corp' cases first
-    clean_name = clean_name.replace("corp.", "corporation")  # Handle cases with a dot
-    clean_name = clean_name.replace("corp ", "corporation ")  # Handle cases with a space
-    clean_name = clean_name.replace("corp-", "corporation-")  # Handle cases with a hyphen
+    # corp
+    clean_name = clean_name.replace("corp.", "corporation")
+    clean_name = clean_name.replace("corp ", "corporation ")
+    clean_name = clean_name.replace("corp-", "corporation-")
     
-    # If 'corporation' replacement is enabled
+    # corporation subsititution
     if use_corporation:
         clean_name = clean_name.replace("company", "corporation")
     
-    # Finally, handle spaces and dots
     clean_name = clean_name.replace(" ", "-")
     clean_name = clean_name.replace(".", "")
     
@@ -110,10 +114,10 @@ def format_company_name(company_name, use_corporation=False):
 
 
 def try_website_search(company_name, use_corporation=False):
-    """Try to search for PDF links on the website"""
+    """Try searching the website for PDF links"""
     formatted_name = format_company_name(company_name, use_corporation)
     search_url = f"{BASE_URL}/Company/{formatted_name}"
-    logger.info(f"Attempting to access URL: {search_url}")
+    logger.info(f"Try to access the URL: {search_url}")
 
     try:
         response = session.get(search_url, timeout=10)
@@ -131,38 +135,36 @@ def try_website_search(company_name, use_corporation=False):
 
         if pdf_links_set:
             logger.info(
-                f"Found {len(pdf_links_set)} PDF links on the website using {'corporation' if use_corporation else 'company'}")
+                f"Useing{'corporation' if use_corporation else 'company'}finds from website {len(pdf_links_set)} 个PDF链接")
             return list(pdf_links_set)
         return None
 
     except Exception as e:
-        logger.error(f"Website search failed ({'corporation' if use_corporation else 'company'}): {str(e)}")
+        logger.error(f"Website Search Failure ({'corporation' if use_corporation else 'company'}): {str(e)}")
         return None
 
 
 def is_valid_pdf_link(link, title=""):
-    """Check if the PDF link is valid (does not contain 'annual/Annual')"""
+    """Check if the PDF link works（excluding annual/Annual）"""
     link_lower = link.lower()
     title_lower = title.lower()
     
-    # Check if the URL or title contains "annual"
     if "annual" in link_lower or "annual" in title_lower:
-        logger.info(f"Skipping annual report: {link}")
+        logger.info(f"Skip annual report: {link}")
         return False
     return True
 
 
 def google_search_pdf(company_name):
-    """Use Google API to search for PDF files, filtering out annual reports"""
+    """Use Google API to search PDF files, filter out annual reports"""
     pdf_links_set = set()
 
     try:
         service = create_google_service()
 
-        # Only search recent years to save quota
         for year in range(2013, 2024):
             query = f"{company_name} {year} responsibility report sustainability report filetype:pdf"
-            logger.info(f"Executing Google search: {query}")
+            logger.info(f"Perform a Google search: {query}")
 
             try:
                 result = service.cse().list(q=query, cx=GOOGLE_CSE_ID, num=10).execute()
@@ -174,113 +176,114 @@ def google_search_pdf(company_name):
                         
                         if link.lower().endswith('.pdf') and is_valid_pdf_link(link, title):
                             pdf_links_set.add(link)
-                            # Only get one valid PDF link per year
+                            # Get only one valid PDF link per year
                             break
 
-                time.sleep(1)  # Avoid triggering API limits
+                time.sleep(1)  # Avoid triggering API restrictions
 
             except Exception as e:
-                logger.error(f"Google search for year {year} failed: {str(e)}")
-                # If quota is exceeded, stop searching immediately
+                logger.error(f"Year {year} Google Search fails: {str(e)}")
+                # Stop searching immediately if you encounter a quota limit
                 if "Quota exceeded" in str(e):
-                    logger.error("Google API quota exceeded, stopping search")
+                    logger.error("Google API quota has been exceeded, stop searching")
                     break
 
     except Exception as e:
-        logger.error(f"Failed to create Google search service: {str(e)}")
+        logger.error(f"Google Search Service Creation Failure: {str(e)}")
 
     return list(pdf_links_set)
 
 
 def get_pdf_links_for_company(company_name):
-    """Get all PDF links for a company using multiple search strategies"""
-    logger.info(f"Starting to process company: {company_name}")
+    """Get access to all of the company's PDF links, using a variety of search strategies"""
+    logger.info(f"Commencement of processing of companies: {company_name}")
 
-    # Strategy 1: Search on the website using the original company name
+    # Tactic 1: Use the original company name to search the site
     pdf_links = try_website_search(company_name, use_corporation=False)
     if pdf_links:
         return pdf_links
 
-    # Strategy 2: Search on the website after replacing 'company' with 'corporation'
+    # Tactic 2: Replace company with corporation and search the site.
     if "company" in company_name.lower():
-        logger.info("Attempting to replace 'company' with 'corporation' and search")
+        logger.info("Try searching after replacing 'company' with 'corporation'")
         pdf_links = try_website_search(company_name, use_corporation=True)
         if pdf_links:
             return pdf_links
 
-    # Strategy 3: Use Google API search
-    logger.info("No results found on the website, attempting Google API search")
+    # Tactic 3: Search using Google API
+    logger.info("Site search did not find results, try using the Google API search")
     pdf_links = google_search_pdf(company_name)
 
     return pdf_links
 
 
 def save_results_to_json(results):
-    """Save results to a JSON file"""
+    """Save the result as a JSON file"""
     try:
         with open(RESULTS_FILE, 'w', encoding='utf-8') as f:
             json.dump(results, f, ensure_ascii=False, indent=4)
-        logger.info(f"Results saved to {RESULTS_FILE}")
+        logger.info(f"The results have been saved to {RESULTS_FILE}")
     except Exception as e:
         logger.error(f"Failed to save JSON: {str(e)}")
 
 
 def load_existing_results():
-    """Load existing results file"""
+    """Loading an existing results file"""
     if os.path.exists(RESULTS_FILE):
         try:
             with open(RESULTS_FILE, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except Exception as e:
-            logger.error(f"Failed to load existing results: {str(e)}")
+            logger.error(f"Failed to load existing result: {str(e)}")
     return {}
 
 
 def main():
-    # Set database path
-    # Get the absolute path of the script file
-    script_dir = Path(__file__).resolve().parent
-    # Build the path to the data file
-    db_path = script_dir / "../../../000.Database/SQL/Equity.db"
-    # Resolve the path (remove redundant ../)
-    db_path = db_path.resolve()
+    # Setting the database path
+    db_path = r"./000.Database/SQL/Equity.db"
 
-    # Read the list of companies
+    # 首先修改数据库
+    logger.info("开始修改数据库...")
+    modify_database(db_path)
+
+
+
+    # Reading company list
     companies = read_companies_from_db(db_path)
     if not companies:
-        logger.error("Failed to retrieve the list of companies")
+        logger.error("Failed to get list")
         return
 
-    logger.info(f"Retrieved {len(companies)} companies")
+    logger.info(f"Get {len(companies)} companies in total")
 
-    # Load existing results
+    # Loading current results
     results = load_existing_results()
 
-    # Process each company
+    # Handling every results
     for i, company in enumerate(companies, 1):
-        logger.info(f"[{i}/{len(companies)}] Processing: {company}")
+        logger.info(f"[{i}/{len(companies)}] Handling: {company}")
 
-        # If the company has already been processed, skip
+        # Skip if company has already dealt with it
         if company in results:
-            logger.info(f"{company} has already been processed, skipping")
+            logger.info(f"{company} have been handled,skip.")
             continue
 
-        # Get PDF links
+        # get pdf links
         pdf_links = get_pdf_links_for_company(company)
 
-        # Save results
+        # save results
         results[company] = pdf_links
 
-        # Save results after processing each company
+        # Save results once per company processed
         if i % 1 == 0:
             save_results_to_json(results)
 
-        # Avoid making requests too frequently
+        # Avoid requests that are too frequent
         time.sleep(1)
 
-    # Final save of results
+    # Final saved results
     save_results_to_json(results)
-    logger.info("All companies processed")
+    logger.info("All company processing completed")
 
 
 if __name__ == "__main__":
