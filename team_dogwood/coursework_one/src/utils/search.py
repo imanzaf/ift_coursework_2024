@@ -29,5 +29,7 @@ def clean_company_name(name: str) -> str:
     # Remove legal suffixes
     cleaned_name = re.sub(legal_pattern, "", name, flags=re.IGNORECASE).strip()
     # Remove common articles and extra spaces
-    cleaned_name = re.sub(article_pattern, "", cleaned_name, flags=re.IGNORECASE).strip()
+    cleaned_name = re.sub(
+        article_pattern, "", cleaned_name, flags=re.IGNORECASE
+    ).strip()
     return cleaned_name

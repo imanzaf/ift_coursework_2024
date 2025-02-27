@@ -47,7 +47,7 @@ class MinioFileSystem(MinioFileSystemRepo, BaseModel):
 
         Args:
             bucket_name (str): The name of the MinIO bucket.
-            
+
         Example:
             >>> minio = MinioFileSystem()
             >>> minio.create_bucket("my-bucket")
