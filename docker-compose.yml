@@ -62,7 +62,7 @@ services:
         - MINIO_ROOT_PASSWORD=minio_password
         - MINIO_DOMAIN=miniocw
       ports:
-        - "9002:9000"
+        - "9000:9000"
         - "9001:9001"
       command: ["server", "/data", "--console-address", ":9001"]
       healthcheck:
@@ -115,6 +115,7 @@ services:
           - ./team_sakura/coursework_one/a_pipeline/config/conf.yaml:/app/a_pipeline/config/conf.yaml  # Mount conf.yaml file
         environment:
           - CONF_PATH=./a_pipeline/config/conf.yaml
+          - DOCKER_ENV=true
         working_dir: /app
         command: tail -f /dev/null  # Keep the container running
         depends_on:

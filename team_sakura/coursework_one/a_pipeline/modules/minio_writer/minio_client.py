@@ -3,14 +3,19 @@ import yaml
 import os
 from minio.error import S3Error
 
-config_path = os.getenv("CONF_PATH", "/app/config/conf.yaml")  # Default path for Docker
+config_path = os.getenv("CONF_PATH", "a_pipeline/config/conf.yaml")  # Default path for Docker
 with open(config_path, "r") as file:
     config = yaml.safe_load(file)
+
+if os.getenv("DOCKER_ENV"):
+    minio_config = config["miniodocker"]
+else:
+    minio_config = config["miniolocal"]
 
 
 def get_minio_client():
     # Ensure the service name "miniocw" is used inside the Docker network
-    minio_host = os.getenv("MINIO_HOST", "miniocw:9000")  # Update this!
+    minio_host = os.getenv("MINIO_HOST", "localhost:9000")  # Update this!
     access_key = os.getenv("AWS_ACCESS_KEY_ID", "ift_bigdata")
     secret_key = os.getenv("AWS_SECRET_ACCESS_KEY", "minio_password")
 
@@ -21,7 +26,7 @@ def get_minio_client():
         secure=False  # Set to False if using HTTP
     )
 
-    bucket_name = config["minio"]["bucket_name"]
+    bucket_name = minio_config["bucket_name"]
     if not minio_client.bucket_exists(bucket_name):
         minio_client.make_bucket(bucket_name)
         print(f"Created MinIO bucket: {bucket_name}")
@@ -33,8 +38,7 @@ def get_minio_client():
 
 minio_client = get_minio_client()
 
-MINIO_CONFIG = config["minio"]
-BUCKET_NAME = MINIO_CONFIG["bucket_name"]
+BUCKET_NAME = minio_config["bucket_name"]
 
 # Ensure bucket exists
 if not minio_client.bucket_exists(BUCKET_NAME):
@@ -62,7 +66,7 @@ def upload_to_minio(local_pdf_path, company_symbol, report_year):
     minio_pdf_path = f"{company_symbol}/{report_year}"
     minio_client.fput_object(BUCKET_NAME, minio_pdf_path, local_pdf_path)
 
-    return f"http://{MINIO_CONFIG['endpoint']}/{BUCKET_NAME}/{minio_pdf_path}"
+    return f"http://{minio_config['endpoint']}/{BUCKET_NAME}/{minio_pdf_path}"
 
 
 
