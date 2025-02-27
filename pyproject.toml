@@ -27,6 +27,7 @@ pymango = "^0.1.1"
 pymupdf = "^1.25.3"
 bs4 = "^0.0.2"
 bson = "^0.5.10"
+flake8 = "^7.1.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "*"

@@ -5,30 +5,29 @@ This is the main repository for the coursework of the module Big Data in Quantit
 ## Project Structure
 
 # Team Adansonia Project
+
 team_adansonia
-└── team_adansonia
-    ├── src
-        ├── scheduler
-            ├── __init__.py
-            └── scheduler.py
-        ├── link_retrieval
-            ├── __init__.py
-            ├── crawler.py
-            ├── minio.py
-            ├── mongodb.py
-            └── validation.py
-        └── main.py
-    ├── tests
-        ├── test_scheduler.py
-        ├── test_crawler.py
-        ├── test_minio.py
-        ├── test_mongodb.py
-        └── test_validation.py
-    ├── .env.template
-    ├── docker-compose.yml
-    ├── pyproject.toml
-    ├── README.md
-    └── poetry.lock
+├── coursework_1
+│   ├── scheduler
+│   │   ├── __init__.py
+│   │   └── scheduler.py
+│   ├── link_retrieval
+│   │   ├── modules
+│   │   ├──__init__.py
+│   │   │   ├── crawler.py
+│   │   │   ├── minio.py
+│   │   │   ├── mongodb.py
+│   │   │   └──validation.py
+│   │   └── tests
+│   │      ├── test_main.py
+│   │      ├── test_crawler.py
+│   │      └── test_google_crawler.py
+│   └── main.py
+├── .env.template
+├── docker-compose.yml
+├── pyproject.toml
+├── README.md
+└── poetry.lock
 
 
 
