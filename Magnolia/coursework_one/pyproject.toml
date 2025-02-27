@@ -1,0 +1,121 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ift_csr_project"
+version = "1.0.0"
+description = "A full CSR data pipeline including web scraping, storage, API, and data analysis."
+authors = [{name = "Your Name", email = "your@email.com"}]
+license = {text = "MIT"}
+
+# Python 依赖库
+dependencies = [
+    # -------------------
+    # 🌐 Web 框架和 API
+    # -------------------
+    "fastapi",              # API 框架
+    "uvicorn",              # ASGI 服务器
+    "starlette",            # FastAPI 依赖（请求处理）
+
+    # -------------------
+    # 🔍 爬虫 & 网页解析
+    # -------------------
+    "selenium",             # 自动化浏览器（爬取 PDF）
+    "chromedriver-autoinstaller",  # 自动安装 ChromeDriver
+    "requests",             # 发送 HTTP 请求
+    "beautifulsoup4",       # HTML 解析
+    "lxml",                 # 更快的 HTML 解析
+    "urllib3",              # 处理 URL 请求
+    "fake-useragent",       # 伪造 User-Agent 防止反爬
+    "tqdm",                 # 进度条
+
+    # -------------------
+    # 🗃️ 数据存储（MongoDB & PostgreSQL & MinIO）
+    # -------------------
+    "pymongo",              # MongoDB 客户端
+    "motor",                # MongoDB 异步支持
+    "psycopg2-binary",      # PostgreSQL 客户端
+    "minio",                # MinIO S3 客户端
+    "sqlalchemy",           # ORM 兼容支持
+
+    # -------------------
+    # 📊 数据处理 & 数据湖
+    # -------------------
+    "numpy",                # 科学计算
+    "pandas",               # 处理表格数据
+    "polars",               # 更快的数据处理替代 pandas
+    "dask",                 # 大数据处理
+    "pyarrow",              # 处理 Parquet 格式
+    "duckdb",               # 本地 SQL 数据湖
+    "fastparquet",          # 读写 Parquet 文件
+    "openpyxl",             # 读写 Excel
+    "sqlalchemy",           # 兼容 SQL 数据库
+
+    # -------------------
+    # 📄 文本解析 & 处理 PDF
+    # -------------------
+    "pdfplumber",           # 解析 PDF
+    "PyMuPDF",              # 解析和转换 PDF
+    "pytesseract",          # OCR 识别 PDF 图片中的文字
+    "pdf2image",            # PDF 转图片（OCR 预处理）
+    "pdfminer.six",         # 另一种 PDF 解析方式
+
+    # -------------------
+    # 🤖 自然语言处理 & 关键词提取
+    # -------------------
+    "nltk",                 # 自然语言处理库
+    "spacy",                # 高效的 NLP 处理
+    "yake",                 # 关键词提取
+    "textblob",             # 简单 NLP 处理
+    "transformers",         # 预训练 NLP 模型（如 BERT）
+    "sentence-transformers", # 嵌入模型（关键词聚类）
+    "scikit-learn",         # 机器学习（可用于情感分析）
+    "wordcloud",            # 词云可视化
+    "gensim",               # 主题建模（LDA）
+
+    # -------------------
+    # 📈 数据可视化
+    # -------------------
+    "matplotlib",           # 可视化库
+    "seaborn",              # 高级统计可视化
+    "altair",               # 快速可视化（Streamlit 支持）
+    "plotly",               # 交互式可视化
+    "dash",                 # 类似 Streamlit 的 Web 可视化
+
+    # -------------------
+    # 🕒 定时任务 & 并发
+    # -------------------
+    "apscheduler",          # 定时任务（可替代 cron）
+    "schedule",             # 轻量级定时任务
+    "celery",               # 分布式任务调度
+    "concurrent-log-handler", # 解决多线程日志问题
+
+    # -------------------
+    # 🚀 部署 & 打包支持
+    # -------------------
+    "gunicorn",             # 生产环境 WSGI 服务器
+    "docker",               # Docker SDK
+    "click",                # 命令行工具
+    "typer",                # 现代 CLI 框架
+
+    # -------------------
+    # 🛠️ 代码质量检查 & 测试
+    # -------------------
+    "black",                # 代码格式化
+    "flake8",               # 代码检查
+    "pytest",               # 单元测试
+    "pytest-asyncio",       # 测试异步代码
+    "pytest-mock",          # Mock 测试
+    "pytest-cov",           # 代码覆盖率检查
+    "requests-mock",        # Mock HTTP 请求
+    "httpx",                # 适用于 FastAPI 的 HTTP 客户端
+]
+
+[project.scripts]
+ift-csr-scraper = "ift_csr.scraper.csr_scraper:main"
+ift-csr-api = "ift_csr.api.fastapi_api:main"
+ift-csr-analysis = "ift_csr.api.analysis_pipeline:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
