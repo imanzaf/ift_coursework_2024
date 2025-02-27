@@ -1,6 +1,7 @@
 import io
 import json
 import requests
+import time
 from kafka import KafkaConsumer
 from minio import Minio
 from minio.error import S3Error
@@ -55,12 +56,15 @@ def connect_to_postgres():
         print(f"Failed to connect to PostgreSQL: {e}")
         raise
 
-# Download PDF file
+# Download PDF file with timeout handling
 def download_pdf(url):
     print(f"Downloading PDF from {url}...")
     try:
-        response = requests.get(url)
-        if response.status_code == 200:
+        start_time = time.time()
+        response = requests.get(url, timeout=60)
+        elapsed_time = time.time() - start_time
+
+        if response.status_code == 200 and elapsed_time <= 60:
             print(f"Successfully downloaded PDF from {url}")
             return response.content
         else:
@@ -116,8 +120,18 @@ def main():
                 # Download PDF file
                 pdf_data = download_pdf(url)
 
-                # Generate file name
-                file_name = f"{company_name}_{url.split('/')[-1]}"
+                # Fetch security and year from PostgreSQL
+                cursor.execute(
+                    "SELECT security, year FROM csr_reporting.company_reports WHERE report_url = %s",
+                    (url,)
+                )
+                result = cursor.fetchone()
+                if result:
+                    security, year = result
+                    file_name = f"{security}_{year}.pdf"
+                else:
+                    raise Exception(f"No matching record found for URL: {url}")
+
                 print(f"Generated file name: {file_name}")
 
                 # Upload to MinIO
@@ -133,6 +147,13 @@ def main():
                 print(f"Successfully updated minio_path for {file_name} in PostgreSQL")
             except Exception as e:
                 print(f"Error processing {url}: {e}")
+                # Record download failure in PostgreSQL
+                cursor.execute(
+                    "UPDATE csr_reporting.company_reports SET minio_path = %s WHERE report_url = %s",
+                    ("download_failed", url)
+                )
+                conn.commit()
+                print(f"Recorded download failure for {url} in PostgreSQL")
 
     cursor.close()
     conn.close()
