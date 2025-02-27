@@ -1,8 +1,6 @@
 import json
 import os
-
 from bson import ObjectId
-
 from modules.mongo_db import company_data as mongo
 from modules.minio import minio_script as minio
 from modules.crawler import crawler as crawler, sustainability_reports_beautifulsoup
