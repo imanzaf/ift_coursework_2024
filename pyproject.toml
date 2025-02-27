@@ -25,6 +25,7 @@ webdriver-manager = "*"
 pycryptodome = "^3.21.0"
 pymupdf = "^1.25.3"
 bs4 = "^0.0.2"
+bson = "^0.5.10"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "*"
