@@ -11,9 +11,11 @@ def connect_to_minio():
     """Connect to the MinIO server."""
     try:
         if is_running_in_docker():
-            minio_endpoint = "miniocw://miniocw:9000"
+            minio_endpoint = "miniocw:9000"
         else:
             minio_endpoint = "localhost:9000"
+
+        print(f"Connecting to MinIO at {minio_endpoint}")
         
         client = Minio(
             minio_endpoint,  # MinIO server endpoint
