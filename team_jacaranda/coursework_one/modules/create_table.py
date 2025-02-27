@@ -16,13 +16,13 @@ SELECT EXISTS (
     SELECT 1 
     FROM information_schema.tables 
     WHERE table_schema = 'csr_reporting' 
-    AND table_name = 'csr_reports'
+    AND table_name = 'company_reports'
 );
 """
 
 # SQL query to create a new table with foreign key constraint
 create_table_query = """
-CREATE TABLE csr_reporting.csr_reports (
+CREATE TABLE csr_reporting.company_reports (
     id SERIAL PRIMARY KEY,
     security TEXT,
     report_url VARCHAR(255),
