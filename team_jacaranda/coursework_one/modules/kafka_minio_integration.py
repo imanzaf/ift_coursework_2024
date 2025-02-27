@@ -120,15 +120,15 @@ def main():
                 # Download PDF file
                 pdf_data = download_pdf(url)
 
-                # Fetch security and year from PostgreSQL
+                # Fetch security and report_year from PostgreSQL
                 cursor.execute(
-                    "SELECT security, year FROM csr_reporting.company_reports WHERE report_url = %s",
+                    "SELECT security, report_year FROM csr_reporting.company_reports WHERE report_url = %s",
                     (url,)
                 )
                 result = cursor.fetchone()
                 if result:
-                    security, year = result
-                    file_name = f"{security}_{year}.pdf"
+                    security, report_year = result
+                    file_name = f"{security}_{report_year}.pdf"
                 else:
                     raise Exception(f"No matching record found for URL: {url}")
 
