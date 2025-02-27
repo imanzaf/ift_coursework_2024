@@ -10,9 +10,19 @@ db_config = {
     "port": 5439
 }
 
+# SQL query to check if the table exists
+check_table_exists_query = """
+SELECT EXISTS (
+    SELECT 1 
+    FROM information_schema.tables 
+    WHERE table_schema = 'csr_reporting' 
+    AND table_name = 'csr_reports'
+);
+"""
+
 # SQL query to create a new table with foreign key constraint
 create_table_query = """
-CREATE TABLE IF NOT EXISTS csr_reporting.company_reports (
+CREATE TABLE csr_reporting.csr_reports (
     id SERIAL PRIMARY KEY,
     security TEXT,
     report_url VARCHAR(255),
@@ -22,18 +32,25 @@ CREATE TABLE IF NOT EXISTS csr_reporting.company_reports (
 )
 """
 
-# Connect to PostgreSQL database and create new table
+# Connect to PostgreSQL database and create new table if it does not exist
 try:
     # Connect to the database
     conn = psycopg2.connect(**db_config)
     cursor = conn.cursor()
 
-    # Execute the SQL query to create the table
-    cursor.execute(create_table_query)
+    # Check if the table exists
+    cursor.execute(check_table_exists_query)
+    table_exists = cursor.fetchone()[0]
 
-    # Commit the transaction
-    conn.commit()
-    print("Table csr_reporting.csr_reports created successfully (if not exists) with foreign key constraint!")
+    if table_exists:
+        print("Table csr_reporting.csr_reports already exists.")
+    else:
+        # Execute the SQL query to create the table
+        cursor.execute(create_table_query)
+
+        # Commit the transaction
+        conn.commit()
+        print("Table csr_reporting.csr_reports created successfully (if not exists) with foreign key constraint!")
 except Exception as e:
     print(f"An error occurred: {e}")
 finally:
