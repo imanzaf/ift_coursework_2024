@@ -9,7 +9,7 @@ script_dir = Path(__file__).resolve().parent
 print(f"Script directory: {script_dir}")
 
 # Construct the path to the data file
-json_file_path = script_dir / "../../../team_jacaranda/coursework_one/static/company_pdf_links.json"
+json_file_path = script_dir / "../../../team_jacaranda/coursework_one/modules/db/company_pdf_links.json"
 # Resolve the path (remove redundant ../)
 json_file_path = json_file_path.resolve()
 print(f"JSON file path: {json_file_path}")
