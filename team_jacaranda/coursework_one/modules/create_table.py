@@ -10,14 +10,15 @@ db_config = {
     "port": 5439
 }
 
-# SQL query to create a new table
+# SQL query to create a new table with foreign key constraint
 create_table_query = """
 CREATE TABLE IF NOT EXISTS csr_reporting.csr_reports (
     id SERIAL PRIMARY KEY,
     security TEXT,
     report_url VARCHAR(255),
     report_year INTEGER,
-    minio_path VARCHAR(255)
+    minio_path VARCHAR(255),
+    FOREIGN KEY (security) REFERENCES csr_reporting.company_static (security)
 )
 """
 
@@ -32,7 +33,7 @@ try:
 
     # Commit the transaction
     conn.commit()
-    print("Table csr_reporting.csr_reports created successfully (if not exists)!")
+    print("Table csr_reporting.csr_reports created successfully (if not exists) with foreign key constraint!")
 except Exception as e:
     print(f"An error occurred: {e}")
 finally:
