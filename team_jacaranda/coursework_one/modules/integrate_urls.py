@@ -24,6 +24,23 @@ db_config = {
     "port": 5439
 }
 
+# Year extraction function with improved regex
+def extract_year(url):
+    # List of regex patterns to match different year formats in URLs
+    patterns = [
+        r"(\d{4})\.pdf$",                  # Matches URLs ending with "2022.pdf"
+        r"_(\d{4})_",                      # Matches URLs with "_2022_" in the middle
+        r"(\d{4})/[^/]+\.pdf$",            # Matches URLs with "2022/" before the file name
+        r"([1-2][0-9]{3})"                 # General year pattern in the URL
+    ]
+
+    for pattern in patterns:
+        match = re.search(pattern, url)
+        if match:
+            return int(match.group(1))
+
+    return None
+
 # Connect to the PostgreSQL database
 try:
     conn = psycopg2.connect(**db_config)
@@ -39,8 +56,7 @@ try:
             # If the company exists, insert URL data
             for url in urls:
                 # Extract the year from the URL
-                year_match = re.search(r"(\d{4})\.pdf$", url)
-                report_year = int(year_match.group(1)) if year_match else None
+                report_year = extract_year(url)
 
                 # Insert data into the company_reports table
                 insert_query = """
