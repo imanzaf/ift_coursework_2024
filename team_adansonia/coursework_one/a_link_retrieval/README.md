@@ -56,7 +56,7 @@ The Link Retrieval pipeline is responsible for fetching and processing web links
    poetry install
    ```
 
-2. **Copy the `.env.template` file to `.env` and update the `ROOT_DIR` to your local project directory:**
+2. **Copy the `.env.template` file to `.env` then update the `ROOT_DIR_LOCAL` to your local project directory:**
 
    ```bash
    cp .env.template .env
@@ -68,11 +68,7 @@ The Link Retrieval pipeline is responsible for fetching and processing web links
    docker-compose up --build
    ```
 
-4. **Run the main script:**
-
-   ```bash
-   poetry run python team_adansonia/coursework_one/a_link_retrieval/main.py
-   ```
+When the containers are running, all the scripts will be scheduled automatically by Jenkins. So it will start extracting past and current ESG reports at regular intervals. **Customising the job schedule** can be done by accessing the Jenkins dashboard at `http://localhost:9999`.
 
 ### Running queries
 
