@@ -4,20 +4,21 @@ This is the main repository for the coursework of the module Big Data in Quantit
 
 ## Project Structure
 
-# Team Adansonia Project
+## Team Adansonia Project
 
+```bash
 team_adansonia
 ├── coursework_1
 │   ├── scheduler
-│   │   ├── _init_.py
+│   │   ├── __init__.py
 │   │   └── scheduler.py
 │   ├── link_retrieval
 │   │   ├── modules
-│   │   ├──_init_.py
+│   │   │   ├── __init__.py
 │   │   │   ├── crawler.py
 │   │   │   ├── minio.py
 │   │   │   ├── mongodb.py
-│   │   │   └──validation.py
+│   │   │   └── validation.py
 │   │   └── tests
 │   │      ├── test_main.py
 │   │      ├── test_crawler.py
@@ -28,10 +29,9 @@ team_adansonia
 ├── pyproject.toml
 ├── README.md
 └── poetry.lock
+```
 
-
-
-This project consists of two main pipelines: Scheduler and Link Retrieval. Each pipeline has its own set of modules and functionalities.
+This project consists of two main pipelines: **Scheduler** and **Link Retrieval**. Each pipeline has its own set of modules and functionalities.
 
 ## Pipelines
 
@@ -40,66 +40,85 @@ The Scheduler pipeline is responsible for scheduling and managing tasks. It ensu
 
 ### 2. Link Retrieval
 The Link Retrieval pipeline is responsible for fetching and processing web links. It consists of the following modules:
-•⁠  ⁠*Crawler*: Fetches web pages and extracts links.
-•⁠  ⁠*Minio*: Handles storage of crawled data using Minio.
-•⁠  ⁠*MongoDB*: Manages database operations with MongoDB.
-•⁠  ⁠*Validation*: Ensures data integrity and correctness.
+
+- **Crawler**: Fetches web pages and extracts links.
+- **Minio**: Handles storage of crawled data using Minio.
+- **MongoDB**: Manages database operations with MongoDB.
+- **Validation**: Ensures data integrity and correctness.
 
 ## Instructions
 
 ### Running the Code
-To run the entire project, execute the following command:
 
-1.⁠ ⁠Install dependencies using Poetry:
-    ⁠ sh
-    poetry install
-     ⁠
+1. **Install dependencies using Poetry:**
 
-2.⁠ ⁠Copy the [.env.template] file to a [.env] and update the ⁠ ROOT_DIR ⁠ to your local project directory:
-    ⁠ sh
-    cp .env.template .env
-     ⁠
+   ```bash
+   poetry install
+   ```
 
-3.⁠ ⁠Build and run the project using Docker Compose:
-    ⁠ sh
-    docker-compose up --build
+2. **Copy the `.env.template` file to `.env` and update the `ROOT_DIR` to your local project directory:**
 
-4. Run Main
- ⁠bash
-poetry run python team_adansonia/coursework_one/a_link_retrieval/main.py
+   ```bash
+   cp .env.template .env
+   ```
 
+3. **Build and run the project using Docker Compose:**
 
+   ```bash
+   docker-compose up --build
+   ```
 
-⁠ ### Running queries
+4. **Run the main script:**
+
+   ```bash
+   poetry run python team_adansonia/coursework_one/a_link_retrieval/main.py
+   ```
+
+### Running queries
+
 Please run the command below and follow the terminal instructions:
- ⁠bash
+
+```bash
 poetry run python team_adansonia/coursework_one/a_link_retrieval/modules/mongo_db/queries.py
-
-
-⁠ Please run the command below and follow the terminal instructions:
+```
 
 ### Running Tests
-To run the tests for the entire project, use the following command:
- ⁠bash
+
+To run the tests for the entire project, use:
+
+```bash
 poetry run pytest
-
-
-⁠ ### Running Bandit
-To run Bandit for security analysis on the entire project, use the following command:
- ⁠bash
-poetry run bandit -r .
-
-
-⁠ ### Using Poetry
-Poetry is used for dependency management and packaging. To install dependencies, run:
- ⁠bash
-poetry install
-
-⁠ To add a new dependency, use:
- ⁠bash
-poetry add <package_name>
-
-⁠ To update dependencies, run:
- ⁠bash
-poetry update
 ```
+
+### Running Bandit
+
+To run Bandit for security analysis on the entire project, use:
+
+```bash
+poetry run bandit -r .
+```
+
+### Using Poetry
+
+Poetry is used for dependency management and packaging.
+
+- To install dependencies, run:
+
+  ```bash
+  poetry install
+  ```
+
+- To add a new dependency, use:
+
+  ```bash
+  poetry add <package_name>
+  ```
+
+- To update dependencies, run:
+
+  ```bash
+  poetry update
+  ```
+
+
+
