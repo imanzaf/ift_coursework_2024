@@ -5,7 +5,12 @@ services:
       container_name: mongo_db_cw
       image: mongo:latest
       ports:
-        - 27020:27017
+        - "27017:27017"
+      healthcheck:
+        test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+        interval: 10s
+        timeout: 5s
+        retries: 5
     postgres_db:
         container_name: postgres_db_cw
         image: postgres:10.5
@@ -52,20 +57,21 @@ services:
     miniocw:
       image: minio/minio
       container_name: miniocw
-      networks:
-        iceberg_net:
       environment:
         - MINIO_ROOT_USER=ift_bigdata
         - MINIO_ROOT_PASSWORD=minio_password
         - MINIO_DOMAIN=miniocw
       ports:
-        - 9002:9000
-
+        - "9002:9000"
+        - "9001:9001"
       command: ["server", "/data", "--console-address", ":9001"]
+      healthcheck:
+        test: [ "CMD", "curl", "-f", "http://localhost:9001/minio/health/live" ]
+        interval: 10s
+        timeout: 5s
+        retries: 5
     minio_client_cw:
       container_name: minio_client_cw
-      networks:
-        iceberg_net:
       depends_on:
         - miniocw
       image: minio/mc
@@ -76,29 +82,48 @@ services:
       entrypoint: >
         /bin/bash -c "
         until (/usr/bin/mc config host add minio http://miniocw:9000 ift_bigdata minio_password) do echo '...waiting...' && sleep 1; done;
-        sleep 10 && /usr/bin/mc rm -r --force minio/csreport;
-        sleep 10 && /usr/bin/mc mb minio/csreport;
-        mc anonymous set public minio/csreport;
+        sleep 10 && /usr/bin/mc rm -r --force minio/csr-reports1;
+        sleep 10 && /usr/bin/mc mb minio/csr-reports1;
+        mc anonymous set public minio/csr-reports1;
         tail -f /dev/null
         "
     jenkins:
-      image: jenkins/jenkins:lts
-      container_name: jenkins_cw
+      build:
+        context: ./team_sakura/coursework_one  # Specify the directory where `Dockerfile_Jenkins` is located
+        dockerfile: Dockerfile_Jenkins  # Use a custom Dockerfile name
+      container_name: jenkins
       restart: always
       user: root
       ports:
-        - "8080:8080"
-        - "50010:50010"
+        - "8081:8080"
+        - "50001:50000"
       volumes:
-        - ./jenkins_home:/var/jenkins_home
+        - jenkins_home:/var/jenkins_home
         - /var/run/docker.sock:/var/run/docker.sock
-      environment:
-        - JENKINS_USER=admin
-        - JENKINS_PASSWORD=admin
+        - ./jenkins_home:/var/jenkins_home
+
+    pipeline_runner:
+        build:
+          context: ./team_sakura/coursework_one
+          dockerfile: Dockerfile_pipeline                # Use `Dockerfile` to build the image
+        container_name: pipeline_runner
+        restart: unless-stopped
+        volumes:
+          - ./team_sakura/coursework_one:/app    # Mount the code directory
+          - ./000.Database/SQL:/app/000.Database/SQL   # Ensure the database directory is accessible
+          - ./team_sakura/coursework_one/a_pipeline/config:/app/a_pipeline/config  # Ensure the config directory is accessible
+          - ./team_sakura/coursework_one/a_pipeline/config/conf.yaml:/app/a_pipeline/config/conf.yaml  # Mount conf.yaml file
+        environment:
+          - CONF_PATH=./a_pipeline/config/conf.yaml
+        working_dir: /app
+        command: tail -f /dev/null  # Keep the container running
+        depends_on:
+          mongo_db:
+            condition: service_healthy
+          miniocw:
+            condition: service_healthy
 
 
+volumes:
+    jenkins_home:
 
-
-networks:
-  iceberg_net:
-    driver: bridge

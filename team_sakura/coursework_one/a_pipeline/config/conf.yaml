@@ -3,13 +3,13 @@ google_api:
   search_engine_id: "${GOOGLE_SEARCH_ENGINE_ID}"
 
 database:
-  sqlite_path: "/Users/estheragossa/PycharmProjects/ift_coursework_2024_final//000.Database/SQL/Equity.db"
-  mongo_uri: "mongodb://localhost:27020/"
+  sqlite_path: "./000.Database/SQL/Equity.db"
+  mongo_uri: "mongo_db_cw:27017"
   mongo_db: "csr_reports_db2"
   mongo_collection: "reports"
 
 minio:
-  endpoint: "localhost:9002"
+  endpoint: "localhost:9000"
   access_key: "ift_bigdata"
   secret_key: "minio_password"
   bucket_name: "csr-reports1"
