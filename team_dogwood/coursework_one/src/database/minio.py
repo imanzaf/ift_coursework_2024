@@ -1,7 +1,3 @@
-"""
-Methods for interacting with minio database.
-"""
-
 import os
 import sys
 from datetime import timedelta
@@ -17,14 +13,13 @@ from config.db import database_settings
 
 
 class MinioFileSystem(MinioFileSystemRepo, BaseModel):
-    """
-    Overwrite file read and file write methods in MinioFileSystemRepo to add functionality to process pdf files.
+    """Overwrite file read and file write methods in MinioFileSystemRepo to add functionality to process PDF files.
 
-    Useful methods from parent class:
-        - list_dir
-        - list_files
-        - dir_exists
-        - file_exists
+    Attributes:
+        bucket_name (str): The name of the MinIO bucket.
+        user (str): The username for MinIO.
+        password (str): The password for MinIO.
+        endpoint_url (str): The endpoint URL used to connect to MinIO, consisting of the MinIO host address and port.
     """
 
     bucket_name: str = database_settings.MINIO_BUCKET_NAME
@@ -34,8 +29,10 @@ class MinioFileSystem(MinioFileSystemRepo, BaseModel):
 
     @property
     def client(self) -> Minio:
-        """
-        Initialize Minio Client.
+        """Initializes and returns a Minio client.
+
+        Returns:
+            Minio: A Minio client instance.
         """
         minio_client = Minio(
             self.endpoint_url,
@@ -46,19 +43,27 @@ class MinioFileSystem(MinioFileSystemRepo, BaseModel):
         return minio_client
 
     def create_bucket(self, bucket_name: str):
-        """
-        Ensure the bucket exists. Creates it if it doesn't exist.
+        """Ensures the bucket exists. Creates it if it doesn't exist.
+
+        Args:
+            bucket_name (str): The name of the MinIO bucket.
+            
+        Example:
+            >>> minio = MinioFileSystem()
+            >>> minio.create_bucket("my-bucket")
+            # Creates a bucket named "my-bucket" if it doesn't exist.
         """
         if not self.client.bucket_exists(bucket_name):
             self.client.make_bucket(bucket_name)
 
     def list_files_by_company(self, company_id):
-        """
-        List all files for a specific company by prefix 'company_id/'.
+        """Lists all files for a specific company by prefix 'company_id/'.
 
-        :param company_id: The company ID (integer or string).
-        :param bucket_name: MinIO bucket name.
-        :return: A list of object names belonging to that company's folder.
+        Args:
+            company_id (str or int): The company ID.
+
+        Returns:
+            list: A list of object names belonging to that company's folder.
         """
         prefix = f"{company_id}/"
         objects = self.client.list_objects(
@@ -66,15 +71,17 @@ class MinioFileSystem(MinioFileSystemRepo, BaseModel):
         )
         return [obj.object_name for obj in objects]
 
-    def view_pdf(self, object_name: str, expiry_hours=1):
-        """
-        Generate a presigned URL to view the PDF in a web browser.
+    def view_pdf(self, object_name: str, expiry_hours: int = 1):
+        """Generates a presigned URL to view the PDF in a web browser.
+
         Users can open the link in their browser without explicitly downloading.
 
-        :param object_name: The MinIO path (e.g. "123/2024/report.pdf").
-        :param bucket_name: MinIO bucket name.
-        :param expiry_hours: The expiry time for the presigned URL.
-        :return: A presigned URL string.
+        Args:
+            object_name (str): The MinIO path (e.g., "123/2024/report.pdf").
+            expiry_hours (int, optional): The expiry time for the presigned URL in hours. Defaults to 1.
+
+        Returns:
+            str: A presigned URL string. Returns None if an error occurs.
         """
         try:
             url = self.client.presigned_get_object(
@@ -86,33 +93,33 @@ class MinioFileSystem(MinioFileSystemRepo, BaseModel):
             return None
 
     def download_file(self, file_name: str, dest_path: str):
-        """
-        Download a file from MinIO to a local path.
+        """Downloads a file from MinIO to a local path.
 
-        :param file_name: Name of the file in the bucket (same as 'upload_file').
-        :param dest_path: Local path to save the file (e.g., "./downloaded.pdf").
-        :param bucket_name: MinIO bucket name.
+        Args:
+            file_name (str): The name of the file in the bucket.
+            dest_path (str): The local path to save the file (e.g., "./downloaded.pdf").
         """
         self.client.fget_object(self.bucket_name, file_name, dest_path)
 
     def upload_pdf(self, local_file_path: str, company_id: str, report_year: str):
-        """
-        Writes (uploads) a PDF into a subfolder structure: company_id/year/filename.pdf.
+        """Uploads a PDF into a subfolder structure: company_id/year/filename.pdf.
 
-        :param local_file_path: Path to the local PDF file.
-        :param company_id: The ID of the company for which the PDF is being uploaded.
-        :param report_year: The year of the CSR report.
-        :param bucket_name: MinIO bucket name.
-        :return: The object name (MinIO path), e.g. "123/2024/report.pdf"
+        Args:
+            local_file_path (str): The path to the local PDF file.
+            company_id (str): The ID of the company for which the PDF is being uploaded.
+            report_year (str): The year of the CSR report.
+
+        Returns:
+            str: The object name (MinIO path), e.g., "123/2024/report.pdf".
         """
         self.create_bucket(self.bucket_name)
 
         # Derive a file name from the local file path (e.g., "report.pdf")
         file_name = os.path.basename(local_file_path)
-        # Construct the object name with subfolders: e.g. "123/2024/report.pdf"
+        # Construct the object name with subfolders: e.g., "123/2024/report.pdf"
         object_name = f"{company_id}/{report_year}/{file_name}"
 
-        # upload object
+        # Upload object
         self.client.fput_object(
             bucket_name=self.bucket_name,
             object_name=object_name,
@@ -124,19 +131,22 @@ class MinioFileSystem(MinioFileSystemRepo, BaseModel):
     def write_pdf_bytes(
         self, pdf_bytes: bytes, company_id: str, report_year: str, file_name: str
     ):
-        """
-        Writes (uploads) a PDF into a subfolder structure: company_id/year/filename.pdf.
+        """Uploads a PDF (as bytes) into a subfolder structure: company_id/year/filename.pdf.
 
-        :param pdf_bytes: The PDF file as bytes.
-        :param company_id: The ID of the company for which the PDF is being uploaded.
-        :param report_year: The year of the CSR report.
-        :return: The object name (MinIO path), e.g. "123/2024/report.pdf"
+        Args:
+            pdf_bytes (bytes): The PDF file as bytes.
+            company_id (str): The ID of the company for which the PDF is being uploaded.
+            report_year (str): The year of the CSR report.
+            file_name (str): The name of the file to be saved.
+
+        Returns:
+            str: The object name (MinIO path), e.g., "123/2024/report.pdf".
         """
         self.create_bucket(self.bucket_name)
 
-        # Construct the object name with subfolders: e.g. "123/2024/report.pdf"
+        # Construct the object name with subfolders: e.g., "123/2024/report.pdf"
         object_name = f"{company_id}/{report_year}/{file_name}"
-        # upload object
+        # Upload object
         self.client.put_object(
             bucket_name=self.bucket_name,
             object_name=object_name,

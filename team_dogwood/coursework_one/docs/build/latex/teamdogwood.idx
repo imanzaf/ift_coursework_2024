@@ -1,0 +1,59 @@
+\indexentry{module@\spxentry{module}!src.data\_models.company@\spxentry{src.data\_models.company}|hyperpage}{8}
+\indexentry{src.data\_models.company@\spxentry{src.data\_models.company}!module@\spxentry{module}|hyperpage}{8}
+\indexentry{Company (class in src.data\_models.company)@\spxentry{Company}\spxextra{class in src.data\_models.company}|hyperpage}{8}
+\indexentry{ESGReport (class in src.data\_models.company)@\spxentry{ESGReport}\spxextra{class in src.data\_models.company}|hyperpage}{9}
+\indexentry{SearchResult (class in src.data\_models.company)@\spxentry{SearchResult}\spxextra{class in src.data\_models.company}|hyperpage}{9}
+\indexentry{module@\spxentry{module}!src.database.minio@\spxentry{src.database.minio}|hyperpage}{10}
+\indexentry{src.database.minio@\spxentry{src.database.minio}!module@\spxentry{module}|hyperpage}{10}
+\indexentry{MinioFileSystem (class in src.database.minio)@\spxentry{MinioFileSystem}\spxextra{class in src.database.minio}|hyperpage}{10}
+\indexentry{client (src.database.minio.MinioFileSystem property)@\spxentry{client}\spxextra{src.database.minio.MinioFileSystem property}|hyperpage}{10}
+\indexentry{create\_bucket() (src.database.minio.MinioFileSystem method)@\spxentry{create\_bucket()}\spxextra{src.database.minio.MinioFileSystem method}|hyperpage}{10}
+\indexentry{download\_file() (src.database.minio.MinioFileSystem method)@\spxentry{download\_file()}\spxextra{src.database.minio.MinioFileSystem method}|hyperpage}{10}
+\indexentry{list\_files\_by\_company() (src.database.minio.MinioFileSystem method)@\spxentry{list\_files\_by\_company()}\spxextra{src.database.minio.MinioFileSystem method}|hyperpage}{11}
+\indexentry{upload\_pdf() (src.database.minio.MinioFileSystem method)@\spxentry{upload\_pdf()}\spxextra{src.database.minio.MinioFileSystem method}|hyperpage}{11}
+\indexentry{view\_pdf() (src.database.minio.MinioFileSystem method)@\spxentry{view\_pdf()}\spxextra{src.database.minio.MinioFileSystem method}|hyperpage}{11}
+\indexentry{write\_pdf\_bytes() (src.database.minio.MinioFileSystem method)@\spxentry{write\_pdf\_bytes()}\spxextra{src.database.minio.MinioFileSystem method}|hyperpage}{11}
+\indexentry{module@\spxentry{module}!src.database.postgres@\spxentry{src.database.postgres}|hyperpage}{12}
+\indexentry{src.database.postgres@\spxentry{src.database.postgres}!module@\spxentry{module}|hyperpage}{12}
+\indexentry{PostgreSQLDB (class in src.database.postgres)@\spxentry{PostgreSQLDB}\spxextra{class in src.database.postgres}|hyperpage}{12}
+\indexentry{\_\_enter\_\_() (src.database.postgres.PostgreSQLDB method)@\spxentry{\_\_enter\_\_()}\spxextra{src.database.postgres.PostgreSQLDB method}|hyperpage}{12}
+\indexentry{\_\_exit\_\_() (src.database.postgres.PostgreSQLDB method)@\spxentry{\_\_exit\_\_()}\spxextra{src.database.postgres.PostgreSQLDB method}|hyperpage}{12}
+\indexentry{\_conn\_postgres() (src.database.postgres.PostgreSQLDB static method)@\spxentry{\_conn\_postgres()}\spxextra{src.database.postgres.PostgreSQLDB static method}|hyperpage}{13}
+\indexentry{\_conn\_postgres\_psycopg2() (src.database.postgres.PostgreSQLDB static method)@\spxentry{\_conn\_postgres\_psycopg2()}\spxextra{src.database.postgres.PostgreSQLDB static method}|hyperpage}{13}
+\indexentry{delete\_csr\_report() (src.database.postgres.PostgreSQLDB method)@\spxentry{delete\_csr\_report()}\spxextra{src.database.postgres.PostgreSQLDB method}|hyperpage}{13}
+\indexentry{execute() (src.database.postgres.PostgreSQLDB method)@\spxentry{execute()}\spxextra{src.database.postgres.PostgreSQLDB method}|hyperpage}{13}
+\indexentry{get\_csr\_report\_by\_id() (src.database.postgres.PostgreSQLDB method)@\spxentry{get\_csr\_report\_by\_id()}\spxextra{src.database.postgres.PostgreSQLDB method}|hyperpage}{13}
+\indexentry{get\_csr\_reports\_by\_company() (src.database.postgres.PostgreSQLDB method)@\spxentry{get\_csr\_reports\_by\_company()}\spxextra{src.database.postgres.PostgreSQLDB method}|hyperpage}{13}
+\indexentry{session (src.database.postgres.PostgreSQLDB property)@\spxentry{session}\spxextra{src.database.postgres.PostgreSQLDB property}|hyperpage}{13}
+\indexentry{store\_csr\_report() (src.database.postgres.PostgreSQLDB method)@\spxentry{store\_csr\_report()}\spxextra{src.database.postgres.PostgreSQLDB method}|hyperpage}{13}
+\indexentry{update\_csr\_report() (src.database.postgres.PostgreSQLDB method)@\spxentry{update\_csr\_report()}\spxextra{src.database.postgres.PostgreSQLDB method}|hyperpage}{13}
+\indexentry{module@\spxentry{module}!src.esg\_reports.search@\spxentry{src.esg\_reports.search}|hyperpage}{14}
+\indexentry{src.esg\_reports.search@\spxentry{src.esg\_reports.search}!module@\spxentry{module}|hyperpage}{14}
+\indexentry{Search (class in src.esg\_reports.search)@\spxentry{Search}\spxextra{class in src.esg\_reports.search}|hyperpage}{14}
+\indexentry{\_format\_google\_results() (src.esg\_reports.search.Search static method)@\spxentry{\_format\_google\_results()}\spxextra{src.esg\_reports.search.Search static method}|hyperpage}{14}
+\indexentry{\_match\_score() (src.esg\_reports.search.Search static method)@\spxentry{\_match\_score()}\spxextra{src.esg\_reports.search.Search static method}|hyperpage}{14}
+\indexentry{google() (src.esg\_reports.search.Search method)@\spxentry{google()}\spxextra{src.esg\_reports.search.Search method}|hyperpage}{15}
+\indexentry{model\_post\_init() (src.esg\_reports.search.Search method)@\spxentry{model\_post\_init()}\spxextra{src.esg\_reports.search.Search method}|hyperpage}{15}
+\indexentry{sustainability\_reports\_dot\_com() (src.esg\_reports.search.Search method)@\spxentry{sustainability\_reports\_dot\_com()}\spxextra{src.esg\_reports.search.Search method}|hyperpage}{15}
+\indexentry{module@\spxentry{module}!src.esg\_reports.validate@\spxentry{src.esg\_reports.validate}|hyperpage}{16}
+\indexentry{src.esg\_reports.validate@\spxentry{src.esg\_reports.validate}!module@\spxentry{module}|hyperpage}{16}
+\indexentry{SearchResultValidator (class in src.esg\_reports.validate)@\spxentry{SearchResultValidator}\spxextra{class in src.esg\_reports.validate}|hyperpage}{16}
+\indexentry{\_company\_name\_in\_result() (src.esg\_reports.validate.SearchResultValidator method)@\spxentry{\_company\_name\_in\_result()}\spxextra{src.esg\_reports.validate.SearchResultValidator method}|hyperpage}{16}
+\indexentry{\_keywords\_in\_result() (src.esg\_reports.validate.SearchResultValidator method)@\spxentry{\_keywords\_in\_result()}\spxextra{src.esg\_reports.validate.SearchResultValidator method}|hyperpage}{17}
+\indexentry{\_year\_in\_result() (src.esg\_reports.validate.SearchResultValidator method)@\spxentry{\_year\_in\_result()}\spxextra{src.esg\_reports.validate.SearchResultValidator method}|hyperpage}{17}
+\indexentry{clean\_company\_name (src.esg\_reports.validate.SearchResultValidator property)@\spxentry{clean\_company\_name}\spxextra{src.esg\_reports.validate.SearchResultValidator property}|hyperpage}{18}
+\indexentry{model\_post\_init() (src.esg\_reports.validate.SearchResultValidator method)@\spxentry{model\_post\_init()}\spxextra{src.esg\_reports.validate.SearchResultValidator method}|hyperpage}{18}
+\indexentry{search\_results (src.esg\_reports.validate.SearchResultValidator attribute)@\spxentry{search\_results}\spxextra{src.esg\_reports.validate.SearchResultValidator attribute}|hyperpage}{18}
+\indexentry{validated\_results (src.esg\_reports.validate.SearchResultValidator property)@\spxentry{validated\_results}\spxextra{src.esg\_reports.validate.SearchResultValidator property}|hyperpage}{18}
+\indexentry{module@\spxentry{module}!src.utils.data@\spxentry{src.utils.data}|hyperpage}{19}
+\indexentry{src.utils.data@\spxentry{src.utils.data}!module@\spxentry{module}|hyperpage}{19}
+\indexentry{download\_pdf\_from\_urls() (in module src.utils.data)@\spxentry{download\_pdf\_from\_urls()}\spxextra{in module src.utils.data}|hyperpage}{19}
+\indexentry{module@\spxentry{module}!src.utils.search@\spxentry{src.utils.search}|hyperpage}{20}
+\indexentry{src.utils.search@\spxentry{src.utils.search}!module@\spxentry{module}|hyperpage}{20}
+\indexentry{clean\_company\_name() (in module src.utils.search)@\spxentry{clean\_company\_name()}\spxextra{in module src.utils.search}|hyperpage}{20}
+\indexentry{module@\spxentry{module}!config.db@\spxentry{config.db}|hyperpage}{21}
+\indexentry{config.db@\spxentry{config.db}!module@\spxentry{module}|hyperpage}{21}
+\indexentry{DataBaseSettings (class in config.db)@\spxentry{DataBaseSettings}\spxextra{class in config.db}|hyperpage}{21}
+\indexentry{module@\spxentry{module}!config.search@\spxentry{config.search}|hyperpage}{22}
+\indexentry{config.search@\spxentry{config.search}!module@\spxentry{module}|hyperpage}{22}
+\indexentry{SearchSettings (class in config.search)@\spxentry{SearchSettings}\spxextra{class in config.search}|hyperpage}{22}

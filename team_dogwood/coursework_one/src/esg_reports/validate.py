@@ -1,7 +1,3 @@
-"""
-Methods to validate that URLs retrieved from the Google API contains the correct data.
-"""
-
 import os
 import sys
 from datetime import datetime
@@ -17,18 +13,26 @@ from src.utils.search import clean_company_name
 
 
 class SearchResultValidator(BaseModel):
-    """
-    Validate the search results from google
+    """Validates search results from Google for ESG reports.
+
+    This class validates search results based on the presence of:
+    - The current or previous year.
+    - The company name.
+    - ESG-related keywords.
+
+    Attributes:
+        company (Company): The company to validate the search results for.
+        search_results (List[SearchResult]): The search results to validate.
     """
 
     company: Company = Field(
-        ..., description="The company to validate the search results for"
+        ..., description="The company to validate the search results for."
     )
     search_results: List[SearchResult] = Field(
-        ..., description="The search results to validate"
+        ..., description="The search results to validate."
     )
 
-    # set values for current and previous year
+    # Set values for current and previous year
     if (
         datetime.now().month < 4
     ):  # If the current month is less than April, the previous year's report is more likely to be available
@@ -56,19 +60,43 @@ class SearchResultValidator(BaseModel):
 
     @property
     def clean_company_name(self) -> str:
-        """
-        Clean the company name by removing legal suffixes and common articles.
+        """Cleans the company name by removing legal suffixes and common articles.
+
+        Returns:
+            str: The cleaned company name.
+
+        Example:
+            >>> company = Company(symbol="AAPL", security="Apple Inc.")
+            >>> validator = SearchResultValidator(company=company, search_results=[])
+            >>> print(validator.clean_company_name)
+            "Apple"
         """
         name = clean_company_name(self.company.security)
         return name
 
     @property
     def validated_results(self) -> List[ESGReport]:
-        """
-        Validate search results based on presence of year,company name and keywords.
+        """Validates search results based on the presence of year, company name, and keywords.
 
-        Returns
-            validated_results (list[ESGReport]): List of validated search results
+        Returns:
+            List[ESGReport]: A list of validated ESG reports.
+
+        Example:
+            >>> company = Company(symbol="AAPL", security="Apple Inc.")
+            >>> results = [
+            ...     SearchResult(
+            ...         title="Apple ESG Report 2023",
+            ...         metatag_title="Apple Inc. (AAPL) ESG Report 2023",
+            ...         author="Apple Inc.",
+            ...         link="https://www.apple.com/esg-report-2023/",
+            ...         snippet="ESG Report 2023",
+            ...     )
+            ... ]
+            >>> validator = SearchResultValidator(company=company, search_results=results)
+            >>> validated_results = validator.validated_results
+            >>> for result in validated_results:
+            ...     print(result.url, result.year)
+            "https://www.apple.com/esg-report-2023/" 2023
         """
         valid_results = []
         for result in self.search_results:
@@ -83,8 +111,24 @@ class SearchResultValidator(BaseModel):
         return valid_results
 
     def _year_in_result(self, result: SearchResult) -> Union[str, None]:
-        """
-        Check that current or previous year is in the title, snippet or link
+        """Checks if the current or previous year is in the title, snippet, or link.
+
+        Args:
+            result (SearchResult): The search result to validate.
+
+        Returns:
+            Union[str, None]: The year if found, otherwise None.
+
+        Example:
+            >>> result = SearchResult(
+            ...     title="Apple ESG Report 2023",
+            ...     snippet="ESG Report 2023",
+            ...     link="https://www.apple.com/esg-report-2023/",
+            ... )
+            >>> validator = SearchResultValidator(company=Company(symbol="AAPL", security="Apple Inc."), search_results=[])
+            >>> year = validator._year_in_result(result)
+            >>> print(year)
+            "2023"
         """
         if any(
             [
@@ -103,8 +147,25 @@ class SearchResultValidator(BaseModel):
         return None
 
     def _company_name_in_result(self, result: SearchResult) -> bool:
-        """
-        Check that the company name is in the author field, title, snippet, or link.
+        """Checks if the company name is in the author field, title, snippet, or link.
+
+        Args:
+            result (SearchResult): The search result to validate.
+
+        Returns:
+            bool: True if the company name is found, otherwise False.
+
+        Example:
+            >>> result = SearchResult(
+            ...     title="Apple ESG Report 2023",
+            ...     snippet="ESG Report 2023",
+            ...     link="https://www.apple.com/esg-report-2023/",
+            ...     author="Apple Inc.",
+            ... )
+            >>> validator = SearchResultValidator(company=Company(symbol="AAPL", security="Apple Inc."), search_results=[])
+            >>> is_valid = validator._company_name_in_result(result)
+            >>> print(is_valid)
+            True
         """
         if any(
             [
@@ -121,8 +182,24 @@ class SearchResultValidator(BaseModel):
         return False
 
     def _keywords_in_result(self, result: SearchResult) -> bool:
-        """
-        Check that ESG keywords are in the title, snippet or link.
+        """Checks if ESG keywords are in the title, snippet, or link.
+
+        Args:
+            result (SearchResult): The search result to validate.
+
+        Returns:
+            bool: True if ESG keywords are found, otherwise False.
+
+        Example:
+            >>> result = SearchResult(
+            ...     title="Apple ESG Report 2023",
+            ...     snippet="ESG Report 2023",
+            ...     link="https://www.apple.com/esg-report-2023/",
+            ... )
+            >>> validator = SearchResultValidator(company=Company(symbol="AAPL", security="Apple Inc."), search_results=[])
+            >>> has_keywords = validator._keywords_in_result(result)
+            >>> print(has_keywords)
+            True
         """
         if (
             any([keyword in result.title.lower() for keyword in self._esg_keywords])

@@ -18,6 +18,7 @@ Data Models Module
    :members:
    :show-inheritance:
    :undoc-members:
+   :exclude-members: model_config, country, esg_reports, gics_industry, gics_sector, region, security, symbol, url, year, author, link, metatag_title, snippet, title
 
    .. rubric:: **Overview**
 

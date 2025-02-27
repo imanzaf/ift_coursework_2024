@@ -1,7 +1,3 @@
-"""
-Search class for scraping ESG reports from various sources.
-"""
-
 # TODO - add method for returning older reports with a year param
 # if report not present, return None
 
@@ -31,15 +27,16 @@ from src.utils.search import clean_company_name
 
 
 class Search(BaseModel):
-    """
+    """Search class for scraping ESG reports from various sources.
+
     This class provides methods to search for and retrieve ESG (Environmental, Social, and Governance)
     reports for a given company using different sources:
 
-    1. Google Custom Search API - searches for PDF ESG reports
-    2. Sustainability Reports website - scrapes reports from responsibilityreports.com
+    1. Google Custom Search API - searches for PDF ESG reports.
+    2. Sustainability Reports website - scrapes reports from responsibilityreports.com.
 
-    Args:
-        company (Company): A Company object containing the company's metadata.
+    Attributes:
+        company (Company): The company to look for ESG reports for.
     """
 
     company: Company = Field(
@@ -58,16 +55,49 @@ class Search(BaseModel):
 
     @property
     def _google_search_query(self) -> str:
+        """Generates the Google search query for ESG reports.
+
+        Returns:
+            str: The search query string.
+
+        Example:
+            >>> search = Search(company=Company(symbol="AAPL", security="Apple Inc."))
+            >>> query = search._google_search_query
+            >>> print(query)
+            "Apple Inc. 2023 ESG report filetype:pdf"
+        """
         search_query = f"{self.company.security} {str(datetime.now().year)} ESG report filetype:pdf"
         return search_query
 
     @property
     def _sustainability_reports_request_url(self) -> str:
+        """Generates the URL for searching sustainability reports.
+
+        Returns:
+            str: The URL for the sustainability reports search.
+
+        Example:
+            >>> search = Search(company=Company(symbol="AAPL", security="Apple Inc."))
+            >>> url = search._sustainability_reports_request_url
+            >>> print(url)
+            "https://sustainabilityreports.com/Companies?search=Apple Inc."
+        """
         return f"{self._sustainability_reports_url}/Companies?search={self.company.security}"
 
     def google(self) -> Union[List[SearchResult], None]:
-        """
-        Uses Google API to scrape search results.
+        """Searches for ESG reports using the Google Custom Search API.
+
+        Returns:
+            Union[List[SearchResult], None]: A list of search results or None if no results are found.
+
+        Example:
+            >>> search = Search(company=Company(symbol="AAPL", security="Apple Inc."))
+            >>> results = search.google()
+            >>> if results:
+            ...     for result in results:
+            ...         print(result.title, result.link)
+            ... else:
+            ...     print("No results found.")
         """
         params = {
             "q": self._google_search_query,
@@ -100,14 +130,20 @@ class Search(BaseModel):
 
     @staticmethod
     def _format_google_results(search_results) -> list[SearchResult]:
-        """
-        Cleans up search results to only keep relevant information.
+        """Formats Google search results into a list of SearchResult objects.
 
         Args:
             search_results (list): A list of search results from the Google API.
 
         Returns:
-            formatted_results (list[SearchResult]): list of parsed search results.
+            list[SearchResult]: A list of formatted search results.
+
+        Example:
+            >>> search = Search(company=Company(symbol="AAPL", security="Apple Inc."))
+            >>> raw_results = [{"title": "Report 2023", "link": "http://example.com"}]
+            >>> formatted_results = search._format_google_results(raw_results)
+            >>> print(formatted_results)
+            [SearchResult(title="Report 2023", link="http://example.com")]
         """
         formatted_results = []
         for result in search_results:
@@ -127,8 +163,18 @@ class Search(BaseModel):
         return formatted_results
 
     def sustainability_reports_dot_com(self) -> ESGReport:
-        """
-        Search for sustainability reports on sustainabilityreports.com
+        """Searches for sustainability reports on sustainabilityreports.com.
+
+        Returns:
+            ESGReport: An ESGReport object containing the report URL and year, or None if no report is found.
+
+        Example:
+            >>> search = Search(company=Company(symbol="AAPL", security="Apple Inc."))
+            >>> report = search.sustainability_reports_dot_com()
+            >>> if report.url:
+            ...     print(f"Report URL: {report.url}, Year: {report.year}")
+            ... else:
+            ...     print("No report found.")
         """
         # strip company name
         company_name = self.company.security.strip()
@@ -199,7 +245,10 @@ class Search(BaseModel):
                                 "Search term shortened to the minimum but still returns 21 <a> tags, returning none."
                             )
                             driver.quit()
-                            return (company_name, "none", "none")
+                            return ESGReport(
+                                url=None,
+                                year=None,
+                            )
                     else:
                         break
             elif count == 22:
@@ -276,8 +325,20 @@ class Search(BaseModel):
 
     @staticmethod
     def _match_score(text: str, search_term: str) -> int:
-        """
-        Calculate match score based on the number of matching words between the text and the search term.
+        """Calculates a match score between the text and the search term.
+
+        Args:
+            text (str): The text to match against.
+            search_term (str): The search term to match.
+
+        Returns:
+            int: The match score (number of matching words).
+
+        Example:
+            >>> search = Search(company=Company(symbol="AAPL", security="Apple Inc."))
+            >>> score = search._match_score("Apple Inc. Report 2023", "Apple Inc.")
+            >>> print(score)
+            2
         """
         text_words = set(text.lower().split())
         term_words = set(search_term.lower().split())

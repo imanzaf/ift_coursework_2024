@@ -1,4 +1,4 @@
-Configuration
+config
 =============
 
 .. rubric:: **Overview**
@@ -17,6 +17,7 @@ Database Settings Module
    :members:
    :show-inheritance:
    :undoc-members:
+   :exclude-members: MINIO_BUCKET_NAME, MINIO_HOST, MINIO_PASSWORD, MINIO_PORT, MINIO_USERNAME, POSTGRES_DB_NAME, POSTGRES_DRIVER, POSTGRES_HOST, POSTGRES_PASSWORD, POSTGRES_PORT, POSTGRES_USERNAME, model_config
 
 Search Settings Module
 ----------------------
@@ -25,3 +26,4 @@ Search Settings Module
    :members:
    :show-inheritance:
    :undoc-members:
+   :exclude-members: GOOGLE_API_KEY, GOOGLE_API_URL, GOOGLE_ENGINE_ID, SUSTAINABILITY_REPORTS_API_URL, model_config
