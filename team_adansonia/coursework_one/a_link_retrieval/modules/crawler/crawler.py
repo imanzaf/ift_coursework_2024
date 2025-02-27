@@ -34,7 +34,7 @@ def init_driver():
     print("init driver() entered")
     """Initialize Selenium WebDriver"""
     options = webdriver.ChromeOptions()
-    print('still not fucking up here')
+    print('setting driver options')
     options.add_argument('--headless')
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     options.add_argument('--disable-gpu')
@@ -43,7 +43,7 @@ def init_driver():
     options.add_argument('--log-level=3')
     options.add_argument('--disable-blink-features=AutomationControlled') 
     options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
-    print('still not fucking up here')
+    print('driver options set')
 
     if not is_running_in_docker():
         print('running d = webdriver.Chrome(options=options)')
