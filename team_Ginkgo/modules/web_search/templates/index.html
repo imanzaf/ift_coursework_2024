@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSR Report Lookup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        .result-container {
+            margin-top: 20px;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>CSR Report Lookup</h2>
+    <form method="post">
+        Company Name / Stock Code: <input type="text" name="company" required>
+        <br><br>
+        Year: <input type="number" name="year" min="1900" max="2100" required>
+        <br><br>
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="result-container">
+        {% if result %}
+            {% if result is iterable and result is not string %}
+                <h3 class="success">Search Results:</h3>
+                <ul>
+                    {% for item in result %}
+                        <li>
+                            <p>✅ Company: <strong>{{ item.company_name }}</strong> ({{ item.symbol }})</p>
+                            <p>🌍 Report URL: <a href="{{ item.report_url }}" target="_blank">{{ item.report_url }}</a></p>
+                            <p>📂 MinIO Storage Path: <code>{{ item.minio_path }}</code></p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="error">⚠️ {{ result.message }}</p>
+            {% endif %}
+        {% endif %}
+    </div>
+
+</body>
+</html>
