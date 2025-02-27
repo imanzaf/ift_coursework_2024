@@ -87,6 +87,8 @@ pipeline {
                     sh "/root/.local/bin/poetry env activate"
                     // Run the main script using Poetry
                     echo "Running the main script..."
+                    sh "/root/.local/bin/poetry run python pipelines/retrieve_store_url/main.py"
+                    echo "URL retrieval completed successfully!"
                 }
             }
         }
@@ -98,6 +100,8 @@ pipeline {
                     sh "/root/.local/bin/poetry env activate"
                     // Run the main script using Poetry
                     echo "Running the main script..."
+                    sh "/root/.local/bin/poetry run python pipelines/retrieve_store_pdf/main.py"
+                    echo "PDF storage completed successfully!"
                 }
             }
         }
