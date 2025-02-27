@@ -1,97 +1,56 @@
 """
+retrieve_store_pdf/main.py
 
-This script retrieves CSR (Corporate Social Responsibility) report URLs from
-a PostgreSQL database (table: csr_reporting.company_csr_reports), then
-immediately downloads and stores the PDFs in MinIO—bypassing any local disk usage.
-
-Usage:
-
-Implementation Overview:
-    1) We query the 'company_csr_reports' table for all rows matching the specified company ID.
-    2) For each row, we:
-       - Read the PDF URL from 'report_url'
-       - Stream-download the PDF in memory (requests + BytesIO)
-       - Upload the PDF bytes directly to MinIO (via minio_utils.MinioFileSystem)
-    3) If the PDF is unavailable or the URL fails, the script logs a warning and continues with the next row.
-
-Note:
-    - "retrieve_store_url" script, it likely populates
-      'csr_reporting.company_csr_reports' with the relevant 'report_url' fields.
-    - We need to ensure that script uses the same table and columns.
-
+Retrieves each row from csr_reporting.company_csr_reports and downloads/stores
+the PDF in MinIO. Bypasses local storage by streaming to memory.
 """
 
+import os
+import sys
 import io
 import requests
 from typing import List
 from loguru import logger
 
-# Ensure correct references to your DB and MinIO modules
+sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
+
 from src.database.postgres import PostgreSQLDB
 from src.database.minio_utils import MinioFileSystem
 
 
-def fetch_csr_reports_by_company(company_id: int) -> List[dict]:
+def fetch_csr_reports(symbol: str) -> List[dict]:
     """
-    Fetch all CSR report metadata (URLs, years, etc.) for a given company ID
-    from our PostgreSQL database.
-
-    Args:
-        company_id (int): The unique ID of the company in the DB.
-
-    Returns:
-        List[dict]: Each dict includes fields like 'report_url' and 'report_year'.
-                    Example: [{'report_url': 'https://example.com/report.pdf',
-                               'report_year': 2024,
-                               ...}, ...]
+    Query all rows from csr_reporting.company_csr_reports for a single symbol.
+    Returns list of dicts: {symbol, report_url, report_year, ...}
     """
     with PostgreSQLDB() as db:
-        results = db.get_csr_reports_by_company(company_id)
-        logger.info(f"Found {len(results)} report(s) for company={company_id}")
+        results = db.get_csr_reports_by_symbol(symbol)
+        logger.info(f"[{symbol}] Found {len(results)} rows in company_csr_reports.")
     return results
 
 
-def retrieve_and_store_pdf(company_id: int) -> None:
+def retrieve_and_store_pdf(symbol: str):
     """
-    Main pipeline function that:
-      1) Queries the DB for all CSR URLs for 'company_id'.
-      2) Downloads each PDF in-memory.
-      3) Uploads each PDF to MinIO (via MinioFileSystem) without saving to disk.
-
-    Args:
-        company_id (int): The DB ID of the company whose CSR reports we want to process.
-
-    Workflow Steps:
-        a) 'fetch_csr_reports_by_company(company_id)'
-        b) For each row, do requests.get(...) chunked into BytesIO
-        c) 'minio_fs.write_pdf_bytes(...)' with the in-memory PDF
-
-    Potential Edge Cases:
-        - If 'report_url' is invalid or the server returns an error code, we log a warning and skip it.
-        - If the DB has no records for that company, the script logs a warning and exits gracefully.
+    Downloads all known CSR PDFs from 'csr_reporting.company_csr_reports' for a given symbol,
+    and stores them in MinIO under {symbol}/{report_year}/pdf_name.
     """
-    # 1. Fetch all relevant DB records
-    records = fetch_csr_reports_by_company(company_id)
+    records = fetch_csr_reports(symbol)
     if not records:
-        logger.warning(f"No CSR report URLs found for company_id={company_id}. Exiting.")
+        logger.warning(f"No CSR report URLs found for symbol={symbol}. Skipping.")
         return
 
-    # 2. Initialize the MinIO filesystem wrapper
     minio_fs = MinioFileSystem()
 
-    for rec in records:
-        report_url = rec["report_url"]
-        report_year = str(rec["report_year"])  # e.g., '2024'
-
-        # Derive a filename from the URL or fallback
+    for row in records:
+        report_url = row["report_url"]
+        report_year = str(row["report_year"])
         file_name = report_url.split("/")[-1] or "report.pdf"
 
         logger.info(f"Attempting to download PDF from: {report_url}")
         try:
-            # Stream-download to in-memory buffer
             response = requests.get(report_url, stream=True, timeout=15)
             if response.status_code != 200:
-                logger.warning(f"Failed to download {report_url} (status={response.status_code})")
+                logger.warning(f"Failed to download {report_url} [status={response.status_code}]")
                 continue
 
             pdf_buffer = io.BytesIO()
@@ -99,7 +58,6 @@ def retrieve_and_store_pdf(company_id: int) -> None:
                 if chunk:
                     pdf_buffer.write(chunk)
 
-            # Reset buffer pointer and read
             pdf_buffer.seek(0)
             pdf_data = pdf_buffer.read()
 
@@ -107,12 +65,12 @@ def retrieve_and_store_pdf(company_id: int) -> None:
             logger.error(f"Error downloading {report_url}: {e}")
             continue
 
-        # 3. Upload the PDF bytes to MinIO
-        logger.info(f"Uploading '{file_name}' for company={company_id}, year={report_year} to MinIO...")
+        # Upload to MinIO
+        logger.info(f"Uploading '{file_name}' for symbol={symbol}, year={report_year} to MinIO...")
         try:
             object_name = minio_fs.write_pdf_bytes(
                 pdf_bytes=pdf_data,
-                company_id=str(company_id),
+                company_id=symbol,
                 report_year=report_year,
                 file_name=file_name
             )
@@ -121,21 +79,22 @@ def retrieve_and_store_pdf(company_id: int) -> None:
             logger.error(f"Error uploading to MinIO: {e}")
 
 
-def main() -> None:
+def main():
     """
-    Example driver code. In a production setting, you might:
-     - Parse 'company_id' from CLI arguments or config
-     - Possibly loop over multiple companies
-
-    Usage:
-        poetry run python retrieve_store_pdf.py
+    Example usage:
+    1. You can loop over multiple symbols, or parse CLI arguments
+    2. For demonstration, let's just do one example symbol
     """
-    logger.info("Starting the 'retrieve_store_pdf' pipeline...")
+    logger.info("Starting the retrieve_store_pdf pipeline...")
 
-    example_company_id = 1
-    retrieve_and_store_pdf(example_company_id)
+    example_symbol = "AAPL"
+    retrieve_and_store_pdf(example_symbol)
 
-    logger.info("Pipeline completed.")
+    # Or do multiple:
+    # for sym in ["AAPL", "MSFT", "TSLA"]:
+    #     retrieve_and_store_pdf(sym)
+
+    logger.info("retrieve_store_pdf pipeline completed.")
 
 
 if __name__ == "__main__":

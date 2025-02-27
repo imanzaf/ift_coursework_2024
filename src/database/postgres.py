@@ -1,5 +1,7 @@
 """
-Methods for interacting with postgres database.
+Methods for interacting with postgres database, focusing on:
+- reading from csr_reporting.company_static
+- writing to csr_reporting.company_csr_reports
 """
 
 import os
@@ -12,22 +14,15 @@ from sqlalchemy import create_engine, engine
 from sqlalchemy.orm import sessionmaker
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
-
 from config.db import database_settings
-
-# from src.data_models.company import Company
 
 
 class PostgreSQLDB(BaseModel):
-    """
-    Methods for connecting to and interacting with the postgres database
-    """
-
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-     self.close()
+        self.close()
 
     @property
     def connection(self):
@@ -40,11 +35,8 @@ class PostgreSQLDB(BaseModel):
         self.connection.close()
 
     def execute(self, query, params=None):
-        """Executes an SQL command (INSERT, UPDATE, DELETE)."""
         if self.connection is None:
-            logger.error(
-                f"No connection to the database {database_settings.POSTGRES_DB_NAME}."
-            )
+            logger.error(f"No connection to {database_settings.POSTGRES_DB_NAME}.")
             return None
         try:
             cursor = self.connection.cursor()
@@ -55,11 +47,8 @@ class PostgreSQLDB(BaseModel):
             logger.error(f"Database error: {e}")
 
     def fetch(self, query, params=None):
-        """Fetches data (SELECT) and returns a list of dictionaries."""
         if self.connection is None:
-            logger.error(
-                f"No connection to the database {database_settings.POSTGRES_DB_NAME}."
-            )
+            logger.error(f"No connection to {database_settings.POSTGRES_DB_NAME}.")
             return []
         try:
             cursor = self.connection.cursor()
@@ -71,89 +60,49 @@ class PostgreSQLDB(BaseModel):
             logger.error(f"Database error: {e}")
             return []
 
-    def store_csr_report(self, company_id, report_url, report_year):
+    #
+    # For storing final URLs
+    #
+    def store_csr_report(self, symbol, report_url, report_year):
         """
-        Inserts a new CSR report record into the database.
-        If (company_id, report_year) is unique, we use ON CONFLICT to avoid duplicates.
-        Adjust if you have a primary key like 'report_id serial primary key'.
+        Insert a new CSR report record into the table:
+          csr_reporting.company_csr_reports
+        If (symbol, report_year) is unique, we skip duplicates.
         """
         query = """
-        INSERT INTO csr_reporting.company_csr_reports (company_id, report_url, report_year, retrieved_at)
+        INSERT INTO csr_reporting.company_csr_reports (symbol, report_url, report_year, retrieved_at)
         VALUES (%s, %s, %s, NOW())
-        ON CONFLICT (company_id, report_year) DO NOTHING
+        ON CONFLICT (symbol, report_year) DO NOTHING
         """
-        self.execute(query, (company_id, report_url, report_year))
+        self.execute(query, (symbol, report_url, report_year))
 
-    def get_csr_reports_by_company(self, company_id):
+    def get_csr_reports_by_symbol(self, symbol):
         """
-        Retrieve all CSR reports for a specific company, ordered by year desc.
+        Retrieve all CSR reports for a specific symbol, ordered by year desc.
         """
         query = """
-        SELECT *
+        SELECT symbol, report_url, report_year, retrieved_at
         FROM csr_reporting.company_csr_reports
-        WHERE company_id = %s
+        WHERE symbol = %s
         ORDER BY report_year DESC
         """
-        return self.fetch(query, (company_id,))
+        return self.fetch(query, (symbol,))
 
-    def get_csr_report_by_id(self, report_id):
+    #
+    # Helpers to read from company_static
+    #
+    def fetch_all_companies(self):
         """
-        Fetch a single CSR report by its primary key (report_id).
-        (Assumes you have a 'report_id' column in your table.)
+        Returns a list of (symbol, security, gics_sector, gics_industry, country, region).
         """
         query = """
-        SELECT *
-        FROM csr_reporting.company_csr_reports
-        WHERE report_id = %s
+        SELECT symbol, security, gics_sector, gics_industry, country, region
+        FROM csr_reporting.company_static
         """
-        results = self.fetch(query, (report_id,))
-        return results[0] if results else None
-
-    def update_csr_report(self, report_id, new_url=None, new_year=None):
-        """
-        Updates a CSR report's URL and/or year based on report_id.
-        Only updates fields that are provided.
-        """
-        # Build dynamic query
-        fields = []
-        params = []
-
-        if new_url is not None:
-            fields.append("report_url = %s")
-            params.append(new_url)
-        if new_year is not None:
-            fields.append("report_year = %s")
-            params.append(new_year)
-
-        # If no fields to update, just return
-        if not fields:
-            print("No fields to update.")
-            return
-
-        set_clause = ", ".join(fields)
-        params.append(report_id)  # for WHERE clause
-
-        query = f"""
-        UPDATE csr_reporting.company_csr_reports
-        SET {set_clause}
-        WHERE report_id = %s
-        """
-
-        self.execute(query, tuple(params))
-
-    def delete_csr_report(self, report_id):
-        """
-        Deletes a CSR report record from the database by report_id.
-        """
-        query = """
-        DELETE FROM csr_reporting.company_csr_reports
-        WHERE report_id = %s
-        """
-        self.execute(query, (report_id,))
+        return self.fetch(query)
 
     @staticmethod
     def _conn_postgres_sqlalchemy():
-        """Establishes a connection to PostgreSQL using SQLAlchemy."""
         url_object = engine.URL.create(
             drivername=database_settings.POSTGRES_DRIVER,
             username=database_settings.POSTGRES_USERNAME,
@@ -170,14 +119,11 @@ class PostgreSQLDB(BaseModel):
                 bind=connection_engine, autocommit=False, autoflush=False
             )
         except Exception as e:
-            logger.error(
-                f"Error occurred while attempting to create postgresql engine: {e}"
-            )
+            logger.error(f"Error creating postgresql engine: {e}")
             return None
 
     @staticmethod
     def _conn_postgres_psycopg2():
-        """Establishes a raw psycopg2 connection to PostgreSQL."""
         try:
             conn = psycopg2.connect(
                 host=database_settings.POSTGRES_HOST,
