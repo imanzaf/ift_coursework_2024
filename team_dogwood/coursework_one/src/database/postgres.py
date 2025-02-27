@@ -10,18 +10,13 @@ from loguru import logger
 from psycopg2.extras import RealDictCursor
 from pydantic import BaseModel
 from sqlalchemy import create_engine, engine
+from sqlalchemy.orm import sessionmaker
 
-# from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.orm import sessionmaker  # scoped_session
-
-# from src.data_models.company import Company
-from sqlalchemy.sql import text
+# from sqlalchemy.sql import text
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
 from config.db import database_settings
-
-# from src.data_models.company import Company
 
 
 class PostgreSQLDB(BaseModel):
@@ -57,66 +52,57 @@ class PostgreSQLDB(BaseModel):
         :param exc_tb: The traceback (if any).
         """
         if exc_type is None:  # No exceptions → commit the transaction
-            self.session.commit()
+            self.conn.commit()
         else:
-            self.session.rollback()  # Rollback on error
-        self.session.close()
+            self.conn.rollback()  # Rollback on error
+        self.conn.close()
 
     @property
-    def session(self):
+    def conn(self):
         """
-        Create and return a SQLAlchemy session for database interactions.
-
-        :return: A SQLAlchemy sessionmaker object.
-        :rtype: sqlalchemy.orm.sessionmaker
+        Create and return a connection to the PostgreSQL database.
         """
-        Session = self._conn_postgres()
-        logger.debug("Connection to PostgreSQL database established.")
-        return Session()
+        return self._conn_postgres_psycopg2()
 
     def execute(self, query, params=None):
         """Fetches data (SELECT) and returns a list of dictionaries."""
-        if self.session is None:
-            logger.error(
-                f"No connection to the database {database_settings.POSTGRES_DB_NAME}."
-            )
-            return []
         try:
             logger.info(f"Executing query: {query}...")
-            logger.debug(f"Connected to DataBase: {self.session.bind.url.database}")
-            result = self.session.execute(text(query), params or {})
-            rows = result.fetchall()
-            self.session.commit()
-            logger.debug(f"Fetched data: {rows}")
+            cursor = self.conn.cursor(cursor_factory=RealDictCursor)
+            cursor.execute(query, params or {})
+            self.conn.commit()
+            cursor.close()
+            return []
+        except Exception as e:
+            logger.error(f"Database error: {e}")
+            return []
+
+    def fetch(self, query, params=None):
+        """Fetches data (SELECT) and returns a single dictionary."""
+        try:
+            logger.info(f"Executing query: {query}...")
+            cursor = self.conn.cursor(cursor_factory=RealDictCursor)
+            cursor.execute(query, params or {})
+            rows = cursor.fetchall()
+            self.conn.commit()
+            cursor.close()
+            logger.debug(f"Fetched {len(rows)} rows.")
             return rows
         except Exception as e:
             logger.error(f"Database error: {e}")
             return []
 
-    def store_csr_report(self, company_id, report_url, report_year):
-        """
-        Inserts a new CSR report record into the database.
-        If (company_id, report_year) is unique, we use ON CONFLICT to avoid duplicates.
-        Adjust if you have a primary key like 'report_id serial primary key'.
-        """
-        query = """
-        INSERT INTO csr_reporting.company_csr_reports (company_id, report_url, report_year, retrieved_at)
-        VALUES (%s, %s, %s, NOW())
-        ON CONFLICT (company_id, report_year) DO NOTHING
-        """
-        self.execute(query, (company_id, report_url, report_year))
-
-    def get_csr_reports_by_company(self, company_id):
+    def get_csr_reports_by_company(self, company_name):
         """
         Retrieve all CSR reports for a specific company, ordered by year desc.
         """
         query = """
         SELECT *
-        FROM csr_reporting.company_urls
+        FROM csr_reporting.company_csr_reports
         WHERE company_name = %s
         ORDER BY report_year DESC
         """
-        return self.execute(query, (company_id,))
+        return self.execute(query, {"company_name": company_name})
 
     def get_csr_report_by_id(self, report_id):
         """
@@ -211,11 +197,11 @@ class PostgreSQLDB(BaseModel):
             logger.debug("Connecting to the PostgreSQL database...")
             conn = psycopg2.connect(
                 host=database_settings.POSTGRES_HOST,
-                database=database_settings.POSTGRES_DB_NAME,
+                dbname=database_settings.POSTGRES_DB_NAME,
                 user=database_settings.POSTGRES_USERNAME,
                 password=database_settings.POSTGRES_PASSWORD,
                 port=database_settings.POSTGRES_PORT,
-                cursor_factory=RealDictCursor,
+                # cursor_factory=RealDictCursor,
             )
             return conn
         except psycopg2.Error as e:

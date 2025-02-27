@@ -3,6 +3,8 @@ import sys
 
 from loguru import logger
 
+# from sqlalchemy.sql import text
+
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
 from src.data_models.company import Company, ESGReport
@@ -15,16 +17,15 @@ def get_all_companies(db: PostgreSQLDB) -> list[Company]:
     """
     Get all companies from the database.
     """
-    companies = db.execute(
-        "SELECT symbol, security FROM csr_reporting.company_static WHERE security = 'MMM'"
-    )
-    logger.info(f"Companies: {companies[:5]}")
+    companies = db.fetch("SELECT symbol, security FROM csr_reporting.company_static")
+    logger.debug(f"Companies Preview: {companies[:1]}")
     if not companies:
         logger.error("No companies found in the database. Exiting.")
         exit()
 
     companies_list = []
-    for company_data in companies:
+    for company_data in companies[:1]:  # Limit to 1 company for testing
+        logger.info(f"Processing company: {company_data['security']}")
         company = Company(**company_data)
         companies_list.append(company)
 
@@ -34,6 +35,8 @@ def get_all_companies(db: PostgreSQLDB) -> list[Company]:
 def get_validated_results(company: Company) -> Company:
     """
     Get validated search results for each company.
+
+    TODO - only intialize webdriver once and pass it to the search instance.
     """
     # Search for ESG reports for the company.
     search_instance = Search(company=company)
@@ -83,7 +86,9 @@ def update_db(db: PostgreSQLDB, company: Company):
         urls.update(
             {
                 (
-                    esg_reports[0].year if esg_reports[0].year is not None else "Other"
+                    esg_reports[0].year
+                    if esg_reports[0].year is not None
+                    else "Unknown"
                 ): esg_reports[0].url
             }
         )
@@ -91,39 +96,35 @@ def update_db(db: PostgreSQLDB, company: Company):
         urls.update(
             {
                 (
-                    esg_reports[0].year if esg_reports[0].year is not None else "Other"
+                    esg_reports[0].year
+                    if esg_reports[0].year is not None
+                    else "Unknown"
                 ): esg_reports[0].url
             }
         )
         urls.update(
             {
                 (
-                    esg_reports[1].year if esg_reports[1].year is not None else "Other"
+                    esg_reports[1].year
+                    if esg_reports[1].year is not None
+                    else "Unknown"
                 ): esg_reports[1].url
             }
         )
 
     update_query = """
-    INSERT INTO company_data (company_name, ":year")
-    VALUES (:company_name, :url)
-    ON CONFLICT (company_name)
-    DO UPDATE SET ":year" = EXCLUDED.":year";
+    INSERT INTO csr_reporting.company_csr_reports (company_name, report_url, report_year, retrieved_at)
+    VALUES ($1, $2, $3, NOW())
+    ON CONFLICT (company_name, report_year)
+    DO UPDATE SET "report_url" = EXCLUDED.report_url, "retrieved_at" = NOW();
     """
     db.execute(
         update_query,
-        {
-            "company_name": company.security,
-            "year": esg_reports[0].year,
-            "url": esg_reports[0].url,
-        },
+        (company.security, esg_reports[0].year, esg_reports[0].url),
     )
     db.execute(
         update_query,
-        {
-            "company_name": company.security,
-            "year": esg_reports[1].year,
-            "url": esg_reports[1].url,
-        },
+        (company.security, esg_reports[0].year, esg_reports[0].url),
     )
     logger.info(
         f"[{company.security}] The retrieved links have been written to the database."
@@ -134,13 +135,12 @@ def main():
     with PostgreSQLDB() as db:
         # Create new table
         query = """
-        CREATE TABLE IF NOT EXISTS scr_reporting.company_urls (
+        CREATE TABLE csr_reporting.company_csr_reports (
         company_name VARCHAR(255) NOT NULL,
-        "2025" STRING
-        "2024" STRING,
-        "2023" STRING,
-        "2022" STRING,
-        "Other" STRING
+        report_url VARCHAR(255) NOT NULL,
+        report_year INT NOT NULL,
+        retrieved_at TIMESTAMP DEFAULT NOW(),
+        PRIMARY KEY (company_name, report_year)
         );
         """
         db.execute(query)
@@ -158,4 +158,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    pass
