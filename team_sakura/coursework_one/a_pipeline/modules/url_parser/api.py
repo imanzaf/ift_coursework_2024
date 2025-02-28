@@ -3,18 +3,20 @@ from pymongo import MongoClient
 import yaml
 import os
 
-config_path = os.getenv(
-    "CONF_PATH", "a_pipeline/config/conf.yaml"
-)  # Default path for Docker
+# Load configuration from YAML file, using a default path for Docker if not set in environment variables
+config_path = os.getenv("CONF_PATH", "a_pipeline/config/conf.yaml")
 with open(config_path, "r") as file:
     config = yaml.safe_load(file)
 
+# MongoDB Configuration
 mongo_config = config["databaselocal"]
-# MongoDB connection
+
+# Connect to MongoDB
 MONGO_CLIENT = MongoClient(mongo_config["mongo_uri"])
 db = MONGO_CLIENT[mongo_config["mongo_db"]]
 collection = db[mongo_config["mongo_collection"]]
 
+# Initialize FastAPI application
 app = FastAPI()
 
 
@@ -27,13 +29,24 @@ def get_reports(
     country: str = Query(None, description="Filter by country"),
     region: str = Query(None, description="Filter by region"),
 ):
-    """Retrieve CSR reports based on filters"""
+    """
+    Retrieve CSR reports based on multiple filter criteria.
+
+    Query Parameters:
+        company_name (str, optional): Filter by company name (case-insensitive).
+        year (int, optional): Filter by report year.
+        sector (str, optional): Filter by GICS sector (case-insensitive).
+        industry (str, optional): Filter by GICS industry (case-insensitive).
+        country (str, optional): Filter by country (case-insensitive).
+        region (str, optional): Filter by region (case-insensitive).
+
+    Returns:
+        dict: JSON response containing count and a list of matching reports.
+    """
     query = {}
+
     if company_name:
-        query["company_name"] = {
-            "$regex": company_name,
-            "$options": "i",
-        }  # Case-insensitive search
+        query["company_name"] = {"$regex": company_name, "$options": "i"}  # Case-insensitive search
     if year:
         query["report_year"] = year
     if sector:
@@ -45,9 +58,10 @@ def get_reports(
     if region:
         query["region"] = {"$regex": region, "$options": "i"}
 
-    results = list(
-        collection.find(query, {"_id": 0})
-    )  # Exclude MongoDB's default _id field
+    # Fetch matching documents and exclude MongoDB's default _id field
+    results = list(collection.find(query, {"_id": 0}))
+
+    # Normalize company name for consistent storage, if provided
     if company_name:
         collection.update_many({}, {"$set": {"company_name": company_name.lower()}})
     else:
@@ -59,4 +73,5 @@ def get_reports(
 if __name__ == "__main__":
     import uvicorn
 
+    # Run FastAPI application using Uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
