@@ -51,18 +51,18 @@ try:
         SELECT symbol, security FROM csr_reporting.company_static
         ORDER BY symbol;
     """)
-    companies = cursor.fetchall()
+        companies = cursor.fetchall()
 
-    for symbol, security in companies:
-        cursor.execute("""
+        for symbol, security in companies:
+            cursor.execute("""
                 INSERT INTO csr_reporting.company_reports (symbol, security)
                 VALUES (%s, %s)
                 ON CONFLICT DO nothing;
             """, (symbol, security))
 
-        # Commit the transaction
-        conn.commit()
-        print("Table csr_reporting.company_reports created successfully (if not exists) with foreign key constraint!")
+    # Commit the transaction
+    conn.commit()
+    print("Table csr_reporting.company_reports created successfully!")
 except Exception as e:
     print(f"An error occurred: {e}")
 finally:
