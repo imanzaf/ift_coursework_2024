@@ -319,9 +319,8 @@ def get_latest_report(rate_limit=10):
 
     mongo_client = mongo.connect_to_mongo()
     if mongo_client is None:
-        exit(1)
         logger.error("Failed to connect to MongoDB")
-        return
+        exit(1)
     else:
         logger.info("Connected to MongoDB")
 
