@@ -9,5 +9,7 @@ CSR Data Pipeline Documentation
    usage
    api_reference
    architecture
+   database
+   main
 
 
