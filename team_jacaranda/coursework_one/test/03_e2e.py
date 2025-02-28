@@ -13,9 +13,9 @@ import time
 
 @pytest.mark.e2e
 def test_full_pipeline():
-    """完整数据流测试：生产者 → Kafka → 消费者 → MinIO/DB"""
+    """End-to-end data flow test: Producer → Kafka → Consumer → MinIO/DB"""
     
-    # 1. 生产者发送数据
+    # 1. Producer sends data
     producer = KafkaProducer(bootstrap_servers='localhost:9092')
     producer.send('csr-report', value={
         'company_name': 'Abbott Laboratories',
@@ -23,10 +23,10 @@ def test_full_pipeline():
     })
     producer.flush()
     
-    # 2. 消费者处理（等待10秒）
+    # 2. Consumer processing (wait for 10 seconds)
     time.sleep(10)
     
-    # 3. 验证MinIO
+    # 3. Verify MinIO
     minio_client = Minio(
         "localhost:9000",
         access_key="ift_bigdata",
@@ -35,7 +35,7 @@ def test_full_pipeline():
     )
     assert minio_client.stat_object("csreport", "Abbott Laboratories_2019.pdf")
     
-    # 4. 验证数据库
+    # 4. Verify database
     conn = psycopg2.connect(
         host="host.docker.internal",
         port=5439,
@@ -47,9 +47,4 @@ def test_full_pipeline():
     cursor.execute("SELECT minio_path FROM company_reports WHERE report_url = 'https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABT _2019.pdf'")
     assert cursor.fetchone()[0] == "Abbott Laboratories_2019.pdf"
 
-
 # In[ ]:
-
-
-
-
