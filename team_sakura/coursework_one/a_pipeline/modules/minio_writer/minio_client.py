@@ -17,7 +17,10 @@ else:
 
 def get_minio_client():
     # Ensure the service name "miniocw" is used inside the Docker network
-    minio_host = os.getenv("MINIO_HOST", "localhost:9000")  # Update this!
+    if os.getenv("DOCKER_ENV"):  # Running in Jenkins
+        minio_host = os.getenv("MINIO_HOST", "miniocw:9000")
+    else:  # Running locally
+        minio_host = os.getenv("MINIO_HOST", "localhost:9000")  # Update this!
     access_key = os.getenv("AWS_ACCESS_KEY_ID", "ift_bigdata")
     secret_key = os.getenv("AWS_SECRET_ACCESS_KEY", "minio_password")
 
