@@ -64,7 +64,7 @@ This can be checked and adjusted on docker desktop settings.
 
 ## Instructions
 
-### environment initialisation
+### Environment Initialisation
 
 1.**copy files from  team_adansonia/coursework_one/a_link_retrieval/config to the root of the project**
 - .env.template to .env
