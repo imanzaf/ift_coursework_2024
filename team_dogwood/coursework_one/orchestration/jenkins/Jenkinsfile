@@ -1,0 +1,118 @@
+pipeline {
+    agent any
+
+    triggers {
+        cron('H 0 1,15 * *') // Runs at midnight on the 1st and 15th of every month
+    }
+
+    environment {
+        POETRY_VERSION = "2.1.1"  // Set desired Poetry version
+        PYTHON_VERSION = "3.10.0"   // Set desired Python version
+
+        DB_MINIO_USERNAME = "ift_bigdata"
+        DB_MINIO_PASSWORD = "minio_password"
+        DB_MINIO_HOST = "localhost"
+        DB_MINIO_PORT = "9000"
+
+        DB_MINIO_BUCKET_NAME = "csr-reports"
+
+        DB_POSTGRES_DRIVER = "postgresql"
+        DB_POSTGRES_USERNAME = "postgres"
+        DB_POSTGRES_PASSWORD = "postgres"
+        DB_POSTGRES_HOST = "localhost"
+        DB_POSTGRES_PORT = "5432"
+        DB_POSTGRES_DB_NAME = "fift"
+
+        SEARCH_GOOGLE_API_URL = "https://www.googleapis.com/customsearch/v1"
+        SEARCH_GOOGLE_ENGINE_ID = "d607709d07e8d4937"
+        SEARCH_GOOGLE_API_KEY = credentials('google_api_key')
+
+        SEARCH_SUSTAINABILITY_REPORTS_API_URL = "https://www.responsibilityreports.com/"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Clone the Git repository
+                    checkout scm
+                }
+            }
+        }
+
+        stage('Build Environment & Run Tests') {
+            steps {
+                dir('team_dogwood/coursework_one') {
+                    // Install Python using pyenv (if needed)
+                    sh '''
+                    if ! command -v python3 &> /dev/null; then
+                        echo "Python not found, installing..."
+                        apt-get update && apt-get install -y python3 python3-pip
+                    fi
+                    '''
+
+                    // Install Poetry if not already installed
+                    sh '''
+                    if ! command -v poetry &> /dev/null; then
+                        curl -sSL https://install.python-poetry.org | python3 -
+                    fi
+                    '''
+
+                    // Navigate to the project directory
+                    
+                    // Verify Poetry installation
+                    sh '/root/.local/bin/poetry --version'
+                    // Ensure Poetry uses the correct Python version
+                    sh "/root/.local/bin/poetry env use /usr/bin/python3"
+                    // Activate the virtual environment
+                    sh "/root/.local/bin/poetry env activate"
+                    // Install project dependencies
+                    sh "/root/.local/bin/poetry install"
+
+                    // Run linters using poetry
+                    sh "/root/.local/bin/poetry run black ."
+                    sh "/root/.local/bin/poetry run isort ."
+                    sh "/root/.local/bin/poetry run flake8 ."
+                    sh "/root/.local/bin/poetry run bandit ."
+                    // Run tests using Poetry
+                    sh "/root/.local/bin/poetry run pytest"
+                }
+            }
+        }
+
+        stage('Run Pipeline 1: ESG URL Retrieval & Storage') {
+            steps {
+                dir('team_dogwood/coursework_one') {
+                    // Activate the virtual environment
+                    sh "/root/.local/bin/poetry env activate"
+                    // Run the main script using Poetry
+                    echo "Running the main script..."
+                    sh "/root/.local/bin/poetry run python pipelines/retrieve_store_url/main.py"
+                    echo "URL retrieval completed successfully!"
+                }
+            }
+        }
+
+        stage('Run Pipeline 2: ESG Report Storage') {
+            steps {
+                dir('team_dogwood/coursework_one') {
+                    // Activate the virtual environment
+                    sh "/root/.local/bin/poetry env activate"
+                    // Run the main script using Poetry
+                    echo "Running the main script..."
+                    sh "/root/.local/bin/poetry run python pipelines/retrieve_store_pdf/main.py"
+                    echo "PDF storage completed successfully!"
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Build and tests completed successfully!"
+        }
+        failure {
+            echo "Build or tests failed!"
+        }
+    }
+}

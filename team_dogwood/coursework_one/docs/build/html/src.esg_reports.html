@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en" data-content_root="./">
+<head>
+    <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>ESG Reports Package &mdash; Team Dogwood 1 documentation</title>
+    
+    <link rel="stylesheet" type="text/css" href="_static/dist/fontawesome.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dist/theme.css?v=310cf088" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+            <link rel="index" title="Index" href="genindex.html" />
+            <link rel="search" title="Search" href="search.html" />
+            <link rel="top" title="Team Dogwood 1 documentation" href="#" />
+            <link rel="up" title="src Packages" href="src.html" />
+            <link rel="next" title="Utils Package" href="src.utils.html" />
+            <link rel="prev" title="Database Package" href="src.database.html" />
+    </head>
+<body>
+    <script type="text/javascript" src="_static/dist/blocking.js"></script>
+    <header class="container-fluid bg-primary">
+        <a class="btn btn-sm btn-light skip-to-content-link" href="#main">Skip to content</a>
+        <div class="container-fluid">
+            <div class="navbar navbar-expand-lg navbar-dark font-weight-bold">
+                    <a href="index.html"
+                        title="Wagtail"
+                        class="logo navbar-brand"
+                    >
+                        <img src="_static/img/wagtail-logo-circle.svg" width="45" height="59" alt="Wagtail"
+                            class="logo-img"
+                        />
+                        Team Dogwood
+                    </a>
+                
+                
+                <button class="navbar-toggler btn btn-primary d-lg-none" type="button" data-toggle="collapse" data-target="#collapseSidebar" aria-expanded="false" aria-controls="collapseExample">
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="sr-only">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-12 col-lg-3 sidebar-container">
+                <div id="collapseSidebar" class="collapse sticky-top d-lg-block pt-5 pr-lg-4">
+<div id="searchbox" class="searchbox mb-6 px-1" role="search">
+    <form id="search-form" action="search.html" autocomplete="off" method="get" role="search">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text border-right-0 bg-white py-3 pl-3 pr-2"><span class="fas fa-search"></span></div>
+            </div>
+            <input class="form-control py-3 pr-3 pl-1 h-100 border-left-0" type="search" name="q" placeholder="Search documentation" aria-label="Search documentation" id="searchinput" />
+        </div>
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+    </form>
+</div><div class="site-toc">
+    <nav class="toc mt-3" aria-label="Main menu">
+        <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="src.html">src Packages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="src.data_models.html">Data Models Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.database.html">Database Package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ESG Reports Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.utils.html">Utils Package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">config</a></li>
+</ul>
+
+    </nav>
+    <template data-toggle-item-template>
+        <button class="btn btn-sm btn-link toctree-expand" type="button">
+            <span class="sr-only">Toggle menu contents</span>
+        </button>
+    </template>
+</div>
+                    <div class="d-lg-none border-bottom">
+                        
+                    </div>
+                </div>
+            </aside>
+            <div class="col-12 col-lg-9 pt-5">
+                <header class="row align-items-baseline">
+                    <div class="col">
+                        <nav aria-label="breadcrumb">
+    <ol class="breadcrumb m-0 p-0 bg-transparent">
+        <li class="breadcrumb-item"><a href="index.html">Docs</a></li>
+            <li class="breadcrumb-item"><a href="modules.html">src</a></li>
+            <li class="breadcrumb-item"><a href="src.html">src Packages</a></li>
+        <li class="breadcrumb-item active" aria-current="page">ESG Reports Package</li>
+    </ol>
+</nav>
+                    </div>
+                    <div class="col-sm-12 col-lg-auto mt-3 mt-lg-3">
+                        <noscript>
+                            <p>JavaScript is required to toggle light/dark mode..</p>
+                        </noscript>
+                        <button id="wagtail-theme" class="btn btn-sm btn-light text-decoration-none" type="button">
+                            <span class="dark-only"><i class="fas fa-sun"></i> Light mode</span>
+                            <span class="light-only"><i class="fas fa-moon"></i> Dark mode</span>
+                        </button>
+    <a class="btn btn-sm btn-light text-decoration-none" href="https://github.com/wagtail/sphinx_wagtail_theme/blob/main/docs/src.esg_reports.rst" rel="nofollow">
+        <span class="btn-icon"><span class="fab fa-github"></span></span>
+        <span class="btn-text">Edit on GitHub</span>
+    </a>
+    <a class="btn btn-sm btn-light text-decoration-none" href="_sources/src.esg_reports.rst.txt" rel="nofollow">
+        <span class="btn-icon"><span class="fas fa-code"></span></span>
+        <span class="btn-text">View source</span>
+    </a>
+                        
+                    </div>
+                </header>
+                <div class="row" >
+                    <div class="col-12">
+                        <hr class="w-100 my-4">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-lg-9 order-last order-lg-first rst-content">
+                        <main role="main" id="main">
+    <section id="esg-reports-package">
+<h1>ESG Reports Package<a class="headerlink" href="#esg-reports-package" title="Link to this heading">¶</a></h1>
+<p class="rubric"><strong>Overview</strong></p>
+<p>This package contains modules for handling ESG (Environmental, Social, and Governance) reports. It includes functionality for searching and validating ESG reports, ensuring data accuracy and consistency.</p>
+<p class="rubric"><strong>Key Features</strong></p>
+<ul class="simple">
+<li><p>Search for ESG reports using various criteria.</p></li>
+<li><p>Validate ESG reports to ensure compliance with required standards.</p></li>
+<li><p>Integrate with external APIs and databases for data retrieval and validation.</p></li>
+</ul>
+<section id="module-src.esg_reports.search">
+<span id="esg-reports-search-module"></span><h2>ESG Reports Search Module<a class="headerlink" href="#module-src.esg_reports.search" title="Link to this heading">¶</a></h2>
+<p class="rubric"><strong>Overview</strong></p>
+<p>The <cite>search</cite> module provides functionality for searching ESG reports. It includes methods for querying external APIs or databases to retrieve ESG reports based on specific criteria such as company name, report year, or keywords.</p>
+<p class="rubric"><strong>Key Features</strong></p>
+<ul class="simple">
+<li><p>Query ESG reports using flexible search parameters.</p></li>
+<li><p>Integrate with external APIs for real-time data retrieval.</p></li>
+<li><p>Filter and sort search results for better usability.</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.esg_reports.search.Search">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.esg_reports.search.</span></span><span class="sig-name descname"><span class="pre">Search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">company</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="src.data_models.html#src.data_models.company.Company" title="src.data_models.company.Company"><span class="pre">Company</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.esg_reports.search.Search" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Search class for scraping ESG reports from various sources.</p>
+<p>This class provides methods to search for and retrieve ESG (Environmental, Social, and Governance)
+reports for a given company using different sources:</p>
+<ol class="arabic simple">
+<li><p>Google Custom Search API - searches for PDF ESG reports.</p></li>
+<li><p>Sustainability Reports website - scrapes reports from responsibilityreports.com.</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>company</strong> (<a class="reference internal" href="src.data_models.html#src.data_models.company.Company" title="src.data_models.company.Company"><em>Company</em></a>) – The company to look for ESG reports for.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.esg_reports.search.Search._format_google_results">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_format_google_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_results</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="src.data_models.html#src.data_models.company.SearchResult" title="src.data_models.company.SearchResult"><span class="pre">SearchResult</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.esg_reports.search.Search._format_google_results" title="Link to this definition">¶</a></dt>
+<dd><p>Formats Google search results into a list of SearchResult objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>search_results</strong> (<em>list</em>) – A list of search results from the Google API.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of formatted search results.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="src.data_models.html#src.data_models.company.SearchResult" title="src.data_models.company.SearchResult">SearchResult</a>]</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">search</span> <span class="o">=</span> <span class="n">Search</span><span class="p">(</span><span class="n">company</span><span class="o">=</span><span class="n">Company</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="n">security</span><span class="o">=</span><span class="s2">&quot;Apple Inc.&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">raw_results</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Report 2023&quot;</span><span class="p">,</span> <span class="s2">&quot;link&quot;</span><span class="p">:</span> <span class="s2">&quot;http://example.com&quot;</span><span class="p">}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formatted_results</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">_format_google_results</span><span class="p">(</span><span class="n">raw_results</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">formatted_results</span><span class="p">)</span>
+<span class="go">[SearchResult(title=&quot;Report 2023&quot;, link=&quot;http://example.com&quot;)]</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.esg_reports.search.Search._match_score">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_match_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_term</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#src.esg_reports.search.Search._match_score" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates a match score between the text and the search term.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>str</em>) – The text to match against.</p></li>
+<li><p><strong>search_term</strong> (<em>str</em>) – The search term to match.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The match score (number of matching words).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">search</span> <span class="o">=</span> <span class="n">Search</span><span class="p">(</span><span class="n">company</span><span class="o">=</span><span class="n">Company</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="n">security</span><span class="o">=</span><span class="s2">&quot;Apple Inc.&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">_match_score</span><span class="p">(</span><span class="s2">&quot;Apple Inc. Report 2023&quot;</span><span class="p">,</span> <span class="s2">&quot;Apple Inc.&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.esg_reports.search.Search.google">
+<span class="sig-name descname"><span class="pre">google</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="src.data_models.html#src.data_models.company.SearchResult" title="src.data_models.company.SearchResult"><span class="pre">SearchResult</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#src.esg_reports.search.Search.google" title="Link to this definition">¶</a></dt>
+<dd><p>Searches for ESG reports using the Google Custom Search API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of search results or None if no results are found.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Union[List[<a class="reference internal" href="src.data_models.html#src.data_models.company.SearchResult" title="src.data_models.company.SearchResult">SearchResult</a>], None]</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">search</span> <span class="o">=</span> <span class="n">Search</span><span class="p">(</span><span class="n">company</span><span class="o">=</span><span class="n">Company</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="n">security</span><span class="o">=</span><span class="s2">&quot;Apple Inc.&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">google</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">results</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">link</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No results found.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.esg_reports.search.Search.model_post_init">
+<span class="sig-name descname"><span class="pre">model_post_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.esg_reports.search.Search.model_post_init" title="Link to this definition">¶</a></dt>
+<dd><p>This function is meant to behave like a BaseModel method to initialise private attributes.</p>
+<p>It takes context as an argument since that’s what pydantic-core passes when calling it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> – The BaseModel instance.</p></li>
+<li><p><strong>context</strong> – The context.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.esg_reports.search.Search.sustainability_reports_dot_com">
+<span class="sig-name descname"><span class="pre">sustainability_reports_dot_com</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="src.data_models.html#src.data_models.company.ESGReport" title="src.data_models.company.ESGReport"><span class="pre">ESGReport</span></a></span></span><a class="headerlink" href="#src.esg_reports.search.Search.sustainability_reports_dot_com" title="Link to this definition">¶</a></dt>
+<dd><p>Searches for sustainability reports on sustainabilityreports.com.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An ESGReport object containing the report URL and year, or None if no report is found.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="src.data_models.html#src.data_models.company.ESGReport" title="src.data_models.company.ESGReport">ESGReport</a></p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">search</span> <span class="o">=</span> <span class="n">Search</span><span class="p">(</span><span class="n">company</span><span class="o">=</span><span class="n">Company</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="n">security</span><span class="o">=</span><span class="s2">&quot;Apple Inc.&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">report</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">sustainability_reports_dot_com</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">report</span><span class="o">.</span><span class="n">url</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Report URL: </span><span class="si">{</span><span class="n">report</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2">, Year: </span><span class="si">{</span><span class="n">report</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No report found.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.esg_reports.validate">
+<span id="esg-reports-validate-module"></span><h2>ESG Reports Validate Module<a class="headerlink" href="#module-src.esg_reports.validate" title="Link to this heading">¶</a></h2>
+<p class="rubric"><strong>Overview</strong></p>
+<p>The <cite>validate</cite> module provides functionality for validating ESG reports. It ensures that ESG reports meet required standards and formats, and it performs checks for data completeness and accuracy.</p>
+<p class="rubric"><strong>Key Features</strong></p>
+<ul class="simple">
+<li><p>Validate ESG report data against predefined standards.</p></li>
+<li><p>Check for missing or inconsistent data.</p></li>
+<li><p>Generate validation reports for further analysis.</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.esg_reports.validate.SearchResultValidator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.esg_reports.validate.</span></span><span class="sig-name descname"><span class="pre">SearchResultValidator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">company</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="src.data_models.html#src.data_models.company.Company" title="src.data_models.company.Company"><span class="pre">Company</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="src.data_models.html#src.data_models.company.SearchResult" title="src.data_models.company.SearchResult"><span class="pre">SearchResult</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.esg_reports.validate.SearchResultValidator" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Validates search results from Google for ESG reports.</p>
+<p>This class validates search results based on the presence of:
+- The current or previous year.
+- The company name.
+- ESG-related keywords.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>company</strong> (<a class="reference internal" href="src.data_models.html#src.data_models.company.Company" title="src.data_models.company.Company"><em>Company</em></a>) – The company to validate the search results for.</p></li>
+<li><p><strong>search_results</strong> (<em>List</em><em>[</em><a class="reference internal" href="src.data_models.html#src.data_models.company.SearchResult" title="src.data_models.company.SearchResult"><em>SearchResult</em></a><em>]</em>) – The search results to validate.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.esg_reports.validate.SearchResultValidator._company_name_in_result">
+<span class="sig-name descname"><span class="pre">_company_name_in_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="src.data_models.html#src.data_models.company.SearchResult" title="src.data_models.company.SearchResult"><span class="pre">SearchResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#src.esg_reports.validate.SearchResultValidator._company_name_in_result" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if the company name is in the author field, title, snippet, or link.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="src.data_models.html#src.data_models.company.SearchResult" title="src.data_models.company.SearchResult"><em>SearchResult</em></a>) – The search result to validate.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the company name is found, otherwise False.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">SearchResult</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Apple ESG Report 2023&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">snippet</span><span class="o">=</span><span class="s2">&quot;ESG Report 2023&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">link</span><span class="o">=</span><span class="s2">&quot;https://www.apple.com/esg-report-2023/&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">author</span><span class="o">=</span><span class="s2">&quot;Apple Inc.&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validator</span> <span class="o">=</span> <span class="n">SearchResultValidator</span><span class="p">(</span><span class="n">company</span><span class="o">=</span><span class="n">Company</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="n">security</span><span class="o">=</span><span class="s2">&quot;Apple Inc.&quot;</span><span class="p">),</span> <span class="n">search_results</span><span class="o">=</span><span class="p">[])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_valid</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">_company_name_in_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">is_valid</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.esg_reports.validate.SearchResultValidator._keywords_in_result">
+<span class="sig-name descname"><span class="pre">_keywords_in_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="src.data_models.html#src.data_models.company.SearchResult" title="src.data_models.company.SearchResult"><span class="pre">SearchResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#src.esg_reports.validate.SearchResultValidator._keywords_in_result" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if ESG keywords are in the title, snippet, or link.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="src.data_models.html#src.data_models.company.SearchResult" title="src.data_models.company.SearchResult"><em>SearchResult</em></a>) – The search result to validate.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if ESG keywords are found, otherwise False.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">SearchResult</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Apple ESG Report 2023&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">snippet</span><span class="o">=</span><span class="s2">&quot;ESG Report 2023&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">link</span><span class="o">=</span><span class="s2">&quot;https://www.apple.com/esg-report-2023/&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validator</span> <span class="o">=</span> <span class="n">SearchResultValidator</span><span class="p">(</span><span class="n">company</span><span class="o">=</span><span class="n">Company</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="n">security</span><span class="o">=</span><span class="s2">&quot;Apple Inc.&quot;</span><span class="p">),</span> <span class="n">search_results</span><span class="o">=</span><span class="p">[])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">has_keywords</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">_keywords_in_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">has_keywords</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.esg_reports.validate.SearchResultValidator._year_in_result">
+<span class="sig-name descname"><span class="pre">_year_in_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="src.data_models.html#src.data_models.company.SearchResult" title="src.data_models.company.SearchResult"><span class="pre">SearchResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#src.esg_reports.validate.SearchResultValidator._year_in_result" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if the current or previous year is in the title, snippet, or link.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="src.data_models.html#src.data_models.company.SearchResult" title="src.data_models.company.SearchResult"><em>SearchResult</em></a>) – The search result to validate.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The year if found, otherwise None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[str, None]</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">SearchResult</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Apple ESG Report 2023&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">snippet</span><span class="o">=</span><span class="s2">&quot;ESG Report 2023&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">link</span><span class="o">=</span><span class="s2">&quot;https://www.apple.com/esg-report-2023/&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validator</span> <span class="o">=</span> <span class="n">SearchResultValidator</span><span class="p">(</span><span class="n">company</span><span class="o">=</span><span class="n">Company</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="n">security</span><span class="o">=</span><span class="s2">&quot;Apple Inc.&quot;</span><span class="p">),</span> <span class="n">search_results</span><span class="o">=</span><span class="p">[])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">year</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">_year_in_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+<span class="go">&quot;2023&quot;</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.esg_reports.validate.SearchResultValidator.clean_company_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clean_company_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.esg_reports.validate.SearchResultValidator.clean_company_name" title="Link to this definition">¶</a></dt>
+<dd><p>Cleans the company name by removing legal suffixes and common articles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The cleaned company name.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">company</span> <span class="o">=</span> <span class="n">Company</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="n">security</span><span class="o">=</span><span class="s2">&quot;Apple Inc.&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validator</span> <span class="o">=</span> <span class="n">SearchResultValidator</span><span class="p">(</span><span class="n">company</span><span class="o">=</span><span class="n">company</span><span class="p">,</span> <span class="n">search_results</span><span class="o">=</span><span class="p">[])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">validator</span><span class="o">.</span><span class="n">clean_company_name</span><span class="p">)</span>
+<span class="go">&quot;Apple&quot;</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.esg_reports.validate.SearchResultValidator.model_post_init">
+<span class="sig-name descname"><span class="pre">model_post_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.esg_reports.validate.SearchResultValidator.model_post_init" title="Link to this definition">¶</a></dt>
+<dd><p>This function is meant to behave like a BaseModel method to initialise private attributes.</p>
+<p>It takes context as an argument since that’s what pydantic-core passes when calling it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> – The BaseModel instance.</p></li>
+<li><p><strong>context</strong> – The context.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.esg_reports.validate.SearchResultValidator.search_results">
+<span class="sig-name descname"><span class="pre">search_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="src.data_models.html#src.data_models.company.SearchResult" title="src.data_models.company.SearchResult"><span class="pre">SearchResult</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#src.esg_reports.validate.SearchResultValidator.search_results" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.esg_reports.validate.SearchResultValidator.validated_results">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validated_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="src.data_models.html#src.data_models.company.ESGReport" title="src.data_models.company.ESGReport"><span class="pre">ESGReport</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#src.esg_reports.validate.SearchResultValidator.validated_results" title="Link to this definition">¶</a></dt>
+<dd><p>Validates search results based on the presence of year, company name, and keywords.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of validated ESG reports.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[<a class="reference internal" href="src.data_models.html#src.data_models.company.ESGReport" title="src.data_models.company.ESGReport">ESGReport</a>]</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">company</span> <span class="o">=</span> <span class="n">Company</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="n">security</span><span class="o">=</span><span class="s2">&quot;Apple Inc.&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">SearchResult</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Apple ESG Report 2023&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">metatag_title</span><span class="o">=</span><span class="s2">&quot;Apple Inc. (AAPL) ESG Report 2023&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">author</span><span class="o">=</span><span class="s2">&quot;Apple Inc.&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">link</span><span class="o">=</span><span class="s2">&quot;https://www.apple.com/esg-report-2023/&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">snippet</span><span class="o">=</span><span class="s2">&quot;ESG Report 2023&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validator</span> <span class="o">=</span> <span class="n">SearchResultValidator</span><span class="p">(</span><span class="n">company</span><span class="o">=</span><span class="n">company</span><span class="p">,</span> <span class="n">search_results</span><span class="o">=</span><span class="n">results</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validated_results</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">validated_results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">validated_results</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+<span class="go">&quot;https://www.apple.com/esg-report-2023/&quot; 2023</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+</main>
+                        <nav aria-label="Page navigation" class="py-4 my-5 clearfix font-weight-bold border-top">
+    <a class="float-left" href="src.database.html" title="Previous">
+        <span aria-hidden="true">←&nbsp;</span>Database Package
+    </a>
+    <a class="float-right" href="src.utils.html" title="Next">
+        Utils Package <span aria-hidden="true">&nbsp;→</span>
+    </a>
+</nav>
+                    </div>
+                    
+                    <nav class="col-12 col-lg-3 pb-4">
+                        <div class="sticky-top toc page-toc" aria-labelledby="page-toc-heading">
+                            <p class="font-weight-bold" id="page-toc-heading">Page contents</p>
+                            <ul>
+<li><a class="reference internal" href="#">ESG Reports Package</a><ul>
+<li><a class="reference internal" href="#module-src.esg_reports.search">ESG Reports Search Module</a><ul>
+<li><a class="reference internal" href="#src.esg_reports.search.Search"><code class="docutils literal notranslate"><span class="pre">Search</span></code></a><ul>
+<li><a class="reference internal" href="#src.esg_reports.search.Search._format_google_results"><code class="docutils literal notranslate"><span class="pre">Search._format_google_results()</span></code></a></li>
+<li><a class="reference internal" href="#src.esg_reports.search.Search._match_score"><code class="docutils literal notranslate"><span class="pre">Search._match_score()</span></code></a></li>
+<li><a class="reference internal" href="#src.esg_reports.search.Search.google"><code class="docutils literal notranslate"><span class="pre">Search.google()</span></code></a></li>
+<li><a class="reference internal" href="#src.esg_reports.search.Search.model_post_init"><code class="docutils literal notranslate"><span class="pre">Search.model_post_init()</span></code></a></li>
+<li><a class="reference internal" href="#src.esg_reports.search.Search.sustainability_reports_dot_com"><code class="docutils literal notranslate"><span class="pre">Search.sustainability_reports_dot_com()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.esg_reports.validate">ESG Reports Validate Module</a><ul>
+<li><a class="reference internal" href="#src.esg_reports.validate.SearchResultValidator"><code class="docutils literal notranslate"><span class="pre">SearchResultValidator</span></code></a><ul>
+<li><a class="reference internal" href="#src.esg_reports.validate.SearchResultValidator._company_name_in_result"><code class="docutils literal notranslate"><span class="pre">SearchResultValidator._company_name_in_result()</span></code></a></li>
+<li><a class="reference internal" href="#src.esg_reports.validate.SearchResultValidator._keywords_in_result"><code class="docutils literal notranslate"><span class="pre">SearchResultValidator._keywords_in_result()</span></code></a></li>
+<li><a class="reference internal" href="#src.esg_reports.validate.SearchResultValidator._year_in_result"><code class="docutils literal notranslate"><span class="pre">SearchResultValidator._year_in_result()</span></code></a></li>
+<li><a class="reference internal" href="#src.esg_reports.validate.SearchResultValidator.clean_company_name"><code class="docutils literal notranslate"><span class="pre">SearchResultValidator.clean_company_name</span></code></a></li>
+<li><a class="reference internal" href="#src.esg_reports.validate.SearchResultValidator.model_post_init"><code class="docutils literal notranslate"><span class="pre">SearchResultValidator.model_post_init()</span></code></a></li>
+<li><a class="reference internal" href="#src.esg_reports.validate.SearchResultValidator.search_results"><code class="docutils literal notranslate"><span class="pre">SearchResultValidator.search_results</span></code></a></li>
+<li><a class="reference internal" href="#src.esg_reports.validate.SearchResultValidator.validated_results"><code class="docutils literal notranslate"><span class="pre">SearchResultValidator.validated_results</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                        </div>
+                    </nav>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="container-fluid bg-primary text-light">
+        <div class="container">
+            <div class="row">
+        <div class="col p-4">
+            
+                <nav aria-label="Footer">
+                    <ul class="nav justify-content-center mb-2">
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/features/">Features</a></li>
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/about-wagtail/"> About Wagtail</a></li>
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/services/"> Services</a></li>
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/blog/"> Blog</a></li>
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/packages/"> Packages</a></li>
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/developers/"> Developers</a></li>
+                        
+                    </ul>
+                </nav>
+            
+            <div class="text-center">
+                    &copy; Copyright 2025, Gabriella Larrisa
+            </div>
+            <div class="text-center text-white-50 font-italic mt-3">
+                <small>
+                    Created using
+                    <a class="text-white" href="https://github.com/wagtail/sphinx_wagtail_theme" rel="nofollow" target="_blank">
+                        Sphinx Wagtail Theme 6.5.0
+                    </a>
+                    and
+                    <a class="text-white" href="https://www.sphinx-doc.org/" rel="nofollow" target="_blank">
+                        Sphinx 8.1.3
+                    </a>
+                </small>
+            </div>
+        </div>
+    </div>
+        </div>
+    </footer>
+        <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="_static/doctools.js?v=9bcbadda"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+        <script type="text/javascript" src="_static/dist/theme.js"></script>
+        <script type="text/javascript" src="_static/dist/vendor.js"></script>
+        <script type="text/javascript" src="_static/searchtools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() { Search.loadIndex("searchindex.js"); });
+        </script>
+        <script type="text/javascript" id="searchindexloader"></script>
+    </body>
+</html>

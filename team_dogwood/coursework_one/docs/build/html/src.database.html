@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en" data-content_root="./">
+<head>
+    <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>Database Package &mdash; Team Dogwood 1 documentation</title>
+    
+    <link rel="stylesheet" type="text/css" href="_static/dist/fontawesome.css" />
+      <link rel="stylesheet" type="text/css" href="_static/dist/theme.css?v=310cf088" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+            <link rel="index" title="Index" href="genindex.html" />
+            <link rel="search" title="Search" href="search.html" />
+            <link rel="top" title="Team Dogwood 1 documentation" href="#" />
+            <link rel="up" title="src Packages" href="src.html" />
+            <link rel="next" title="ESG Reports Package" href="src.esg_reports.html" />
+            <link rel="prev" title="Data Models Package" href="src.data_models.html" />
+    </head>
+<body>
+    <script type="text/javascript" src="_static/dist/blocking.js"></script>
+    <header class="container-fluid bg-primary">
+        <a class="btn btn-sm btn-light skip-to-content-link" href="#main">Skip to content</a>
+        <div class="container-fluid">
+            <div class="navbar navbar-expand-lg navbar-dark font-weight-bold">
+                    <a href="index.html"
+                        title="Wagtail"
+                        class="logo navbar-brand"
+                    >
+                        <img src="_static/img/wagtail-logo-circle.svg" width="45" height="59" alt="Wagtail"
+                            class="logo-img"
+                        />
+                        Team Dogwood
+                    </a>
+                
+                
+                <button class="navbar-toggler btn btn-primary d-lg-none" type="button" data-toggle="collapse" data-target="#collapseSidebar" aria-expanded="false" aria-controls="collapseExample">
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="sr-only">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-12 col-lg-3 sidebar-container">
+                <div id="collapseSidebar" class="collapse sticky-top d-lg-block pt-5 pr-lg-4">
+<div id="searchbox" class="searchbox mb-6 px-1" role="search">
+    <form id="search-form" action="search.html" autocomplete="off" method="get" role="search">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text border-right-0 bg-white py-3 pl-3 pr-2"><span class="fas fa-search"></span></div>
+            </div>
+            <input class="form-control py-3 pr-3 pl-1 h-100 border-left-0" type="search" name="q" placeholder="Search documentation" aria-label="Search documentation" id="searchinput" />
+        </div>
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+    </form>
+</div><div class="site-toc">
+    <nav class="toc mt-3" aria-label="Main menu">
+        <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="src.html">src Packages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="src.data_models.html">Data Models Package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Database Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.esg_reports.html">ESG Reports Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.utils.html">Utils Package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">config</a></li>
+</ul>
+
+    </nav>
+    <template data-toggle-item-template>
+        <button class="btn btn-sm btn-link toctree-expand" type="button">
+            <span class="sr-only">Toggle menu contents</span>
+        </button>
+    </template>
+</div>
+                    <div class="d-lg-none border-bottom">
+                        
+                    </div>
+                </div>
+            </aside>
+            <div class="col-12 col-lg-9 pt-5">
+                <header class="row align-items-baseline">
+                    <div class="col">
+                        <nav aria-label="breadcrumb">
+    <ol class="breadcrumb m-0 p-0 bg-transparent">
+        <li class="breadcrumb-item"><a href="index.html">Docs</a></li>
+            <li class="breadcrumb-item"><a href="modules.html">src</a></li>
+            <li class="breadcrumb-item"><a href="src.html">src Packages</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Database Package</li>
+    </ol>
+</nav>
+                    </div>
+                    <div class="col-sm-12 col-lg-auto mt-3 mt-lg-3">
+                        <noscript>
+                            <p>JavaScript is required to toggle light/dark mode..</p>
+                        </noscript>
+                        <button id="wagtail-theme" class="btn btn-sm btn-light text-decoration-none" type="button">
+                            <span class="dark-only"><i class="fas fa-sun"></i> Light mode</span>
+                            <span class="light-only"><i class="fas fa-moon"></i> Dark mode</span>
+                        </button>
+    <a class="btn btn-sm btn-light text-decoration-none" href="https://github.com/wagtail/sphinx_wagtail_theme/blob/main/docs/src.database.rst" rel="nofollow">
+        <span class="btn-icon"><span class="fab fa-github"></span></span>
+        <span class="btn-text">Edit on GitHub</span>
+    </a>
+    <a class="btn btn-sm btn-light text-decoration-none" href="_sources/src.database.rst.txt" rel="nofollow">
+        <span class="btn-icon"><span class="fas fa-code"></span></span>
+        <span class="btn-text">View source</span>
+    </a>
+                        
+                    </div>
+                </header>
+                <div class="row" >
+                    <div class="col-12">
+                        <hr class="w-100 my-4">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-lg-9 order-last order-lg-first rst-content">
+                        <main role="main" id="main">
+    <section id="database-package">
+<h1>Database Package<a class="headerlink" href="#database-package" title="Link to this heading">¶</a></h1>
+<p>This package contains modules for interacting with databases and storage services, including <strong>PostgreSQL</strong> for relational data and <strong>MinIO</strong> for object storage.</p>
+<section id="module-src.database.minio">
+<span id="database-minio-module"></span><h2>Database Minio Module<a class="headerlink" href="#module-src.database.minio" title="Link to this heading">¶</a></h2>
+<p class="rubric"><strong>Overview</strong></p>
+<p>The <cite>minio</cite> module provides functionality for interacting with <strong>MinIO</strong>, an open-source object storage service. It includes methods for uploading, downloading, and managing files stored in MinIO buckets.</p>
+<p class="rubric"><strong>Key Features</strong></p>
+<ul class="simple">
+<li><p>Upload files to MinIO buckets.</p></li>
+<li><p>Download files from MinIO buckets.</p></li>
+<li><p>Manage bucket policies and configurations.</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.database.minio.</span></span><span class="sig-name descname"><span class="pre">MinioFileSystem</span></span><a class="headerlink" href="#src.database.minio.MinioFileSystem" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MinioFileSystemRepo</span></code></p>
+<p>Overwrite file read and file write methods in MinioFileSystemRepo to add functionality to process PDF files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> (<em>str</em>) – The name of the MinIO bucket.</p></li>
+<li><p><strong>user</strong> (<em>str</em>) – The username for MinIO.</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – The password for MinIO.</p></li>
+<li><p><strong>endpoint_url</strong> (<em>str</em>) – The endpoint URL used to connect to MinIO, consisting of the MinIO host address and port.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.create_bucket">
+<span class="sig-name descname"><span class="pre">create_bucket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.create_bucket" title="Link to this definition">¶</a></dt>
+<dd><p>Ensures the bucket exists. Creates it if it doesn’t exist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bucket_name</strong> (<em>str</em>) – The name of the MinIO bucket.</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">minio</span> <span class="o">=</span> <span class="n">MinioFileSystem</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">minio</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s2">&quot;my-bucket&quot;</span><span class="p">)</span>
+<span class="go"># Creates a bucket named &quot;my-bucket&quot; if it doesn&#39;t exist.</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.download_file">
+<span class="sig-name descname"><span class="pre">download_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.download_file" title="Link to this definition">¶</a></dt>
+<dd><p>Downloads a file from MinIO to a local path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> (<em>str</em>) – The name of the file in the bucket.</p></li>
+<li><p><strong>dest_path</strong> (<em>str</em>) – The local path to save the file (e.g., “./downloaded.pdf”).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.list_files_by_company">
+<span class="sig-name descname"><span class="pre">list_files_by_company</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">company_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.list_files_by_company" title="Link to this definition">¶</a></dt>
+<dd><p>Lists all files for a specific company by prefix ‘company_id/’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>company_id</strong> (<em>str</em><em> or </em><em>int</em>) – The company ID.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of object names belonging to that company’s folder.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.upload_pdf">
+<span class="sig-name descname"><span class="pre">upload_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">company_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report_year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.upload_pdf" title="Link to this definition">¶</a></dt>
+<dd><p>Uploads a PDF into a subfolder structure: company_id/year/filename.pdf.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>local_file_path</strong> (<em>str</em>) – The path to the local PDF file.</p></li>
+<li><p><strong>company_id</strong> (<em>str</em>) – The ID of the company for which the PDF is being uploaded.</p></li>
+<li><p><strong>report_year</strong> (<em>str</em>) – The year of the CSR report.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The object name (MinIO path), e.g., “123/2024/report.pdf”.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.view_pdf">
+<span class="sig-name descname"><span class="pre">view_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expiry_hours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.view_pdf" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a presigned URL to view the PDF in a web browser.</p>
+<p>Users can open the link in their browser without explicitly downloading.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_name</strong> (<em>str</em>) – The MinIO path (e.g., “123/2024/report.pdf”).</p></li>
+<li><p><strong>expiry_hours</strong> (<em>int</em><em>, </em><em>optional</em>) – The expiry time for the presigned URL in hours. Defaults to 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A presigned URL string. Returns None if an error occurs.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.minio.MinioFileSystem.write_pdf_bytes">
+<span class="sig-name descname"><span class="pre">write_pdf_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf_bytes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">company_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report_year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.minio.MinioFileSystem.write_pdf_bytes" title="Link to this definition">¶</a></dt>
+<dd><p>Uploads a PDF (as bytes) into a subfolder structure: company_id/year/filename.pdf.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdf_bytes</strong> (<em>bytes</em>) – The PDF file as bytes.</p></li>
+<li><p><strong>company_id</strong> (<em>str</em>) – The ID of the company for which the PDF is being uploaded.</p></li>
+<li><p><strong>report_year</strong> (<em>str</em>) – The year of the CSR report.</p></li>
+<li><p><strong>file_name</strong> (<em>str</em>) – The name of the file to be saved.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The object name (MinIO path), e.g., “123/2024/report.pdf”.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.database.postgres">
+<span id="database-postgres-module"></span><h2>Database Postgres Module<a class="headerlink" href="#module-src.database.postgres" title="Link to this heading">¶</a></h2>
+<p>Methods for interacting with postgres database.</p>
+<p class="rubric"><strong>Overview</strong></p>
+<p>The <cite>postgres</cite> module provides functionality for interacting with <strong>PostgreSQL</strong>, a powerful open-source relational database. It includes methods for querying, inserting, updating, and deleting data in PostgreSQL tables.</p>
+<p class="rubric"><strong>Key Features</strong></p>
+<ul class="simple">
+<li><p>Execute SQL queries.</p></li>
+<li><p>Insert, update, and delete records.</p></li>
+<li><p>Manage database connections and transactions.</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.database.postgres.</span></span><span class="sig-name descname"><span class="pre">PostgreSQLDB</span></span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Methods for connecting to and interacting with the PostgreSQL database.</p>
+<p>This class provides methods for connecting to a PostgreSQL database, executing SQL operations,
+and managing database sessions. It supports both read and upsert (update/insert) operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>BaseModel</strong> – Inherits from Pydantic’s BaseModel for data validation and settings management.</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">PostgreSQLDB</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">db</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;read&quot;</span><span class="p">,</span> <span class="n">sql_statement</span><span class="o">=</span><span class="s2">&quot;SELECT * FROM companies&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.__enter__">
+<span class="sig-name descname"><span class="pre">__enter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.__enter__" title="Link to this definition">¶</a></dt>
+<dd><p>Enter the runtime context related to this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The instance of the PostgreSQLDB class.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#src.database.postgres.PostgreSQLDB" title="src.database.postgres.PostgreSQLDB">PostgreSQLDB</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.__exit__">
+<span class="sig-name descname"><span class="pre">__exit__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exc_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traceback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.__exit__" title="Link to this definition">¶</a></dt>
+<dd><p>Exit the runtime context and close the database connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>exc_type</strong> – The exception type (if any).</p></li>
+<li><p><strong>exc_val</strong> – The exception value (if any).</p></li>
+<li><p><strong>exc_tb</strong> – The traceback (if any).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB._conn_postgres">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_conn_postgres</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB._conn_postgres" title="Link to this definition">¶</a></dt>
+<dd><p>Create a connection engine for PostgreSQL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A SQLAlchemy engine object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>sqlalchemy.engine.Engine</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If an error occurs while creating the engine.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB._conn_postgres_psycopg2">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_conn_postgres_psycopg2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB._conn_postgres_psycopg2" title="Link to this definition">¶</a></dt>
+<dd><p>Establishes a raw psycopg2 connection to PostgreSQL.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.delete_csr_report">
+<span class="sig-name descname"><span class="pre">delete_csr_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">report_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.delete_csr_report" title="Link to this definition">¶</a></dt>
+<dd><p>Deletes a CSR report record from the database by report_id.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.execute" title="Link to this definition">¶</a></dt>
+<dd><p>Fetches data (SELECT) and returns a list of dictionaries.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.fetch">
+<span class="sig-name descname"><span class="pre">fetch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.fetch" title="Link to this definition">¶</a></dt>
+<dd><p>Fetches data (SELECT) and returns a single dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.get_csr_report_by_id">
+<span class="sig-name descname"><span class="pre">get_csr_report_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">report_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.get_csr_report_by_id" title="Link to this definition">¶</a></dt>
+<dd><p>Fetch a single CSR report by its primary key (report_id).
+(Assumes you have a ‘report_id’ column in your table.)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.get_csr_reports_by_company">
+<span class="sig-name descname"><span class="pre">get_csr_reports_by_company</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">company_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.get_csr_reports_by_company" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve all CSR reports for a specific company, ordered by year desc.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.database.postgres.PostgreSQLDB.update_csr_report">
+<span class="sig-name descname"><span class="pre">update_csr_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">report_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.database.postgres.PostgreSQLDB.update_csr_report" title="Link to this definition">¶</a></dt>
+<dd><p>Updates a CSR report’s URL and/or year based on report_id.
+Only updates fields that are provided.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+</main>
+                        <nav aria-label="Page navigation" class="py-4 my-5 clearfix font-weight-bold border-top">
+    <a class="float-left" href="src.data_models.html" title="Previous">
+        <span aria-hidden="true">←&nbsp;</span>Data Models Package
+    </a>
+    <a class="float-right" href="src.esg_reports.html" title="Next">
+        ESG Reports Package <span aria-hidden="true">&nbsp;→</span>
+    </a>
+</nav>
+                    </div>
+                    
+                    <nav class="col-12 col-lg-3 pb-4">
+                        <div class="sticky-top toc page-toc" aria-labelledby="page-toc-heading">
+                            <p class="font-weight-bold" id="page-toc-heading">Page contents</p>
+                            <ul>
+<li><a class="reference internal" href="#">Database Package</a><ul>
+<li><a class="reference internal" href="#module-src.database.minio">Database Minio Module</a><ul>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem</span></code></a><ul>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.create_bucket"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.create_bucket()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.download_file"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.download_file()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.list_files_by_company"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.list_files_by_company()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.upload_pdf"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.upload_pdf()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.view_pdf"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.view_pdf()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.minio.MinioFileSystem.write_pdf_bytes"><code class="docutils literal notranslate"><span class="pre">MinioFileSystem.write_pdf_bytes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.database.postgres">Database Postgres Module</a><ul>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB</span></code></a><ul>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.__enter__"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.__enter__()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.__exit__"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.__exit__()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB._conn_postgres"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB._conn_postgres()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB._conn_postgres_psycopg2"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB._conn_postgres_psycopg2()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.delete_csr_report"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.delete_csr_report()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.execute"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.execute()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.fetch"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.fetch()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.get_csr_report_by_id"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.get_csr_report_by_id()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.get_csr_reports_by_company"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.get_csr_reports_by_company()</span></code></a></li>
+<li><a class="reference internal" href="#src.database.postgres.PostgreSQLDB.update_csr_report"><code class="docutils literal notranslate"><span class="pre">PostgreSQLDB.update_csr_report()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                        </div>
+                    </nav>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="container-fluid bg-primary text-light">
+        <div class="container">
+            <div class="row">
+        <div class="col p-4">
+            
+                <nav aria-label="Footer">
+                    <ul class="nav justify-content-center mb-2">
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/features/">Features</a></li>
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/about-wagtail/"> About Wagtail</a></li>
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/services/"> Services</a></li>
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/blog/"> Blog</a></li>
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/packages/"> Packages</a></li>
+                        
+                            
+                            
+                            <li class="nav-item"><a class="nav-link text-light"  href="https://wagtail.org/developers/"> Developers</a></li>
+                        
+                    </ul>
+                </nav>
+            
+            <div class="text-center">
+                    &copy; Copyright 2025, Gabriella Larrisa
+            </div>
+            <div class="text-center text-white-50 font-italic mt-3">
+                <small>
+                    Created using
+                    <a class="text-white" href="https://github.com/wagtail/sphinx_wagtail_theme" rel="nofollow" target="_blank">
+                        Sphinx Wagtail Theme 6.5.0
+                    </a>
+                    and
+                    <a class="text-white" href="https://www.sphinx-doc.org/" rel="nofollow" target="_blank">
+                        Sphinx 8.1.3
+                    </a>
+                </small>
+            </div>
+        </div>
+    </div>
+        </div>
+    </footer>
+        <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="_static/doctools.js?v=9bcbadda"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+        <script type="text/javascript" src="_static/dist/theme.js"></script>
+        <script type="text/javascript" src="_static/dist/vendor.js"></script>
+        <script type="text/javascript" src="_static/searchtools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() { Search.loadIndex("searchindex.js"); });
+        </script>
+        <script type="text/javascript" id="searchindexloader"></script>
+    </body>
+</html>
