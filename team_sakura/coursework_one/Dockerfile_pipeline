@@ -1,0 +1,23 @@
+# Use Python 3.10 as the base image
+FROM python:3.10
+
+# Set the working directory
+WORKDIR /app
+
+# Install Poetry using the recommended installation script
+RUN curl -sSL https://install.python-poetry.org | python3 -
+
+# Add Poetry to the PATH for subsequent commands
+ENV PATH="/root/.local/bin:$PATH"
+
+# Copy Poetry dependency management files
+COPY pyproject.toml poetry.lock ./
+
+# Install Python dependencies using Poetry
+RUN poetry install --no-root  # Install project dependencies
+
+# Copy the project files into the container
+COPY . .
+
+# Execute `main.py` using Poetry
+CMD ["poetry", "run", "python", "a_pipeline/main.py"]
