@@ -49,8 +49,16 @@ The Link Retrieval pipeline is responsible for fetching and processing web links
 ## system requirements
 
 To run this project, you need to make sure you have
+- Docker installed (Docker Desktop for Mac/Windows) Link: https://www.docker.com/products/docker-desktop/
 - At least 6GB of RAM usable by docker container
 - At least 128GB of free space on hard drive available to docker.
+- Python 3.10 or higher
+- Poetry 2.1.1. or higher
+
+to install poetry run the command below:
+```bash
+pip install poetry
+```
 
 This can be checked and adjusted on docker desktop settings.
 
