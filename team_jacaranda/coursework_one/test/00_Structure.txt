@@ -1,21 +1,21 @@
 tests/
 ├── 00 Structure.txt
-├── 01 Unit.py            # 单元测试
-├── 02 Integration.py     # 集成测试
-├── 03 e2e.py             # 端到端测试
-└── conftest.py           # 全局配置
+├── 01 Unit.py            # Unit tests
+├── 02 Integration.py     # Integration tests
+├── 03 e2e.py             # End-to-end tests
+└── conftest.py           # Global configuration
 
 tests/
-├── unit/                 # 单元测试
-│   ├── test_database.py          # 对应 test_database.ipynb
-│   ├── test_url_processing.py    # 对应 test_url_processing.ipynb
-│   └── test_kafka_producer.py    # 对应 test_kafka_producer.ipynb 的纯逻辑部分
-├── integration/          # 集成测试
-│   ├── test_minio_postgres.py    # 对应 test_kafka_minio.ipynb 的 MinIO+DB 集成部分
-│   └── test_kafka_ingestion.py   # 对应 test_kafka_minio.ipynb 的 Kafka 消费逻辑
-├── e2e/                  # 端到端测试
-│   └── test_data_pipeline.py     # 完整流程测试
-└── conftest.py           # 全局配置
+├── unit/                 # Unit tests
+│   ├── test_database.py          # Corresponding to test_database.ipynb
+│   ├── test_url_processing.py    # Corresponding to test_url_processing.ipynb
+│   └── test_kafka_producer.py    # Corresponding to test_kafka_producer.ipynb (pure logic part)
+├── integration/          # Integration tests
+│   ├── test_minio_postgres.py    # Corresponding to test_kafka_minio.ipynb (MinIO+DB integration part)
+│   └── test_kafka_ingestion.py   # Corresponding to test_kafka_minio.ipynb (Kafka consumption logic)
+├── e2e/                  # End-to-end tests
+│   └── test_data_pipeline.py     # Full process test
+└── conftest.py           # Global configuration
 
 
 tests/
