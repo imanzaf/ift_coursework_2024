@@ -58,5 +58,6 @@ jobs:
         sphinx-build -b html docs/
 
     # Step 5: Deploy the generated files to GitHub Pages
-    - name: Deploy to GitHub Pages
+    - name: Deployment
+      id: deployment
       uses: actions/deploy-pages@v4
