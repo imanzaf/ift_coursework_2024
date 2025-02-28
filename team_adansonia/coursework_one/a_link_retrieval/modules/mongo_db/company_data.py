@@ -8,7 +8,7 @@ import datetime
 import sqlite3
 import pandas as pd
 import dotenv
-from modules.utils.dockercheck import is_running_in_docker
+from ...modules.utils.dockercheck import is_running_in_docker
 load_dotenv()
 
 if is_running_in_docker():

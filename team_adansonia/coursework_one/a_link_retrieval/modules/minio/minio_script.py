@@ -6,8 +6,8 @@ from minio.error import S3Error
 from datetime import timedelta
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-from modules.mongo_db.company_data import connect_to_mongo, CompanyData
-from modules.utils.dockercheck import is_running_in_docker
+from ...modules.mongo_db.company_data import connect_to_mongo, CompanyData
+from ...modules.utils.dockercheck import is_running_in_docker
 
 
 # --- MinIO Connection Setup ---

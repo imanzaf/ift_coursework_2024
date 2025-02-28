@@ -1,14 +1,14 @@
 import json
 import os
 from bson import ObjectId
-from modules.mongo_db import company_data as mongo
-from modules.minio import minio_script as minio
-from modules.crawler import crawler as crawler, sustainability_reports_beautifulsoup
-from modules.crawler import google_api_combined_crawler as google_api_combined_crawler
+from team_adansonia.coursework_one.a_link_retrieval.modules.mongo_db import company_data as mongo
+from team_adansonia.coursework_one.a_link_retrieval.modules.minio import minio_script as minio
+from team_adansonia.coursework_one.a_link_retrieval.modules.crawler import crawler as crawler, sustainability_reports_beautifulsoup
+from team_adansonia.coursework_one.a_link_retrieval.modules.crawler import google_api_combined_crawler as google_api_combined_crawler
 from datetime import datetime
 import logging
-from modules.mongo_db.company_data import ROOT_DIR
-from modules.utils.dockercheck import is_running_in_docker
+from team_adansonia.coursework_one.a_link_retrieval.modules.mongo_db.company_data import ROOT_DIR
+from team_adansonia.coursework_one.a_link_retrieval.modules.utils.dockercheck import is_running_in_docker
 #Variable to check database statues
 is_db_initialized = False
 

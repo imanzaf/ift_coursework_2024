@@ -153,21 +153,21 @@ When the containers are running, all the scripts will be scheduled automatically
    poetry install
    ```
 
-3.1.**Run the scheduler pipeline:**
+3.1.**Run the main function to test the project:**
 
    ```bash
-   PYTHONPATH=team_adansonia/coursework_one/a_link_retrieval poetry run python -m main
+   poetry run python -m team_adansonia.coursework_one.a_link_retrieval.main
    ```
 
 3.2.**Run specific fundtions inside main.py**
 
    ```bash
-   PYTHONPATH=team_adansonia/coursework_one/a_link_retrieval poetry run python -c "from main import <function_name>; <function_name>(<parameters>)"
+   poetry run python -c "from main import <function_name>; <function_name>(<parameters>)"
    ```
    **for example:**
 
    ```bash
-   PYTHONPATH=team_adansonia/coursework_one/a_link_retrieval poetry run python -c "from main import populate_database; populate_database(5)"
+   poetry run python -c "from main import populate_database_jenkins; populate_database_jenkins(2, True)"
    ```
    **this will populate the database with all available historical reports from 5 companies**
 
@@ -176,7 +176,7 @@ When the containers are running, all the scripts will be scheduled automatically
 Please run the command below and follow the terminal instructions:
 
 ```bash
-poetry run python team_adansonia/coursework_one/a_link_retrieval/modules/mongo_db/queries.py
+poetry run python -m team_adansonia.coursework_one.a_link_retrieval.modules.mongo_db.queries
 ```
 
 ### Running Tests

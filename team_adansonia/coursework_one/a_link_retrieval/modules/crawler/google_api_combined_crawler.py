@@ -8,7 +8,7 @@ import fitz  # PyMuPDF for PDF parsing
 from dotenv import load_dotenv
 from loguru import logger
 from typing import List
-import modules.validation.validation as validation
+import team_adansonia.coursework_one.a_link_retrieval.modules.validation.validation as validation
 # Load environment variables
 load_dotenv()
 

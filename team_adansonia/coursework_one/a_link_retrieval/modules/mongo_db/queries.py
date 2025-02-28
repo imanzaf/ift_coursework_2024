@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 
 from team_adansonia.coursework_one.a_link_retrieval.modules.mongo_db.company_data import CompanyDatabase
-from modules.utils.dockercheck import is_running_in_docker
+from ...modules.utils.dockercheck import is_running_in_docker
 
 
 def connect_to_mongo():
