@@ -5,7 +5,7 @@ import pytest
 import sys
 import os
 
-# 手动添加项目根目录到 Python 路径
+# Manually add the project root directory to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..','..', '..')))
 
 
@@ -18,23 +18,23 @@ from unittest.mock import Mock, patch
 import psycopg2
 
 def test_table_creation():
-    """测试表创建逻辑"""
+    """Test table creation logic"""
     with patch('psycopg2.connect') as mock_connect:
-         # 在此代码块内，所有对 psycopg2.connect 的调用都会被 Mock 对象替代
+         # Within this code block, all calls to psycopg2.connect will be replaced with the Mock object
         mock_conn = Mock()
         mock_cursor = Mock()
-        mock_connect.return_value = mock_conn # 定义 connect() 的返回值
+        mock_connect.return_value = mock_conn  # Define the return value of connect()
         mock_conn.cursor.return_value = mock_cursor
         
-        # 执行表创建代码
+        # Execute table creation code
         from team_jacaranda.coursework_one.modules.create_table import create_table
         create_table()
 
-        # 验证是否调用了正确的SQL
+        # Verify if the correct SQL was called
         mock_cursor.execute.assert_called_with("CREATE TABLE IF NOT EXISTS ...")
 
 def test_database_connection():
-    """测试数据库连接"""
+    """Test database connection"""
     with patch('psycopg2.connect') as mock_connect:
         from team_jacaranda.coursework_one.modules.create_table import connect_to_postgres
         connect_to_postgres()
@@ -71,7 +71,7 @@ from unittest.mock import Mock
 from team_jacaranda.coursework_one.modules.kafka_producer import group_reports_by_company
 
 def test_group_reports():
-    """测试数据分组逻辑"""
+    """Test data grouping logic"""
     test_data = [
         ("Alaska Air Group inc", "ALK", "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ALK_2017.pdf"),
         ("Alaska Air Group inc", "ALK", "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ALK_2022.pdf"),
@@ -85,13 +85,3 @@ def test_group_reports():
 
 
 # In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
