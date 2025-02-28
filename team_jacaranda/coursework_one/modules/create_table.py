@@ -23,12 +23,12 @@ SELECT EXISTS (
 # SQL query to create a new table with foreign key constraint
 create_table_query = """
 CREATE TABLE csr_reporting.company_reports (
-    id SERIAL PRIMARY KEY,
+    symbol CHAR(12),
     security TEXT,
     report_url VARCHAR(255),
     report_year INTEGER,
     minio_path VARCHAR(255),
-    FOREIGN KEY (security) REFERENCES csr_reporting.company_static (security)
+    PRIMARY KEY (symbol)
 )
 """
 
@@ -43,14 +43,26 @@ try:
     table_exists = cursor.fetchone()[0]
 
     if table_exists:
-        print("Table csr_reporting.csr_reports already exists.")
+        print("Table csr_reporting.company_reports already exists.")
     else:
         # Execute the SQL query to create the table
         cursor.execute(create_table_query)
+        cursor.execute("""
+        SELECT symbol, security FROM csr_reporting.company_static
+        ORDER BY symbol;
+    """)
+    companies = cursor.fetchall()
+
+    for symbol, security in companies:
+        cursor.execute("""
+                INSERT INTO csr_reporting.company_reports (symbol, security)
+                VALUES (%s, %s)
+                ON CONFLICT DO nothing;
+            """, (symbol, security))
 
         # Commit the transaction
         conn.commit()
-        print("Table csr_reporting.csr_reports created successfully (if not exists) with foreign key constraint!")
+        print("Table csr_reporting.company_reports created successfully (if not exists) with foreign key constraint!")
 except Exception as e:
     print(f"An error occurred: {e}")
 finally:
