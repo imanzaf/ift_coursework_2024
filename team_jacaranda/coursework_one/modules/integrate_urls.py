@@ -7,7 +7,7 @@ from pathlib import Path
 # Get the absolute path of the script file
 script_dir = Path(__file__).resolve().parent
 # Construct the path to the data file
-json_file_path = script_dir / "../../../team_jacaranda/coursework_one/static/company_pdf_links.json"
+json_file_path = script_dir / "../../../team_jacaranda/coursework_one/modules/db/company_pdf_links.json"
 # Resolve the path (remove redundant ../)
 json_file_path = json_file_path.resolve()
 
