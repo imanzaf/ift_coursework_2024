@@ -4,31 +4,3 @@ tests/
 ├── 02 Integration.py     # Integration tests
 ├── 03 e2e.py             # End-to-end tests
 └── conftest.py           # Global configuration
-
-tests/
-├── unit/                 # Unit tests
-│   ├── test_database.py          # Corresponding to test_database.ipynb
-│   ├── test_url_processing.py    # Corresponding to test_url_processing.ipynb
-│   └── test_kafka_producer.py    # Corresponding to test_kafka_producer.ipynb (pure logic part)
-├── integration/          # Integration tests
-│   ├── test_minio_postgres.py    # Corresponding to test_kafka_minio.ipynb (MinIO+DB integration part)
-│   └── test_kafka_ingestion.py   # Corresponding to test_kafka_minio.ipynb (Kafka consumption logic)
-├── e2e/                  # End-to-end tests
-│   └── test_data_pipeline.py     # Full process test
-└── conftest.py           # Global configuration
-
-
-tests/
-├── unit/
-│   ├── test_database.py
-│   ├── test_extractors.py
-│   ├── test_file_handling.py
-│   └── test_kafka_ops.py
-├── integration/
-│   ├── test_data_pipeline.py
-│   └── test_kafka_minio.py
-├── e2e/
-│   └── test_full_flow.py
-├── conftest.py
-├── pytest.ini
-└── .coveragerc
