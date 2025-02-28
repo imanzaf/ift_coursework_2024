@@ -312,6 +312,19 @@ def schedule_scraper():
     except (KeyboardInterrupt, SystemExit):
         write_log("🛑 Scheduler stopped.")
 
+def main(max_companies=None):
+    """Run the CSR crawling process"""
+    companies = get_company_list_from_postgres()
+
+    if max_companies:
+        companies = companies[:max_companies]  # Crawl only the specified number of companies
+    
+    if not MINIO_CLIENT.bucket_exists(BUCKET_NAME):
+        MINIO_CLIENT.make_bucket(BUCKET_NAME)  # Create the bucket if it does not exist
+
+    write_log("📢 Starting to process the company list...")
+    process_batch(companies)
+    write_log("🎉 All companies have been processed!")
 
 if __name__ == "__main__":
     # By default, run the crawler once

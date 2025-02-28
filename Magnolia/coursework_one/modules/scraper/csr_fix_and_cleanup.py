@@ -156,17 +156,30 @@ def delete_duplicate_pdfs():
 
 
 # ========== Main Program ==========
-def main():
-    write_log("🚀 Starting CSR report year correction...")
-    update_csr_year()
+def main(dry_run=False):
+    """Fix/Clean CSR data"""
+    write_log("🔍 Starting data cleaning and fixing task...")
 
-    write_log("🚀 Starting ingestion_time correction...")
-    fix_ingestion_time()
+    if dry_run:
+        write_log("🔎 Running in dry-run mode, no DB changes will be made")
 
-    write_log("🚀 Starting duplicate CSR report cleanup...")
-    delete_duplicate_pdfs()
+    # 1. Update CSR report year
+    if not dry_run:
+        write_log("🚀 Correcting CSR report years...")
+        update_csr_year()
 
-    write_log("🎉 All tasks completed!")
+    # 2. Fix ingestion_time
+    if not dry_run:
+        write_log("🚀 Fixing ingestion_time fields...")
+        fix_ingestion_time()
+
+    # 3. Delete duplicates
+    if not dry_run:
+        write_log("🚀 Deleting duplicate CSR reports...")
+        delete_duplicate_pdfs()
+
+    write_log("✅ All tasks completed!")
+
 
 
 if __name__ == "__main__":
