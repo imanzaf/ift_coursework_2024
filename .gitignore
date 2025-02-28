@@ -207,18 +207,6 @@ __pycache__
 # vs code settings
 .vscode
 
-# pycharm settings
-.idea
-
-# test/jenkins_log.txt
-team_adansonia/coursework_one/a_link_retrieval/test/jenkins_log.txt
-team_adansonia/coursework_one/a_link_retrieval/populated_tracking.json
-mongo-seed/seed_data.json
-# poetry lock file
-poetry.lock
-
-
-
 # volumes folders docker
 
 postgres-data/
