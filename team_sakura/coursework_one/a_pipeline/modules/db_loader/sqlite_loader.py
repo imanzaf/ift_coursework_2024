@@ -2,12 +2,12 @@ import sqlite3
 import yaml
 import os
 
-config_path = os.getenv(
-    "CONF_PATH", "a_pipeline/config/conf.yaml"
-)  # Default path for Docker
+# Load configuration from YAML file, using a default path for Docker if not set in environment variables
+config_path = os.getenv("CONF_PATH", "a_pipeline/config/conf.yaml")
 with open(config_path, "r") as file:
     config = yaml.safe_load(file)
 
+# Determine database path based on environment (Docker or local)
 if os.getenv("DOCKER_ENV"):
     DB_PATH = config["databasedocker"]["sqlite_path"]
 else:
@@ -15,7 +15,12 @@ else:
 
 
 def fetch_companies():
-    """Fetch company data from SQLite database."""
+    """
+    Fetch company data from the SQLite database.
+
+    Returns:
+        list[dict]: A list of dictionaries containing company information.
+    """
     conn = sqlite3.connect(DB_PATH)
     print("Using database:", DB_PATH)
     cursor = conn.cursor()
@@ -23,7 +28,7 @@ def fetch_companies():
     cursor.execute(
         """
         SELECT security, symbol, gics_sector, gics_industry, country, region FROM equity_static
-    """
+        """
     )
 
     companies = [
@@ -39,4 +44,4 @@ def fetch_companies():
     ]
 
     conn.close()
-    return companies
+    return companies  # Ensure database connection is closed before returning results
