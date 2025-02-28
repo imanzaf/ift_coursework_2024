@@ -1,3 +1,0 @@
-# 忽略 Sphinx 生成的临时文件
-build/doctrees/
-build/latex/
