@@ -49,10 +49,11 @@ try:
     # Iterate through the JSON data
     for company_name, urls in data.items():
         # Check if the company name exists in the company_static table
-        cursor.execute("SELECT security FROM csr_reporting.company_static WHERE security = %s", (company_name,))
+        cursor.execute("SELECT symbol, security FROM csr_reporting.company_static WHERE security = %s", (company_name,))
         result = cursor.fetchone()
 
         if result:
+            symbol, security = result
             # If the company exists, insert URL data
             for url in urls:
                 # Extract the year from the URL
@@ -60,10 +61,10 @@ try:
 
                 # Insert data into the company_reports table
                 insert_query = """
-                    INSERT INTO csr_reporting.company_reports (security, report_url, report_year)
-                    VALUES (%s, %s, %s)
+                    INSERT INTO csr_reporting.company_reports (symbol, security, report_url, report_year)
+                    VALUES (%s, %s, %s, %s)
                 """
-                cursor.execute(insert_query, (company_name, url, report_year))
+                cursor.execute(insert_query, (symbol, company_name, url, report_year))
 
     # Commit the transaction
     conn.commit()

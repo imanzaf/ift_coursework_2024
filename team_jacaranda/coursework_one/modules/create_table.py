@@ -23,12 +23,13 @@ SELECT EXISTS (
 # SQL query to create a new table with foreign key constraint
 create_table_query = """
 CREATE TABLE csr_reporting.company_reports (
+    id SERIAL,
     symbol CHAR(12),
     security TEXT,
     report_url VARCHAR(255),
     report_year INTEGER,
     minio_path VARCHAR(255),
-    PRIMARY KEY (symbol)
+    PRIMARY KEY (id)
 )
 """
 
