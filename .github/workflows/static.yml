@@ -1,0 +1,49 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - feature/enable-docs  # Trigger action when pushing to the main branch
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Step 2: Set up Python (for Sphinx build)
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8  # Adjust version if necessary
+
+    # Step 3: Install dependencies
+    - name: Install dependencies
+      run: |
+        pip install -U sphinx  # Install Sphinx and other dependencies
+
+    # Step 4: Build Sphinx HTML documentation
+    - name: Build Sphinx documentation
+      run: |
+        sphinx-build -b html docs/ docs/_build/
+
+    # Step 5: Copy generated HTML files to the root of gh-pages branch
+    - name: Create gh-pages branch and copy files
+      run: |
+        git checkout --orphan gh-pages  # Create an orphan branch (no history)
+        git rm -rf .  # Clean the branch
+        cp -r docs/_build/html/* .  # Copy generated HTML files to root
+        git add .  # Stage the files
+        git commit -m "Deploy Sphinx docs"
+        git push origin gh-pages --force  # Force push to the gh-pages branch
+    
+    # Step 6: Deploy the generated files to GitHub Pages
+    - name: Deployment
+      id: deployment
+      uses: actions/deploy-pages@v4
