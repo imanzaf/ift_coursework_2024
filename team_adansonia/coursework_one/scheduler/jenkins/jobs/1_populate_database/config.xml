@@ -18,7 +18,7 @@ to trigger the main.py script poetry run python command is used</description>
   </properties>
   <scm class="hudson.scm.NullSCM"/>
   <canRoam>true</canRoam>
-  <disabled>true</disabled>
+  <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <triggers>
@@ -38,7 +38,7 @@ else
   poetry sync
 fi
 
-PYTHONPATH=team_adansonia/coursework_one/a_link_retrieval poetry run python -c "from main import populate_database_jenkins; populate_database_jenkins(1)"
+PYTHONPATH=team_adansonia/coursework_one/a_link_retrieval poetry run python -c "from main import populate_database_jenkins; populate_database_jenkins(50)"
       </command>
       <configuredLocalRules/>
     </hudson.tasks.Shell>
