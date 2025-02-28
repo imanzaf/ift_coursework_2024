@@ -1,10 +1,14 @@
+import os
+import tempfile
+import requests
 from minio import Minio
 from minio.error import S3Error
+from datetime import timedelta
+from pymongo import MongoClient
+from bson.objectid import ObjectId
 from modules.mongo_db.company_data import connect_to_mongo, CompanyData
 from modules.utils.dockercheck import is_running_in_docker
-import tempfile
-import os
-import requests
+
 
 # --- MinIO Connection Setup ---
 def connect_to_minio():
@@ -33,15 +37,6 @@ def connect_to_minio():
     except S3Error as e:
         print(f"❌ Error connecting to MinIO: {e}")
         return None
-
-from datetime import timedelta
-from pymongo import MongoClient
-from bson.objectid import ObjectId
-import tempfile
-import os
-import requests
-from minio import Minio
-from minio.error import S3Error
 
 
 def upload_report_to_minio(document, client, mongo_client):

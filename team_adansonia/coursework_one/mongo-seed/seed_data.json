@@ -672,10 +672,12 @@
         "csr_reports": {
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_AEE_2020.pdf",
             "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_AEE_2022.pdf",
-            "2023": "https://www.responsibilityreports.com/Click/1793"
+            "2023": "https://www.responsibilityreports.com/Click/1793",
+            "2021": "https://s21.q4cdn.com/448935352/files/doc_downloads/Ameren_2021_Sustainability_Report.pdf",
+            "2024": "https://s21.q4cdn.com/448935352/files/doc_downloads/2024/05/2024_ameren_sustainability_report.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:37:11.865000"
+        "updated_at": "2025-02-28 11:12:11.019878"
     },
     {
         "symbol": "AAL",
@@ -702,10 +704,11 @@
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_AAL_2020.pdf",
             "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_AAL_2021.pdf",
             "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_AAL_2022.pdf",
-            "2023": "https://www.responsibilityreports.com/Click/2017"
+            "2023": "https://www.responsibilityreports.com/Click/2017",
+            "2024": "https://s202.q4cdn.com/986123435/files/images/esg/American-Airlines-Sustainability-Report-2023.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:37:12.518000"
+        "updated_at": "2025-02-28 11:12:37.362530"
     },
     {
         "symbol": "AEP",
@@ -732,10 +735,12 @@
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_AEP_2020.pdf",
             "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_AEP_2021.pdf",
             "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_AEP_2022.pdf",
-            "2023": "https://www.responsibilityreports.com/Click/2020"
+            "2023": "https://www.responsibilityreports.com/Click/2020",
+            "2007": "",
+            "2024": "https://aepsustainability.com/lib/docs/2024_EEI_ESG_Report.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:37:13.196000"
+        "updated_at": "2025-02-28 11:13:07.869182"
     },
     {
         "symbol": "AXP",

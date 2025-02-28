@@ -68,8 +68,10 @@ def retrieve_and_store_csr_reports(collection, populated_data, api_limit=10, byp
             # Generate all years from earliest found to current year (inclusive)
             
             if bypass:
+                print('bypass true')
                 years_to_process = list(range(int(earliest_year), int(current_year)))
             else:
+                print('no bypass')
                 years_to_process = list(range(int(earliest_year), int(current_year)+1))
 
             print(years_to_process)
@@ -194,7 +196,7 @@ def responsibility_reports_seed():
         exit(1)
 
     ROOT_DIR = os.getenv("ROOT_DIR")
-    seed_folder = os.path.join(ROOT_DIR, "mongo-seed")
+    seed_folder = os.path.join(ROOT_DIR, "team_adansonia/coursework_one/mongo-seed")
     seed_file = os.path.join(seed_folder, "seed_data.json")
 
     db = mongo_client["csr_reports"]
@@ -238,7 +240,7 @@ def populate_database(rate_limit=10, bypass=True):
     else:
         ROOT_DIR = os.getenv("ROOT_DIR_LOCAL")
 
-    seed_folder = os.path.join(ROOT_DIR, "mongo-seed")
+    seed_folder = os.path.join(ROOT_DIR, "team_adansonia/coursework_one/mongo-seed")
     seed_file = os.path.join(seed_folder, "seed_data.json")
 
     mongo_client = mongo.connect_to_mongo()
@@ -445,5 +447,5 @@ def test_jenkins():
     print("this is from jenkins_test.py at " + date_str)
 
 if __name__ == '__main__':
-    populate_database_jenkins(5, False)
-    get_latest_report_jenkins(5, False)
+    populate_database_jenkins(3, True)
+    #get_latest_report_jenkins(5, False)

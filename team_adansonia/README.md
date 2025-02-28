@@ -46,6 +46,14 @@ The Link Retrieval pipeline is responsible for fetching and processing web links
 - **MongoDB**: Manages database operations with MongoDB.
 - **Validation**: Ensures data integrity and correctness.
 
+## system requirements
+
+To run this project, you need to make sure you have
+- At least 6GB of RAM usable by docker container
+- At least 128GB of free space on hard drive available to docker.
+
+This can be checked and adjusted on docker desktop settings.
+
 ## Instructions
 
 ### Running the App on Docker

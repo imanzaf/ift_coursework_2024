@@ -48,6 +48,7 @@ class CompanyData:
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat()
         }
+    
 class CompanyDatabase:
     """
     A class to handle database operations for CompanyData.
@@ -190,7 +191,7 @@ def create_mongo_seed_file(df):
     """Convert DataFrame to JSON and save for MongoDB import inside 'mongo_seed/' folder."""
 
     # Define folder and file path
-    seed_folder = os.path.join(ROOT_DIR, "mongo-seed")
+    seed_folder = os.path.join(ROOT_DIR, "team_adansonia/coursework_one/mongo-seed")
     seed_file = os.path.join(seed_folder, "seed_data.json")
 
     # Check if file already exists
@@ -244,7 +245,7 @@ def import_seed_to_mongo():
     print("⚠️ All existing documents in the collection have been deleted.")
 
     # Step 3: Load the seed file into MongoDB
-    seed_file = os.path.join(ROOT_DIR, "mongo-seed", "seed_data.json")
+    seed_file = os.path.join(ROOT_DIR, "team_adansonia/coursework_one/mongo-seed", "seed_data.json")
     if os.path.exists(seed_file):  # Check if the seed file exists
         with open(seed_file, "r") as f:
             try:
@@ -275,4 +276,5 @@ def main():
     # Access the database (not the collection directly)
     db = mongo_client["csr_reports"]
 
+#run main on import 
 main()
