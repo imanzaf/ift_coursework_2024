@@ -1,0 +1,34 @@
+tests/
+├── 00 Structure.txt
+├── 01 Unit.py            # 单元测试
+├── 02 Integration.py     # 集成测试
+├── 03 e2e.py             # 端到端测试
+└── conftest.py           # 全局配置
+
+tests/
+├── unit/                 # 单元测试
+│   ├── test_database.py          # 对应 test_database.ipynb
+│   ├── test_url_processing.py    # 对应 test_url_processing.ipynb
+│   └── test_kafka_producer.py    # 对应 test_kafka_producer.ipynb 的纯逻辑部分
+├── integration/          # 集成测试
+│   ├── test_minio_postgres.py    # 对应 test_kafka_minio.ipynb 的 MinIO+DB 集成部分
+│   └── test_kafka_ingestion.py   # 对应 test_kafka_minio.ipynb 的 Kafka 消费逻辑
+├── e2e/                  # 端到端测试
+│   └── test_data_pipeline.py     # 完整流程测试
+└── conftest.py           # 全局配置
+
+
+tests/
+├── unit/
+│   ├── test_database.py
+│   ├── test_extractors.py
+│   ├── test_file_handling.py
+│   └── test_kafka_ops.py
+├── integration/
+│   ├── test_data_pipeline.py
+│   └── test_kafka_minio.py
+├── e2e/
+│   └── test_full_flow.py
+├── conftest.py
+├── pytest.ini
+└── .coveragerc
