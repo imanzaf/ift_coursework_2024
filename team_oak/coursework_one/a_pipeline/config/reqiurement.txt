@@ -1,0 +1,27 @@
+############################################
+#            REQUIREMENTS FILE             #
+############################################
+
+# Standard Library (No installation required)
+hashlib
+logging
+os
+random
+threading
+time
+urllib
+re
+concurrent.futures
+typing
+
+############################################
+#           THIRD-PARTY LIBRARIES          #
+############################################
+
+schedule  # Task scheduling
+pandas  # Data analysis and manipulation
+pdfplumber  # Extract text from PDFs
+requests  # HTTP requests
+minio  # MinIO client for object storage
+selenium  # Web automation
+webdriver-manager  # Manage web drivers automatically

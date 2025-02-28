@@ -15,7 +15,6 @@ class PostgresManager:
             database=dbname
         )
         self.cur = self.conn.cursor()
-        # 如果需要创建表:
         self.cur.execute("""
             CREATE TABLE IF NOT EXISTS pdf_records (
                 id SERIAL PRIMARY KEY,
@@ -34,19 +33,19 @@ class PostgresManager:
         query = "SELECT COUNT(*) FROM pdf_records WHERE file_hash = %s;"
         self.cur.execute(query, (file_hash,))
         count = self.cur.fetchone()[0]
-        return count > 0  # 如果 count > 0，说明已存在
+        return count > 0  # if count > 0，it already exists
     
     def insert_pdf_record(self, record: Dict):
-    # 检查数据库是否已存在 (company, year)
+    # Check if database already exists (company, year)
         query = "SELECT 1 FROM pdf_records WHERE company = %s AND year = %s;"
         self.cur.execute(query, (record['company'], record['year']))
         exists = self.cur.fetchone()
 
-        if exists:  # 如果已经存在该公司该年的记录，就跳过
+        if exists:  # Skip if records already exist for that company for that year
             logger.info(f"[Postgres] Skipping {record['company']} {record['year']}, already exists.")
             return
     
-    # 插入数据
+    # insert data
         try:
             self.cur.execute("""
             INSERT INTO pdf_records (company, url, year, file_hash, filename)
@@ -55,7 +54,7 @@ class PostgresManager:
             self.conn.commit()
             logger.info(f"[Postgres] Inserted record for {record['company']} - {record['year']}")
         except Exception as e:
-            self.conn.rollback()  # 事务回滚
+            self.conn.rollback()  
             logger.error(f"[Postgres] Insert failed: {str(e)}")
 
    

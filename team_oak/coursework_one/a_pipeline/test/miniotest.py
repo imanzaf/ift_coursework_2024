@@ -4,7 +4,6 @@ from minio import Minio
 from io import BytesIO
 from unittest.mock import patch
 
-# MinIO 配置
 MINIO_ENDPOINT = "localhost:9000"
 MINIO_ACCESS_KEY = "ift_bigdata"
 MINIO_SECRET_KEY = "minio_password"

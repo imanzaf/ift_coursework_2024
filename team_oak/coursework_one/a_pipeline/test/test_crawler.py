@@ -5,6 +5,7 @@ import pytest
 from unittest.mock import patch, MagicMock
 from crawler import PDFScraper, Config
 
+
 @pytest.fixture
 def scraper():
     """
