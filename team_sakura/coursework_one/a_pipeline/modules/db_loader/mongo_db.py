@@ -2,7 +2,9 @@ import yaml
 from pymongo import MongoClient
 import os
 
-config_path = os.getenv("CONF_PATH", "a_pipeline/config/conf.yaml")  # Default path for Docker
+config_path = os.getenv(
+    "CONF_PATH", "a_pipeline/config/conf.yaml"
+)  # Default path for Docker
 with open(config_path, "r") as file:
     config = yaml.safe_load(file)
 
@@ -12,7 +14,8 @@ if os.getenv("DOCKER_ENV"):
 else:
     mongo_config = config["databaselocal"]
 
-### MongoDB Connection ###
+
+# MongoDB Connection
 def get_mongo_collection():
     MONGO_CLIENT = MongoClient(mongo_config["mongo_uri"])
     db = MONGO_CLIENT[mongo_config["mongo_db"]]

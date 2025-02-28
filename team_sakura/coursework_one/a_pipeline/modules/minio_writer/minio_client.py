@@ -3,7 +3,9 @@ import yaml
 import os
 from minio.error import S3Error
 
-config_path = os.getenv("CONF_PATH", "a_pipeline/config/conf.yaml")  # Default path for Docker
+config_path = os.getenv(
+    "CONF_PATH", "a_pipeline/config/conf.yaml"
+)  # Default path for Docker
 with open(config_path, "r") as file:
     config = yaml.safe_load(file)
 
@@ -23,7 +25,7 @@ def get_minio_client():
         minio_host,
         access_key=access_key,
         secret_key=secret_key,
-        secure=False  # Set to False if using HTTP
+        secure=False,  # Set to False if using HTTP
     )
 
     bucket_name = minio_config["bucket_name"]
@@ -67,6 +69,3 @@ def upload_to_minio(local_pdf_path, company_symbol, report_year):
     minio_client.fput_object(BUCKET_NAME, minio_pdf_path, local_pdf_path)
 
     return f"http://{minio_config['endpoint']}/{BUCKET_NAME}/{minio_pdf_path}"
-
-
-

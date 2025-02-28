@@ -1,19 +1,22 @@
 import sqlite3
-from flask import Flask, request, jsonify, render_template
+from flask import request, jsonify, render_template
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
 import yaml
 from flask import Flask
-import sys
-from team_sakura.coursework_one.a_pipeline.modules.db_loader.mongo_db import get_mongo_collection
+from team_sakura.coursework_one.a_pipeline.modules.db_loader.mongo_db import (
+    get_mongo_collection,
+)
 
 load_dotenv()
 
 app = Flask(__name__)
 
 
-config_path = os.getenv("CONF_PATH", "a_pipeline/config/conf.yaml")  # Default path for Docker
+config_path = os.getenv(
+    "CONF_PATH", "a_pipeline/config/conf.yaml"
+)  # Default path for Docker
 with open(config_path, "r") as file:
     config = yaml.safe_load(file)
 
@@ -25,19 +28,25 @@ collection = get_mongo_collection()
 
 # SQLite Connection
 SQLITE_DB_PATH = mongo_config["sqlite_path"]
+
+
 def get_company_names():
     """Fetch unique company names from equity.db."""
     conn = sqlite3.connect(SQLITE_DB_PATH)
     cursor = conn.cursor()
-    cursor.execute("SELECT DISTINCT security FROM equity_static")  # Adjust table name if needed
+    cursor.execute(
+        "SELECT DISTINCT security FROM equity_static"
+    )  # Adjust table name if needed
     companies = [row[0] for row in cursor.fetchall()]
     conn.close()
     return companies
+
 
 @app.route("/get_companies", methods=["GET"])
 def get_companies():
     """Return a list of company names from the SQLite database."""
     return jsonify(get_company_names())
+
 
 @app.route("/csr_reports", methods=["GET"])
 def get_csr_reports():
@@ -47,17 +56,33 @@ def get_csr_reports():
 
     query = {}
     if company_name:
-        query["company_name"] = {"$regex": company_name, "$options": "i"}  # Case-insensitive search
+        query["company_name"] = {
+            "$regex": company_name,
+            "$options": "i",
+        }  # Case-insensitive search
     if report_year:
         query["report_year"] = report_year
 
-    reports = list(collection.find(query, {"_id": 0, "company_name": 1, "report_year": 1, "pdf_link": 1, "minio_url": 1}))
+    reports = list(
+        collection.find(
+            query,
+            {
+                "_id": 0,
+                "company_name": 1,
+                "report_year": 1,
+                "pdf_link": 1,
+                "minio_url": 1,
+            },
+        )
+    )
     return jsonify(reports)  # Returns PDF URLs instead of report details
+
 
 @app.route("/")
 def index():
     """Render the main filter page."""
     return render_template("filter.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)

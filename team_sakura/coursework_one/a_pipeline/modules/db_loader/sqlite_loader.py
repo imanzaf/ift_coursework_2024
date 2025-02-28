@@ -2,7 +2,9 @@ import sqlite3
 import yaml
 import os
 
-config_path = os.getenv("CONF_PATH", "a_pipeline/config/conf.yaml")  # Default path for Docker
+config_path = os.getenv(
+    "CONF_PATH", "a_pipeline/config/conf.yaml"
+)  # Default path for Docker
 with open(config_path, "r") as file:
     config = yaml.safe_load(file)
 
@@ -18,10 +20,11 @@ def fetch_companies():
     print("Using database:", DB_PATH)
     cursor = conn.cursor()
 
-    cursor.execute("""
-        SELECT security, symbol, gics_sector, gics_industry, country, region 
-        FROM equity_static
-    """)
+    cursor.execute(
+        """
+        SELECT security, symbol, gics_sector, gics_industry, country, region FROM equity_static
+    """
+    )
 
     companies = [
         {
@@ -30,11 +33,10 @@ def fetch_companies():
             "gics_sector": row[2],
             "gics_industry": row[3],
             "country": row[4],
-            "region": row[5]
+            "region": row[5],
         }
         for row in cursor.fetchall()
     ]
 
     conn.close()
     return companies
-

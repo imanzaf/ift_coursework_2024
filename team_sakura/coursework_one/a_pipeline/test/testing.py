@@ -1,14 +1,15 @@
-import pytest
 from datetime import datetime
-from team_sakura.coursework_one.a_pipeline.modules.url_parser.extract_year import extract_year_from_url_or_snippet
+from team_sakura.coursework_one.a_pipeline.modules.url_parser.extract_year import (
+    extract_year_from_url_or_snippet,
+)
 import yaml
 import sqlite3
-import json
 import pytest
 import mongomock
 from unittest.mock import patch, mock_open, MagicMock
 from minio.error import S3Error
-from pymongo.collection import Collection
+
+
 # Mock YAML content to prevent FileNotFoundError
 mock_yaml_content1 = """
 minio:
@@ -22,7 +23,7 @@ with patch("builtins.open", mock_open(read_data=mock_yaml_content1)):
             get_minio_client,
             delete_all_files_from_minio,
             upload_to_minio,
-            BUCKET_NAME
+            BUCKET_NAME,
         )
 
 # Mock the file reading BEFORE importing the module
@@ -37,7 +38,6 @@ with patch("builtins.open", mock_open(read_data=mock_yaml_content)):
     import team_sakura.coursework_one.a_pipeline.modules.db_loader.mongo_db as mongo_db
 
 
-
 # Mock YAML configuration before importing the module
 mock_yaml_content = """
 database:
@@ -45,9 +45,12 @@ database:
 """
 
 with patch("builtins.open", mock_open(read_data=mock_yaml_content)):
-    with patch("team_sakura.coursework_one.a_pipeline.modules.db_loader.sqlite_loader.config",
-               yaml.safe_load(mock_yaml_content)):
+    with patch(
+        "team_sakura.coursework_one.a_pipeline.modules.db_loader.sqlite_loader.config",
+        yaml.safe_load(mock_yaml_content),
+    ):
         import team_sakura.coursework_one.a_pipeline.modules.db_loader.sqlite_loader as sqlite_loader
+
 
 @pytest.fixture
 def mock_mongo_collection():
@@ -55,19 +58,28 @@ def mock_mongo_collection():
     client = mongomock.MongoClient()
     db = client["test_db"]
     collection = db["test_collection"]
-    collection.insert_many([
-        {"company_name": "Company A", "report_year": 2023},
-        {"company_name": "Company B", "report_year": 2022},
-    ])
+    collection.insert_many(
+        [
+            {"company_name": "Company A", "report_year": 2023},
+            {"company_name": "Company B", "report_year": 2022},
+        ]
+    )
     return collection
 
-@patch("team_sakura.coursework_one.a_pipeline.modules.db_loader.mongo_db.get_mongo_collection")
-def test_delete_all_documents_from_mongo(mock_get_mongo_collection, mock_mongo_collection):
+
+@patch(
+    "team_sakura.coursework_one.a_pipeline.modules.db_loader.mongo_db.get_mongo_collection"
+)
+def test_delete_all_documents_from_mongo(
+    mock_get_mongo_collection, mock_mongo_collection
+):
     """Test deleting all documents from MongoDB."""
     mock_get_mongo_collection.return_value = mock_mongo_collection
 
     mongo_db.delete_all_documents_from_mongo()
-    assert mock_mongo_collection.count_documents({}) == 0  # Ensure documents are deleted
+    assert (
+        mock_mongo_collection.count_documents({}) == 0
+    )  # Ensure documents are deleted
 
 
 @pytest.fixture
@@ -77,7 +89,8 @@ def setup_test_db():
     cursor = conn.cursor()
 
     # Create test table
-    cursor.execute("""
+    cursor.execute(
+        """
         CREATE TABLE equity_static (
             security TEXT,
             symbol TEXT,
@@ -86,7 +99,8 @@ def setup_test_db():
             country TEXT,
             region TEXT
         )
-    """)
+    """
+    )
 
     # Insert test data
     test_data = [
@@ -100,9 +114,10 @@ def setup_test_db():
     conn.close()
 
 
-
 def test_extract_year_from_url():
-    assert extract_year_from_url_or_snippet("https://example.com/news/2023", "") == "2023"
+    assert (
+        extract_year_from_url_or_snippet("https://example.com/news/2023", "") == "2023"
+    )
 
 
 def test_extract_year_from_snippet():
@@ -110,17 +125,28 @@ def test_extract_year_from_snippet():
 
 
 def test_extract_year_from_both():
-    assert extract_year_from_url_or_snippet("https://example.com/2022/article", "Snippet mentioning 2020") == "2022"
+    assert (
+        extract_year_from_url_or_snippet(
+            "https://example.com/2022/article", "Snippet mentioning 2020"
+        )
+        == "2022"
+    )
 
 
 def test_no_year_found():
-    assert extract_year_from_url_or_snippet("https://example.com", "No year mentioned") == "Unknown"
+    assert (
+        extract_year_from_url_or_snippet("https://example.com", "No year mentioned")
+        == "Unknown"
+    )
     assert extract_year_from_url_or_snippet("https://example.com/path", "") == "Unknown"
 
 
 def test_dynamic_year():
     current_year = str(datetime.now().year)
-    assert extract_year_from_url_or_snippet(f"https://example.com/{current_year}", "") == current_year
+    assert (
+        extract_year_from_url_or_snippet(f"https://example.com/{current_year}", "")
+        == current_year
+    )
 
 
 @patch("team_sakura.coursework_one.a_pipeline.modules.minio_client.Minio")
@@ -144,13 +170,17 @@ def test_delete_all_files_from_minio(mock_minio_client):
 
     delete_all_files_from_minio()
     mock_minio_client.list_objects.assert_called_once_with(BUCKET_NAME, recursive=True)
-    mock_minio_client.remove_object.assert_called_once_with(BUCKET_NAME, "test_file.pdf")
+    mock_minio_client.remove_object.assert_called_once_with(
+        BUCKET_NAME, "test_file.pdf"
+    )
 
 
 @patch("team_sakura.coursework_one.a_pipeline.modules.minio_client.minio_client")
 def test_delete_all_files_from_minio_error(mock_minio_client):
     """Test handling of S3Error when deleting files from MinIO."""
-    mock_minio_client.list_objects.side_effect = S3Error("Error", "Mock error", "RequestID", "HostID")
+    mock_minio_client.list_objects.side_effect = S3Error(
+        "Error", "Mock error", "RequestID", "HostID"
+    )
 
     with patch("builtins.print") as mock_print:
         delete_all_files_from_minio()
@@ -167,10 +197,13 @@ def test_upload_to_minio(mock_minio_client):
     report_year = "2023"
     expected_url = f"http://mock_endpoint/{BUCKET_NAME}/{company_symbol}/{report_year}"
 
-    with patch("team_sakura.coursework_one.a_pipeline.modules.minio_client.MINIO_CONFIG",
-               {"endpoint": "mock_endpoint"}):
+    with patch(
+        "team_sakura.coursework_one.a_pipeline.modules.minio_client.MINIO_CONFIG",
+        {"endpoint": "mock_endpoint"},
+    ):
         result = upload_to_minio(local_pdf_path, company_symbol, report_year)
 
     assert result == expected_url
-    mock_minio_client.fput_object.assert_called_once_with(BUCKET_NAME, f"{company_symbol}/{report_year}",
-                                                          local_pdf_path)
+    mock_minio_client.fput_object.assert_called_once_with(
+        BUCKET_NAME, f"{company_symbol}/{report_year}", local_pdf_path
+    )

@@ -3,31 +3,37 @@ from pymongo import MongoClient
 import yaml
 import os
 
-config_path = os.getenv("CONF_PATH", "/app/config/conf.yaml")  # Default path for Docker
+config_path = os.getenv(
+    "CONF_PATH", "a_pipeline/config/conf.yaml"
+)  # Default path for Docker
 with open(config_path, "r") as file:
     config = yaml.safe_load(file)
 
+mongo_config = config["databaselocal"]
 # MongoDB connection
-MONGO_CLIENT = MongoClient(config["database"]["mongo_uri"])
-db = MONGO_CLIENT[config["database"]["mongo_db"]]
-collection = db[config["database"]["mongo_collection"]]
+MONGO_CLIENT = MongoClient(mongo_config["mongo_uri"])
+db = MONGO_CLIENT[mongo_config["mongo_db"]]
+collection = db[mongo_config["mongo_collection"]]
 
 app = FastAPI()
 
 
 @app.get("/reports")
 def get_reports(
-        company_name: str = Query(None, description="Filter by company name"),
-        year: int = Query(None, description="Filter by report year"),
-        sector: str = Query(None, description="Filter by GICS sector"),
-        industry: str = Query(None, description="Filter by GICS industry"),
-        country: str = Query(None, description="Filter by country"),
-        region: str = Query(None, description="Filter by region"),
+    company_name: str = Query(None, description="Filter by company name"),
+    year: int = Query(None, description="Filter by report year"),
+    sector: str = Query(None, description="Filter by GICS sector"),
+    industry: str = Query(None, description="Filter by GICS industry"),
+    country: str = Query(None, description="Filter by country"),
+    region: str = Query(None, description="Filter by region"),
 ):
     """Retrieve CSR reports based on filters"""
     query = {}
     if company_name:
-        query["company_name"] = {"$regex": company_name, "$options": "i"}  # Case-insensitive search
+        query["company_name"] = {
+            "$regex": company_name,
+            "$options": "i",
+        }  # Case-insensitive search
     if year:
         query["report_year"] = year
     if sector:
@@ -39,7 +45,9 @@ def get_reports(
     if region:
         query["region"] = {"$regex": region, "$options": "i"}
 
-    results = list(collection.find(query, {"_id": 0}))  # Exclude MongoDB's default _id field
+    results = list(
+        collection.find(query, {"_id": 0})
+    )  # Exclude MongoDB's default _id field
     if company_name:
         collection.update_many({}, {"$set": {"company_name": company_name.lower()}})
     else:

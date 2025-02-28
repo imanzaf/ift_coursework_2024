@@ -22,7 +22,7 @@ SEARCH_ENGINE_ID = os.getenv("GOOGLE_SEARCH_ENGINE_ID")
 
 collection = get_mongo_collection()
 
-os.makedirs('CSR_Reports', exist_ok=True)
+os.makedirs("CSR_Reports", exist_ok=True)
 
 
 def google_search_csr_reports(company_name):
@@ -32,9 +32,12 @@ def google_search_csr_reports(company_name):
     response = requests.get(url)
 
     if response.status_code == 200:
-        results = response.json().get('items', [])
-        pdf_links = [(item['link'], item.get('snippet', '')) for item in results if
-                     item['link'].lower().endswith('.pdf')]
+        results = response.json().get("items", [])
+        pdf_links = [
+            (item["link"], item.get("snippet", ""))
+            for item in results
+            if item["link"].lower().endswith(".pdf")
+        ]
         return pdf_links
     else:
         print(f"Google API Error for {company_name}: {response.status_code}")
@@ -51,8 +54,10 @@ def bing_search_csr_reports(company_name):
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, "html.parser")
         results = soup.find_all("a", href=True)
-        pdf_links = list(set(link["href"] for link in results if ".pdf" in link["href"]))
-        return [(link, '') for link in pdf_links]
+        pdf_links = list(
+            set(link["href"] for link in results if ".pdf" in link["href"])
+        )
+        return [(link, "") for link in pdf_links]
     else:
         print(f"Bing search failed for {company_name}: {response.status_code}")
         return []
@@ -60,33 +65,33 @@ def bing_search_csr_reports(company_name):
 
 def get_reports_json(company_name):
     """Scrape responsibilityreports.com for CSR report PDFs."""
-    base_url = 'https://www.responsibilityreports.com'
-    search_url = f'{base_url}/Companies'
-    payload = {'search': company_name}
+    base_url = "https://www.responsibilityreports.com"
+    search_url = f"{base_url}/Companies"
+    payload = {"search": company_name}
     response = requests.post(search_url, data=payload)
-    soup = BeautifulSoup(response.text, 'html.parser')
+    soup = BeautifulSoup(response.text, "html.parser")
 
-    company_link = soup.select_one('.companyName a')
+    company_link = soup.select_one(".companyName a")
     if not company_link:
         return []
 
-    company_url = urljoin(base_url, company_link['href'])
+    company_url = urljoin(base_url, company_link["href"])
     response = requests.post(company_url)
-    soup = BeautifulSoup(response.text, 'html.parser')
+    soup = BeautifulSoup(response.text, "html.parser")
 
     reports = []
-    most_recent_title_elem = soup.select_one('.most_recent_content_block .bold_txt')
-    most_recent_link_elem = soup.select_one('.most_recent_content_block .view_btn a')
+    most_recent_title_elem = soup.select_one(".most_recent_content_block .bold_txt")
+    most_recent_link_elem = soup.select_one(".most_recent_content_block .view_btn a")
     if most_recent_title_elem and most_recent_link_elem:
-        recent_report_url = urljoin(base_url, most_recent_link_elem.get('href'))
+        recent_report_url = urljoin(base_url, most_recent_link_elem.get("href"))
         reports.append((recent_report_url, most_recent_title_elem.get_text(strip=True)))
 
-    archived_lis = soup.select('.archived_report_content_block ul li')
+    archived_lis = soup.select(".archived_report_content_block ul li")
     for li in archived_lis:
-        title_elem = li.select_one('.heading')
-        download_link = li.select_one('.btn_archived.download a')
+        title_elem = li.select_one(".heading")
+        download_link = li.select_one(".btn_archived.download a")
         if title_elem and download_link:
-            archive_url = urljoin(base_url, download_link.get('href'))
+            archive_url = urljoin(base_url, download_link.get("href"))
             reports.append((archive_url, title_elem.get_text(strip=True)))
 
     return reports
@@ -94,43 +99,54 @@ def get_reports_json(company_name):
 
 def report_exists(company_name, report_year):
     """Check if a report for the company and year already exists in the database."""
-    return collection.find_one({"company_name": company_name, "report_year": report_year}) is not None
+    return (
+        collection.find_one({"company_name": company_name, "report_year": report_year})
+        is not None
+    )
 
 
 def fetch_and_store_reports(company):
     print(f"\nSearching CSR reports for: {company['company_name']}")
 
-    pdf_links = google_search_csr_reports(company['company_name'])
-    pdf_links += bing_search_csr_reports(company['company_name'])
-    pdf_links += get_reports_json(company['company_name'])
+    pdf_links = google_search_csr_reports(company["company_name"])
+    pdf_links += bing_search_csr_reports(company["company_name"])
+    pdf_links += get_reports_json(company["company_name"])
 
     if pdf_links:
         for pdf_link, snippet in pdf_links:
             report_year = extract_year_from_url_or_snippet(pdf_link, snippet)
 
-            if report_exists(company['company_name'], report_year):
-                print(f"Skipping already stored report for {company['company_name']} ({report_year})")
+            if report_exists(company["company_name"], report_year):
+                print(
+                    f"Skipping already stored report for {company['company_name']} ({report_year})"
+                )
                 continue  # Avoid duplicate uploads
 
             print(f"Storing report for {report_year}: {pdf_link}")
             try:
-                pdf_response = requests.get(pdf_link, timeout=10, headers={"User-Agent": "Mozilla/5.0"})
+                pdf_response = requests.get(
+                    pdf_link, timeout=10, headers={"User-Agent": "Mozilla/5.0"}
+                )
                 if pdf_response.status_code == 200:
-                    pdf_name = pdf_link.split('/')[-1].split('?')[0]
-                    local_pdf_path = os.path.join('CSR_Reports', pdf_name)
+                    pdf_name = pdf_link.split("/")[-1].split("?")[0]
+                    local_pdf_path = os.path.join("CSR_Reports", pdf_name)
 
-                    with open(local_pdf_path, 'wb') as pdf_file:
+                    with open(local_pdf_path, "wb") as pdf_file:
                         pdf_file.write(pdf_response.content)
 
-                    minio_pdf_url = upload_to_minio(local_pdf_path, company['symbol'], pdf_name)
+                    minio_pdf_url = upload_to_minio(
+                        local_pdf_path, company["symbol"], pdf_name
+                    )
 
                     # Store in MongoDB
-                    collection.insert_one({
-                        **company,
-                        "pdf_link": pdf_link,
-                        "report_year": report_year,
-                        "minio_url": minio_pdf_url
-                    })
+                    collection.insert_one(
+                        {
+                            **company,
+                            "pdf_link": pdf_link,
+                            "report_year": report_year,
+                            "minio_url": minio_pdf_url,
+                        }
+                    )
                 else:
                     print(f"Failed to download {pdf_link}")
             except Exception as e:
