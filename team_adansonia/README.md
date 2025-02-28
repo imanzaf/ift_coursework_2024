@@ -167,9 +167,9 @@ When the containers are running, all the scripts will be scheduled automatically
    **for example:**
 
    ```bash
-   poetry run python -c "from main import populate_database_jenkins; populate_database_jenkins(2, True)"
+   poetry run python -c "from main import populate_database_jenkins; populate_database_jenkins(2)"
    ```
-this will populate the database with all available historical reports from 5 companies
+this will populate the database with all available historical reports from 2 companies
 
 ### Running queries
 
