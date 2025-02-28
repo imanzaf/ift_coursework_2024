@@ -48,27 +48,58 @@ The Link Retrieval pipeline is responsible for fetching and processing web links
 
 ## Instructions
 
-### Running the Code
+### Running the App on Docker
 
-1. **Install dependencies using Poetry:**
-
-   ```bash
-   poetry install
-   ```
-
-2. **Copy the `.env.template` file to `.env` then update the `ROOT_DIR_LOCAL` to your local project directory:**
+1.**Copy the `.env.template` file to `.env` then update the `ROOT_DIR_LOCAL` to your local project directory:**
 
    ```bash
    cp .env.template .env
    ```
 
-3. **Build and run the project using Docker Compose:**
+2.**Build and run the project using Docker Compose:**
 
    ```bash
    docker-compose up --build
    ```
 
 When the containers are running, all the scripts will be scheduled automatically by Jenkins. So it will start extracting past and current ESG reports at regular intervals. **Customising the job schedule** can be done by accessing the Jenkins dashboard at `http://localhost:9999`.
+
+### Running and testing scripts on local
+
+1.**Make sure that you have build and run the docker containers and they running, you can do so by running the command below:**
+
+   ```bash
+   docker-compose up --build
+   ```
+**if the containers has been built once, you can just run the command below:**
+
+   ```bash
+   docker-compose up
+   ```
+
+2.**Use poetry to install the dependencies:**
+
+   ```bash
+   poetry install
+   ```
+
+3.1.**Run the scheduler pipeline:**
+
+   ```bash
+   PYTHONPATH=team_adansonia/coursework_one/a_link_retrieval poetry run python -m main
+   ```
+
+3.2.**Run specific fundtions inside main.py**
+
+   ```bash
+   PYTHONPATH=team_adansonia/coursework_one/a_link_retrieval poetry run python -c "from main import <function_name>; <function_name>(<parameters>)"
+   ```
+   **for example:**
+
+   ```bash
+   PYTHONPATH=team_adansonia/coursework_one/a_link_retrieval poetry run python -c "from main import populate_database; populate_database(5)"
+   ```
+   **this will populate the database with all available historical reports from 5 companies**
 
 ### Running queries
 
@@ -115,6 +146,3 @@ Poetry is used for dependency management and packaging.
   ```bash
   poetry update
   ```
-
-
-
