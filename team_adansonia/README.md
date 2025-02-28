@@ -56,15 +56,77 @@ This can be checked and adjusted on docker desktop settings.
 
 ## Instructions
 
+### environment initialisation
+
+1.**copy files from  team_adansonia/coursework_one/a_link_retrieval/config to the root of the project**
+- .env.template to .env
+- docker-compose.yml: this will modify the docker-compose to:
+   - add binded volume for mongo service
+   - add Jenkins service at localhost:9999
+- pyproject.toml
+- .gitignore
+
+Or you can run this command in your terminal or CMD:
+
+for Mac/Linux:
+```bash
+cat << 'EOF' > copy_files.sh
+#!/bin/bash
+
+# Define the source and destination directories
+SOURCE_DIR="team_adansonia/coursework_one/a_link_retrieval/config"
+DEST_DIR="."
+
+# Copy .env.template to .env
+if [ -f "$SOURCE_DIR/.env.template" ]; then
+    cp "$SOURCE_DIR/.env.template" "$DEST_DIR/.env"
+    echo "✅ Copied .env.template to .env"
+else
+    echo "❌ .env.template not found in $SOURCE_DIR"
+fi
+
+# Copy docker-compose.yml
+if [ -f "$SOURCE_DIR/docker-compose.yml" ]; then
+    cp "$SOURCE_DIR/docker-compose.yml" "$DEST_DIR/docker-compose.yml"
+    echo "✅ Copied docker-compose.yml"
+else
+    echo "❌ docker-compose.yml not found in $SOURCE_DIR"
+fi
+
+# Copy pyproject.toml
+if [ -f "$SOURCE_DIR/pyproject.toml" ]; then
+    cp "$SOURCE_DIR/pyproject.toml" "$DEST_DIR/pyproject.toml"
+    echo "✅ Copied pyproject.toml"
+else
+    echo "❌ pyproject.toml not found in $SOURCE_DIR"
+fi
+
+# Copy .gitignore
+if [ -f "$SOURCE_DIR/.gitignore" ]; then
+    cp "$SOURCE_DIR/.gitignore" "$DEST_DIR/.gitignore"
+    echo "✅ Copied .gitignore"
+else
+    echo "❌ .gitignore not found in $SOURCE_DIR"
+fi
+
+# Delete the script itself
+rm -- "$0"
+EOF
+
+chmod +x copy_files.sh
+bash copy_files.sh
+```
+
+for Windows:
+```bash
+for %i in (.env.template:.env docker-compose.yml:docker-compose.yml pyproject.toml:pyproject.toml .gitignore:.gitignore) do @(for /f "tokens=1,2 delims=:" %a in ("%i") do @if exist "team_adansonia\coursework_one\a_link_retrieval\config\%a" (copy "team_adansonia\coursework_one\a_link_retrieval\config\%a" "%b" >nul & echo Copied %a to %b) else (echo File %a not found))
+```
+
+2.**In /.env, update the `ROOT_DIR_LOCAL` to your local project directory.**
+
 ### Running the App on Docker
 
-1.**Copy the `.env.template` file to `.env` then update the `ROOT_DIR_LOCAL` to your local project directory:**
-
-   ```bash
-   cp .env.template .env
-   ```
-
-2.**Build and run the project using Docker Compose:**
+1.**Build and run the project using Docker Compose:**
 
    ```bash
    docker-compose up --build
