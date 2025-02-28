@@ -1,18 +1,11 @@
-'''
-This is the main file for the web search module. It is a Flask web application that allows users to search for a company's financial report by entering the company name and year. The application will then call the FastAPI API to query the financial report data and display the result on the web page.
+"""
+app.py
 
-The application consists of two main parts:
-1. The Flask web application that handles user input and displays the search result.
-2. The FastAPI API that queries the financial report data from the database.
+This module defines a Flask application that provides a web interface to query CSR reports
+using a FastAPI backend. The application allows users to input a company name or stock symbol
+and a year, and then queries the FastAPI API to retrieve the corresponding CSR report.
+"""
 
-Example usage:
-- User enters the company name and year in the web application.
-- The web application calls the FastAPI API with the user input.
-- The FastAPI API queries the financial report data from the database.
-- The FastAPI API returns the query result to the web application.
-- The web application displays the query result to the user.
-
-'''
 from flask import Flask, render_template, request
 import requests
 import os
@@ -22,9 +15,21 @@ app = Flask(__name__)
 # FastAPI API address
 API_URL = os.getenv("API_URL", "http://localhost:8000/report")
 
-
 @app.route("/", methods=["GET", "POST"])
 def index():
+    """
+    Handle the root route of the Flask application.
+
+    This function handles both GET and POST requests to the root URL (`/`):
+    - For GET requests, it renders the `index.html` template with no result.
+    - For POST requests, it processes the form data to query the FastAPI API for CSR reports.
+
+    Args:
+        request (flask.request): The request object containing form data.
+
+    Returns:
+        flask.Response: The rendered `index.html` template with the query result.
+    """
     result = None
     if request.method == "POST":
         company = request.form["company"]
@@ -47,6 +52,12 @@ def index():
 
     return render_template("index.html", result=result)
 
-
+# Run
 if __name__ == "__main__":
+    """
+    Main entry point to start the Flask server.
+
+    This script uses the `app.run` method to start the Flask application
+    in debug mode on port `5000`.
+    """
     app.run(debug=True, port=5000)

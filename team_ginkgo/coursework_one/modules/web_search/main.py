@@ -1,10 +1,3 @@
-'''
-This script is used to run both FastAPI and Flask servers simultaneously.
-The FastAPI server is used to query CSR reports from the database, while the Flask server is used to provide a web interface for users to search for a company's financial report by entering the company name and year.
-The script starts the FastAPI server in a separate thread and the Flask server in the main thread. It also provides a simple menu for users to open the web page in a browser or close the servers.
-
-'''
-
 import threading
 import uvicorn
 import sys
@@ -17,12 +10,23 @@ from web_search.api import app as fastapi_app
 
 
 def run_fastapi():
-    """Start FastAPI server"""
+    """
+    Start the FastAPI server.
+
+    This function uses the `uvicorn` module to run the FastAPI application
+    on host `0.0.0.0` and port `8000` with log level set to `error` and no log configuration.
+    """
     uvicorn.run(fastapi_app, host="0.0.0.0", port=8000, log_level="error", log_config=None)
 
 
 def run_flask():
-    """Start Flask server"""
+    """
+    Start the Flask server.
+
+    This function uses the `subprocess` module to run the Flask application
+    on host `0.0.0.0` and port `5000`. It listens to the startup logs of the Flask server
+    and waits for the message indicating that the server is running.
+    """
     process = subprocess.Popen(
         ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port=5000"],
         stdout=subprocess.PIPE,
@@ -38,6 +42,12 @@ def run_flask():
 
 
 if __name__ == "__main__":
+    """
+    Main entry point of the script.
+
+    This script starts both FastAPI and Flask servers in separate threads.
+    It provides a simple command-line interface to open the web page or close the servers.
+    """
     try:
         # Start FastAPI server (thread)
         fastapi_thread = threading.Thread(target=run_fastapi, daemon=True)
