@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>modules.scraper &#8212; CSR Data Pipeline 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for modules.scraper</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">scraper.py</span>
+
+<span class="sd">This module contains functions to scrape CSR reports from the web using the Google Custom Search API</span>
+<span class="sd">and update the database with the found URLs. The module uses multithreading to efficiently process</span>
+<span class="sd">multiple companies and handle database operations concurrently.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">psycopg2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">googleapiclient.discovery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">config</span><span class="w"> </span><span class="kn">import</span> <span class="n">DB_CONFIG</span><span class="p">,</span> <span class="n">GOOGLE_API_KEY</span><span class="p">,</span> <span class="n">GOOGLE_CX</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="c1"># Get database connection</span>
+<div class="viewcode-block" id="get_db_connection">
+<a class="viewcode-back" href="../../api_reference.html#modules.scraper.get_db_connection">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_db_connection</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Establish a connection to the PostgreSQL database using the configuration provided in DB_CONFIG.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        psycopg2.extensions.connection: A connection object to the database, or None if the connection fails.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="o">**</span><span class="n">DB_CONFIG</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">conn</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Database connection failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<span class="c1"># Google API search PDF reports (with retry mechanism)</span>
+<div class="viewcode-block" id="google_search_pdf">
+<a class="viewcode-back" href="../../api_reference.html#modules.scraper.google_search_pdf">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">google_search_pdf</span><span class="p">(</span><span class="n">company_name</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Search for PDF CSR reports using the Google Custom Search API with a retry mechanism.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        company_name (str): The name of the company.</span>
+<span class="sd">        year (int): The year of the CSR report.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The URL of the first found PDF report, or None if no PDF is found after 3 attempts.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="s2">&quot;customsearch&quot;</span><span class="p">,</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span> <span class="n">developerKey</span><span class="o">=</span><span class="n">GOOGLE_API_KEY</span><span class="p">)</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">company_name</span><span class="si">}</span><span class="s2"> CSR report </span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2"> filetype:pdf&quot;</span>
+
+    <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Record attempt count</span>
+    <span class="k">while</span> <span class="n">attempts</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># Maximum 3 attempts</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sleep_time</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># Random wait 1-3 seconds</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_time</span><span class="p">)</span>
+
+            <span class="n">res</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">cse</span><span class="p">()</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">cx</span><span class="o">=</span><span class="n">GOOGLE_CX</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+            <span class="n">pdf_links</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;link&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">,</span> <span class="p">[])</span> <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;link&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.pdf&#39;</span><span class="p">)]</span>
+
+            <span class="k">if</span> <span class="n">pdf_links</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">pdf_links</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Successfully found PDF, return immediately</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attempt </span><span class="si">{</span><span class="n">attempts</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> failed: </span><span class="si">{</span><span class="n">company_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># Increase attempt count</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">company_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2"> failed after 3 attempts&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<span class="c1"># Get companies to scrape</span>
+<div class="viewcode-block" id="get_companies_to_scrape">
+<a class="viewcode-back" href="../../api_reference.html#modules.scraper.get_companies_to_scrape">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_companies_to_scrape</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve companies from the database that do not have a CSR report URL.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: A list of tuples containing company data (symbol, company_name, report_year).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db_connection</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        SELECT symbol, company_name, report_year </span>
+<span class="s2">        FROM Ginkgo.csr_reports  -- Query Full List table</span>
+<span class="s2">        WHERE report_url IS NULL;</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="n">companies</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+
+    <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">companies</span>  <span class="c1"># [(symbol, company_name, report_year), ...]</span></div>
+
+
+<span class="c1"># Multithreaded execution of scraping &amp; database update</span>
+<div class="viewcode-block" id="process_company_data">
+<a class="viewcode-back" href="../../api_reference.html#modules.scraper.process_company_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">process_company_data</span><span class="p">(</span><span class="n">company_data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Process company data by searching for a PDF CSR report and updating the database with the URL.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        company_data (tuple): A tuple containing company data (symbol, company_name, report_year).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">symbol</span><span class="p">,</span> <span class="n">company_name</span><span class="p">,</span> <span class="n">report_year</span> <span class="o">=</span> <span class="n">company_data</span>
+    <span class="n">pdf_url</span> <span class="o">=</span> <span class="n">google_search_pdf</span><span class="p">(</span><span class="n">company_name</span><span class="p">,</span> <span class="n">report_year</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">pdf_url</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db_connection</span><span class="p">()</span>  <span class="c1"># Each thread independently gets database connection</span>
+        <span class="k">if</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                    UPDATE Ginkgo.csr_reports </span>
+<span class="s2">                    SET report_url = </span><span class="si">%s</span><span class="s2"> </span>
+<span class="s2">                    WHERE symbol = </span><span class="si">%s</span><span class="s2"> AND report_year = </span><span class="si">%s</span><span class="s2">;</span>
+<span class="s2">                &quot;&quot;&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">pdf_url</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">report_year</span><span class="p">))</span>
+                <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Update successful: </span><span class="si">{</span><span class="n">company_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">report_year</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">pdf_url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Database update failed: </span><span class="si">{</span><span class="n">company_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">report_year</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed after 3 attempts: </span><span class="si">{</span><span class="n">company_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">report_year</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># Main function: Multithreaded execution of scraping</span>
+<div class="viewcode-block" id="multithread_update_csr_reports">
+<a class="viewcode-back" href="../../api_reference.html#modules.scraper.multithread_update_csr_reports">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">multithread_update_csr_reports</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform multithreaded scraping of CSR reports and update the database with the found URLs.</span>
+
+<span class="sd">    This function:</span>
+<span class="sd">    1. Retrieves companies that need to be scraped.</span>
+<span class="sd">    2. Uses a ThreadPoolExecutor to process each company concurrently.</span>
+<span class="sd">    3. Prints the time taken for the entire process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>  <span class="c1"># Timing</span>
+    <span class="n">companies</span> <span class="o">=</span> <span class="n">get_companies_to_scrape</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">companies</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No data to scrape, check if the database is fully updated!&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">max_threads</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># Number of threads, adjustable</span>
+    <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">max_threads</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+        <span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">process_company_data</span><span class="p">,</span> <span class="n">companies</span><span class="p">)</span>
+
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Multithreaded scraping completed! Time taken: </span><span class="si">{</span><span class="n">end_time</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># Run</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Main entry point to start the multithreaded scraping process.</span>
+
+<span class="sd">    This script uses the `multithread_update_csr_reports` function to perform the scraping and database update.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">multithread_update_csr_reports</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">CSR Data Pipeline</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../database.html">Database Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main.html">main Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web.html">CSR Report Search Application</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Team Ginkgo.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.1</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CSR Report Search Application &#8212; CSR Data Pipeline 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="main Module" href="main.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="csr-report-search-application">
+<h1>CSR Report Search Application<a class="headerlink" href="#csr-report-search-application" title="Link to this heading">¶</a></h1>
+<p>This project is a simple <strong>CSR (Corporate Social Responsibility) Report Search Tool</strong> that combines <strong>FastAPI</strong> and <strong>Flask</strong> to provide both backend API services and a web interface. Below is an overview of the project structure and usage guidelines.</p>
+<section id="project-structure">
+<h2>Project Structure<a class="headerlink" href="#project-structure" title="Link to this heading">¶</a></h2>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
+/web_search</p>
+<blockquote>
+<div><p>├── api.py       # FastAPI backend that provides the CSR report query API
+├── app.py       # Flask frontend for users to search for CSR reports
+└── main.py      # Main script to start both FastAPI and Flask servers</p>
+</div></blockquote>
+<p><a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+<p>—</p>
+</section>
+<section id="fastapi-backend-api-py">
+<h2>FastAPI Backend (api.py)<a class="headerlink" href="#fastapi-backend-api-py" title="Link to this heading">¶</a></h2>
+<p>The <strong>FastAPI backend</strong> handles requests for CSR reports by querying a PostgreSQL database.</p>
+<p><strong>Features</strong>:
+- Establishes a connection to a PostgreSQL database.
+- Provides an API endpoint <cite>/report</cite> that allows users to search for CSR reports using a <strong>company name or stock symbol</strong> and a <strong>year</strong>.
+- Returns company details, stock symbols, report URLs, and MinIO storage paths.</p>
+<p><strong>Example API Request</strong>:
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">GET</span> <span class="pre">http://127.0.0.1:8000/report?query=Tesla&amp;year=2023</span>
+<span class="pre">`</span></code></p>
+<p><strong>Example API Response</strong>:
+<a href="#id7"><span class="problematic" id="id8">``</span></a><a href="#id9"><span class="problematic" id="id10">`</span></a>json
+[</p>
+<blockquote>
+<div><dl class="simple">
+<dt>{</dt><dd><p>“company_name”: “Tesla Inc.”,
+“symbol”: “TSLA”,
+“report_url”: “<a class="reference external" href="https://example.com/tesla_2023_csr.pdf">https://example.com/tesla_2023_csr.pdf</a>”,
+“minio_path”: “/minio/reports/tesla_2023.pdf”</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<section id="id11">
+<h3>]<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
+<p>—</p>
+</section>
+</section>
+<section id="flask-frontend-app-py">
+<h2>Flask Frontend (app.py)<a class="headerlink" href="#flask-frontend-app-py" title="Link to this heading">¶</a></h2>
+<p>The <strong>Flask frontend</strong> provides a simple <strong>web interface</strong> that allows users to enter a <strong>company name</strong> and <strong>year</strong> to search for CSR reports.</p>
+<p><strong>How It Works</strong>:
+1. The user enters a <strong>company name or stock symbol</strong> and a <strong>year</strong>.
+2. The Flask app sends a request to the FastAPI backend.
+3. The backend returns CSR report details, which are displayed in the web interface.</p>
+<p>—</p>
+</section>
+<section id="main-script-main-py">
+<h2>Main Script (main.py)<a class="headerlink" href="#main-script-main-py" title="Link to this heading">¶</a></h2>
+<p>The <cite>main.py</cite> script is responsible for <strong>starting both FastAPI and Flask servers simultaneously</strong>.</p>
+<p><strong>How It Works</strong>:
+- Runs the <strong>FastAPI server</strong> in a background thread.
+- Starts the <strong>Flask server</strong> and waits for it to initialize.
+- Provides a simple command-line menu for users to <strong>open the web interface</strong> or <strong>shut down the servers</strong>.</p>
+<p><strong>Available Options</strong>:
+<a href="#id12"><span class="problematic" id="id13">``</span></a>`
+==========================</p>
+<blockquote>
+<div><p>[1] Open Web Page
+[2] Close Server</p>
+</div></blockquote>
+<p><a href="#id14"><span class="problematic" id="id15">``</span></a><a href="#id16"><span class="problematic" id="id17">`</span></a></p>
+<p>—</p>
+</section>
+<section id="how-to-run-the-application">
+<h2>How to Run the Application<a class="headerlink" href="#how-to-run-the-application" title="Link to this heading">¶</a></h2>
+<p>To start the application, run:
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">python</span> <span class="pre">main.py</span>
+<span class="pre">`</span></code></p>
+<p>Once the servers are running, open the <strong>Flask web interface</strong> at:
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">http://127.0.0.1:5000</span>
+<span class="pre">`</span></code></p>
+<p>Alternatively, you can access the <strong>FastAPI API</strong> at:
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">http://127.0.0.1:8000/docs</span>
+<span class="pre">`</span></code></p>
+<p>—</p>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h2>
+<p>Ensure you have the following dependencies installed:
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fastapi</span> <span class="pre">flask</span> <span class="pre">uvicorn</span> <span class="pre">requests</span> <span class="pre">psycopg2</span>
+<span class="pre">`</span></code></p>
+<p>—</p>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">¶</a></h2>
+<p>This project provides a <strong>simple and interactive way</strong> to search for CSR reports using a <strong>FastAPI backend</strong> and a <strong>Flask frontend</strong>. It enables users to retrieve reports efficiently and access relevant company information in an organized manner.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CSR Data Pipeline</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main Module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CSR Report Search Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#project-structure">Project Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fastapi-backend-api-py">FastAPI Backend (api.py)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#flask-frontend-app-py">Flask Frontend (app.py)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#main-script-main-py">Main Script (main.py)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-run-the-application">How to Run the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="main.html" title="previous chapter">main Module</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Team Ginkgo.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.1</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/web.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

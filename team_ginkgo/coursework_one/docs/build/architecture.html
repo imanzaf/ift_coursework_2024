@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Architecture Overview &#8212; CSR Data Pipeline 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Database Module" href="database.html" />
+    <link rel="prev" title="API Reference" href="api_reference.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="architecture-overview">
+<h1>Architecture Overview<a class="headerlink" href="#architecture-overview" title="Link to this heading">¶</a></h1>
+<section id="system-components">
+<h2>System Components<a class="headerlink" href="#system-components" title="Link to this heading">¶</a></h2>
+<p>The CSR Report Data Processing System consists of:</p>
+<ol class="arabic simple">
+<li><p><strong>Database Module (`database.py`)</strong></p>
+<ul class="simple">
+<li><p>Creates <cite>Ginkgo.csr_reports</cite> table in PostgreSQL.</p></li>
+<li><p>Stores company symbols, names, report years, and URLs.</p></li>
+</ul>
+</li>
+<li><p><strong>Data Scraper (`scraper.py`)</strong></p>
+<ul class="simple">
+<li><p>Uses Google Custom Search API to find CSR PDF reports.</p></li>
+<li><p>Saves report URLs to PostgreSQL.</p></li>
+</ul>
+</li>
+<li><p><strong>MinIO Storage (`minio_client.py`)</strong></p>
+<ul class="simple">
+<li><p>Downloads PDFs and uploads them to MinIO.</p></li>
+<li><p>Updates PostgreSQL with MinIO storage paths.</p></li>
+</ul>
+</li>
+<li><p><strong>Scheduler (`scheduler.py`)</strong></p>
+<ul class="simple">
+<li><p>Runs <cite>database.py</cite>, <cite>scraper.py</cite>, and <cite>minio_client.py</cite> <strong>every quarter</strong>.</p></li>
+</ul>
+</li>
+<li><p><strong>Main Controller (`main.py`)</strong></p>
+<ul class="simple">
+<li><p>Provides a CLI for users to manually run scripts or schedule tasks.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="technology-stack">
+<h2>Technology Stack<a class="headerlink" href="#technology-stack" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Python</strong> (Backend Processing)</p></li>
+<li><p><strong>PostgreSQL</strong> (Structured Data Storage)</p></li>
+<li><p><strong>MinIO</strong> (Object Storage for PDFs)</p></li>
+<li><p><strong>Google Custom Search API</strong> (CSR Report Discovery)</p></li>
+<li><p><strong>Docker</strong> (Containerization)</p></li>
+<li><p><strong>APScheduler</strong> (Task Scheduling)</p></li>
+</ul>
+</section>
+<section id="system-workflow">
+<h2>System Workflow<a class="headerlink" href="#system-workflow" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Database Initialization</strong> (<cite>database.py</cite>)</p>
+<ul class="simple">
+<li><p>Creates tables and populates them with companies.</p></li>
+</ul>
+</li>
+<li><p><strong>Scraping Reports</strong> (<cite>scraper.py</cite>)</p>
+<ul class="simple">
+<li><p>Searches for CSR PDFs using Google API.</p></li>
+<li><p>Updates PostgreSQL with report URLs.</p></li>
+</ul>
+</li>
+<li><p><strong>Downloading &amp; Storing Reports</strong> (<cite>minio_client.py</cite>)</p>
+<ul class="simple">
+<li><p>Downloads PDFs from URLs.</p></li>
+<li><p>Uploads PDFs to MinIO.</p></li>
+<li><p>Updates PostgreSQL with MinIO paths.</p></li>
+</ul>
+</li>
+<li><p><strong>Scheduling Execution</strong> (<cite>scheduler.py</cite>)</p>
+<ul class="simple">
+<li><p>Automatically triggers the above steps <strong>every quarter</strong>.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CSR Data Pipeline</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Architecture Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#system-components">System Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#technology-stack">Technology Stack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#system-workflow">System Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">CSR Report Search Application</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="api_reference.html" title="previous chapter">API Reference</a></li>
+      <li>Next: <a href="database.html" title="next chapter">Database Module</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Team Ginkgo.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.1</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/architecture.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
