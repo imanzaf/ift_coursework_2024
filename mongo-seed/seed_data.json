@@ -13,11 +13,10 @@
             "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/c/NYSE_CPE_2021.pdf",
             "2022": "https://www.responsibilityreports.com/Click/2346",
             "2023": "https://multimedia.3m.com/mws/media/2292786O/3m-2023-global-impact-report.pdf",
-            "2024": "https://multimedia.3m.com/mws/media/2418918O/3m-india-business-responsibility-and-sustainability-report-2023-2024.pdf",
-            "2025": null
+            "2024": "https://multimedia.3m.com/mws/media/2418918O/3m-india-business-responsibility-and-sustainability-report-2023-2024.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-25T16:48:10.697000"
+        "updated_at": "2025-02-28 06:22:24.249600"
     },
     {
         "symbol": "ABT",
@@ -122,10 +121,13 @@
         "website_url": null,
         "csr_reports": {
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_ATVI_2020.pdf",
-            "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_ATVI_2021.pdf"
+            "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_ATVI_2021.pdf",
+            "2022": "",
+            "2023": "",
+            "2024": "https://scholarship.law.upenn.edu/cgi/viewcontent.cgi?article=1716&context=jbl"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:51.895000"
+        "updated_at": "2025-02-28 05:28:51.490920"
     },
     {
         "symbol": "ADBE",
@@ -146,10 +148,11 @@
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_ADBE_2020.pdf",
             "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_ADBE_2021.pdf",
             "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_ADBE_2022.pdf",
-            "2023": "https://www.responsibilityreports.com/Click/1976"
+            "2023": "https://www.responsibilityreports.com/Click/1976",
+            "2024": "https://www.adobe.com/content/dam/cc/en/corporate-responsibility/pdfs/Adobe-CSR-Report-2023.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:52.669000"
+        "updated_at": "2025-02-28 05:29:54.393100"
     },
     {
         "symbol": "AMD",
@@ -171,10 +174,13 @@
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_AMD_2020.pdf",
             "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_AMD_2021.pdf",
             "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_AMD_2022.pdf",
-            "2023": "https://www.responsibilityreports.com/Click/1980"
+            "2023": "https://www.responsibilityreports.com/Click/1980",
+            "2016": "",
+            "2018": "",
+            "2024": "https://www.amd.com/content/dam/amd/en/documents/corporate/cr/climate-policy.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:53.655000"
+        "updated_at": "2025-02-28 05:30:19.497833"
     },
     {
         "symbol": "AAP",
@@ -188,10 +194,13 @@
             "2018": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_AAP_2018.pdf",
             "2019": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_AAP_2019.pdf",
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_AAP_2020.pdf",
-            "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_AAP_2021.pdf"
+            "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_AAP_2021.pdf",
+            "2022": "https://s203.q4cdn.com/791774973/files/doc_financials/2022/Q422-FCPT-Investor-Pres_vFF-2022-10-31.pdf",
+            "2023": "https://filecache.investorroom.com/mr5ir_genuineparts/832/2023%20GPC%20Sustainability%20Report_FINAL.pdf",
+            "2024": ""
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:54.321000"
+        "updated_at": "2025-02-28 05:32:30.791096"
     },
     {
         "symbol": "AES",
@@ -207,10 +216,17 @@
             "2014": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/t/NYSE_AES_2014.pdf",
             "2015": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/t/NYSE_AES_2015.pdf",
             "2018": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/t/NYSE_AES_2018.pdf",
-            "2019": "https://www.responsibilityreports.com/Click/1991"
+            "2019": "https://www.responsibilityreports.com/Click/1991",
+            "2016": "",
+            "2017": "",
+            "2020": "",
+            "2021": "",
+            "2022": "",
+            "2023": "https://www.aes.com/sites/aes.com/files/2023-09/2022_ESG_Indicators_Report_vfinal2.pdf",
+            "2024": "https://www.aes.com/sites/aesvault.com/files/2024-10/2023-AES-Improving-Lives-Report.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:54.998000"
+        "updated_at": "2025-02-28 05:33:57.119748"
     },
     {
         "symbol": "AMG",
@@ -221,10 +237,15 @@
         "region": "North America",
         "website_url": null,
         "csr_reports": {
-            "2019": "https://www.responsibilityreports.com/Click/2622"
+            "2019": "https://www.responsibilityreports.com/Click/2622",
+            "2020": "",
+            "2021": "",
+            "2022": "",
+            "2023": "",
+            "2024": ""
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:55.727000"
+        "updated_at": "2025-02-28 05:37:24.757196"
     },
     {
         "symbol": "AFL",
@@ -245,10 +266,12 @@
             "2019": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_AFL_2019.pdf",
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_AFL_2020.pdf",
             "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_AFL_2021.pdf",
-            "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_AFL_2022.pdf"
+            "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_AFL_2022.pdf",
+            "2023": "",
+            "2024": "https://s24.q4cdn.com/367535798/files/doc_financials/2023/ar/2023-aflac-incorporated-business-and-sustainability-report-3-21.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:56.410000"
+        "updated_at": "2025-02-28 06:03:45.958108"
     },
     {
         "symbol": "A",
@@ -281,10 +304,12 @@
             "2019": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_A_2019.pdf",
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_A_2020.pdf",
             "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_A_2021.pdf",
-            "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_A_2022.pdf"
+            "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_A_2022.pdf",
+            "2023": "https://www.agilent.com/about/esg/en/2022-agilent-esg-report.pdf",
+            "2024": "https://impaxam.com/assets/pdfs/gem-fund/pax-gem-bfr-report.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:57.115000"
+        "updated_at": "2025-02-28 06:04:27.282808"
     },
     {
         "symbol": "APD",
@@ -299,10 +324,11 @@
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_APD_2020.pdf",
             "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_APD_2021.pdf",
             "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_APD_2022.pdf",
-            "2023": "https://www.responsibilityreports.com/Click/1988"
+            "2023": "https://www.responsibilityreports.com/Click/1988",
+            "2024": "https://www.airproducts.com/-/media/files/en/900/900-24-001-us-sustainability-report-2024.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:57.776000"
+        "updated_at": "2025-02-28 06:04:44.586057"
     },
     {
         "symbol": "AKAM",
@@ -317,10 +343,11 @@
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_AKAM_2020.pdf",
             "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_AKAM_2021.pdf",
             "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_AKAM_2022.pdf",
-            "2023": "https://www.responsibilityreports.com/Click/1997"
+            "2023": "https://www.responsibilityreports.com/Click/1997",
+            "2024": "https://www.ir.akamai.com/static-files/c498a631-cc88-43cd-9d45-4f9fc9d46d58"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:58.498000"
+        "updated_at": "2025-02-28 06:05:11.253522"
     },
     {
         "symbol": "ALK",
@@ -340,10 +367,16 @@
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ALK_2020.pdf",
             "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ALK_2021.pdf",
             "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ALK_2022.pdf",
-            "2023": "https://www.responsibilityreports.com/Click/2001"
+            "2023": "https://www.responsibilityreports.com/Click/2001",
+            "2010": "",
+            "2011": "",
+            "2014": "",
+            "2015": "",
+            "2016": "",
+            "2024": "https://news.alaskaair.com/investor-relations/events-presentations/wp-content/uploads/2024/08/Alaska-Airlines-Sustainability-Report-2023.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:59.265000"
+        "updated_at": "2025-02-28 06:06:02.483611"
     },
     {
         "symbol": "ALB",
@@ -369,10 +402,12 @@
             "2019": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ALB_2019.pdf",
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ALB_2020.pdf",
             "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ALB_2021.pdf",
-            "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ALB_2022.pdf"
+            "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ALB_2022.pdf",
+            "2023": "",
+            "2024": "https://www.albemarle.com/sites/default/files/2024-06/Albemarle%202023%20Sustainability%20Report%284%29.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:37:00.040000"
+        "updated_at": "2025-02-28 06:07:04.577607"
     },
     {
         "symbol": "ARE",
@@ -389,10 +424,11 @@
             "2020": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ARE_2020.pdf",
             "2021": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ARE_2021.pdf",
             "2022": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ARE_2022.pdf",
-            "2023": "https://www.responsibilityreports.com/Click/2008"
+            "2023": "https://www.responsibilityreports.com/Click/2008",
+            "2024": "https://www.ey.com/content/dam/ey-unified-site/ey-com/en-gl/about-us/analyst-relations/documents/ey-gl-verdantix-green-quadrant-esg-sustainability-consulting-03-2024.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:37:00.737000"
+        "updated_at": "2025-02-28 06:07:44.419282"
     },
     {
         "symbol": "ALXN",
@@ -404,10 +440,14 @@
         "website_url": null,
         "csr_reports": {
             "2019": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_ALXN_2019.pdf",
-            "2020": "https://www.responsibilityreports.com/Click/2007"
+            "2020": "https://www.responsibilityreports.com/Click/2007",
+            "2021": "",
+            "2022": "",
+            "2023": "",
+            "2024": "https://catalystpharma.com/wp-content/uploads/2024/06/CPRX-ESG-2024-6-27-Final.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:37:01.531000"
+        "updated_at": "2025-02-28 06:08:01.047621"
     },
     {
         "symbol": "ALGN",
@@ -417,9 +457,12 @@
         "country": "US",
         "region": "North America",
         "website_url": null,
-        "csr_reports": {},
+        "csr_reports": {
+            "2023": "",
+            "2024": "https://www.aligntech.com/documents/Align%202023%20Sustainability%20Report%20(v1%20June%2024%202024)_final%20-%20Signed%20SB%20KS%20JT%201.pdf"
+        },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:36:33.173419"
+        "updated_at": "2025-02-28 06:09:32.228686"
     },
     {
         "symbol": "ALLE",
@@ -430,10 +473,14 @@
         "region": "North America",
         "website_url": null,
         "csr_reports": {
-            "2020": "https://www.responsibilityreports.com/Click/2798"
+            "2020": "https://www.responsibilityreports.com/Click/2798",
+            "2021": "",
+            "2022": "",
+            "2023": "https://www.allegion.com/content/dam/allegion-corp/migration/annual_report/2022/docs/2022%20Allegion%20Annual%20Report%20and%20More_ESG%20Summary%20Report%20Download.pdf",
+            "2024": "https://www.allegion.com/content/dam/allegion-corp/migration/annual_report/2023/2023%20Digital%20Annual%20Report%20and%20More_10-K%20Download.pdf"
         },
         "created_at": "2025-02-24T15:36:33.173419",
-        "updated_at": "2025-02-24T15:37:03.348000"
+        "updated_at": "2025-02-28 06:10:14.929648"
     },
     {
         "symbol": "AGN",
