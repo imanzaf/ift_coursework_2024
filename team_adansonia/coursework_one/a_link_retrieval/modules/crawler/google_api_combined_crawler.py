@@ -42,7 +42,7 @@ def _get_report_search_results(company_name: str, ticker: str, year: str) -> str
 
         try:
             logger.info(f"Using API Key: {api_key}")
-            response = requests.get(url, params=params)
+            response = requests.get(url, params=params, timeout=180)
 
             # Handle rate limits
             if response.status_code == 429:

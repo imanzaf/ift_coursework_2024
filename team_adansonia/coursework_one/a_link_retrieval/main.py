@@ -230,7 +230,7 @@ def responsibility_reports_seed():
 
     print(f"Exported {len(unique_data)} unique documents to {seed_file}")
 
-def populate_database(rate_limit=10):
+def populate_database(rate_limit=10, bypass=True):
     global is_db_initialized
 
     if is_running_in_docker():
@@ -272,7 +272,7 @@ def populate_database(rate_limit=10):
         print("Company pending for past report processing: " + str(collection.count_documents({}) - len(populated_data)))
     
     #populate status is dictionary containing the processing result of n unprocessed companies
-    populate_status = retrieve_and_store_csr_reports(collection, populated_data, api_limit=rate_limit)
+    populate_status = retrieve_and_store_csr_reports(collection, populated_data, api_limit=rate_limit, bypass=bypass)
 
     # Ensure uniqueness before exporting
     unique_data = []
@@ -312,7 +312,7 @@ def populate_database(rate_limit=10):
     return is_db_initialized
 
 
-def get_latest_report(rate_limit=10):
+def get_latest_report(rate_limit=10, bypass=True):
 
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
@@ -335,17 +335,8 @@ def get_latest_report(rate_limit=10):
         company_name = document["security"]
         ticker = document.get("symbol", "")  # Ensure ticker is present if needed
         logger.info(f"Processing company: {company_name}")
-
         try:
             existing_reports = document.get("csr_reports", {})
-
-            # Find the earliest year from existing reports or default to the current year
-            #if existing_reports:
-            #    latest_year = max(existing_reports.keys()) + 1
-            #    logger.info(f"Latest year for {company_name} is {latest_year}")
-            #else:
-            #    latest_year = current_year
-            #    logger.info(f"No reports found for {company_name}, using current year")
 
             years_to_process = [current_year]
 
@@ -363,7 +354,7 @@ def get_latest_report(rate_limit=10):
                     continue
 
                 # Process for current year
-                if year_str == current_year:
+                if not bypass and year_str == current_year:
                     try:
                         result = crawler.process_company(company_name)
 
@@ -422,17 +413,17 @@ def get_latest_report(rate_limit=10):
     #Use the webdriver to get latest report, if different from previous year add, otherwise skip
     return
 
-def populate_database_jenkins(rate_limit=0):
+def populate_database_jenkins(rate_limit=0, bypass=True):
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
     logger.info("populate database: Starting the script on " + str(datetime.now()))
     if rate_limit == 0:
         rate_limit = 100
     logger.info("populate database: Populating database with rate limit " + str(rate_limit))
-    populate_database(rate_limit)
+    populate_database(rate_limit, bypass)
     logger.info("populate database: Script completed on " + str(datetime.now()))
 
-def get_latest_report_jenkins(rate_limit=0):
+def get_latest_report_jenkins(rate_limit=0, bypass=True):
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
     logger.info("get latest report: Starting the script on " + str(datetime.now()))
@@ -446,7 +437,7 @@ def get_latest_report_jenkins(rate_limit=0):
     limit = collection.count_documents({})
     if rate_limit == 0:
         rate_limit = limit
-    get_latest_report(rate_limit)
+    get_latest_report(rate_limit, bypass)
     logger.info("get latest report: Script completed on " + str(datetime.now()))
 
 def test_jenkins():
@@ -454,5 +445,5 @@ def test_jenkins():
     print("this is from jenkins_test.py at " + date_str)
 
 if __name__ == '__main__':
-    #populate_database_jenkins(1)
-    get_latest_report_jenkins(5)
+    populate_database_jenkins(5, False)
+    get_latest_report_jenkins(5, False)
