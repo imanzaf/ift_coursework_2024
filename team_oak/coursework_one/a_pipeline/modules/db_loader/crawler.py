@@ -440,7 +440,7 @@ class PDFScraper:
             companies = df["Name"].dropna().unique().tolist()
             logger.info(f"Loaded {len(companies)} companies")
             with ThreadPoolExecutor(max_workers=Config.MAX_WORKERS) as executor:
-                futures = {executor.submit(self.process_company, co): co for co in companies[1:2]}
+                futures = {executor.submit(self.process_company, co): co for co in companies}
                 for future in as_completed(futures):
                     company = futures[future]
                     try:

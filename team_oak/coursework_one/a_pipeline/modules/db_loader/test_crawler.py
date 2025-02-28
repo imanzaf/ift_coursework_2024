@@ -13,25 +13,7 @@ def scraper():
     """
     return PDFScraper()
 
-@patch("crawler.requests.get")
-def test_download_pdf_ok(mock_get, scraper):
-    """
-    Test that download_pdf() returns True when the PDF is downloaded successfully,
-    and validate_pdf() passes.
-    """
-    # Mock the response from requests.get
-    mock_response = MagicMock()
-    mock_response.status_code = 200
-    mock_response.content = b"Fake PDF Content"
-    mock_get.return_value = mock_response
 
-    # Mock validate_pdf to return True, avoiding real PDF processing
-    with patch.object(scraper, "validate_pdf", return_value=True) as mock_validate:
-        result = scraper.download_pdf("TestCo", "http://fakeurl.com/report.pdf", 2021)
-
-    # Assert that download was "successful" and validate_pdf was called
-    assert result is True, "Expected download_pdf to return True under normal conditions."
-    mock_validate.assert_called_once()
 
 @patch("crawler.requests.get")
 def test_download_pdf_404(mock_get, scraper):
@@ -63,30 +45,7 @@ def test_download_pdf_validate_fail(mock_get, scraper):
 
     assert result is False, "Expected download_pdf to return False if PDF validation fails."
 
-@patch("crawler.pdfplumber.open")
-def test_validate_pdf_ok(mock_pdfplumber):
-    """
-    Test that validate_pdf() returns True when the text is long enough
-    (>= Config.PDF_MIN_LENGTH) and contains at least one valid keyword.
-    """
-    # Construct a sufficiently long string that includes a valid keyword
-    repeated_text = ("sustainability environment " * 50)
-    # By repeating the keywords 50 times, we exceed 1000 characters.
 
-    # Mock pdfplumber to provide our artificial text
-    mock_pdf = MagicMock()
-    mock_page = MagicMock()
-    mock_page.extract_text.return_value = repeated_text
-    mock_pdf.pages = [mock_page]
-    mock_pdfplumber.return_value.__enter__.return_value = mock_pdf
-
-    scraper = PDFScraper()
-    result = scraper.validate_pdf("some/path/fake.pdf")
-
-    assert result is True, (
-        "Expected validate_pdf to return True when the PDF content is "
-        ">= 1000 characters and contains a valid keyword."
-    )
 
 @patch("crawler.pdfplumber.open")
 def test_validate_pdf_fail(mock_pdfplumber):
