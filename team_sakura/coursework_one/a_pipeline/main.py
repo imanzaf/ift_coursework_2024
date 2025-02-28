@@ -12,7 +12,7 @@ from modules.db_loader.mongo_db import get_mongo_collection
 
 load_dotenv()
 
-config_path = os.getenv("CONF_PATH", "/app/config/conf.yaml")  # Default path for Docker
+config_path = os.getenv("CONF_PATH", "a_pipeline/config/conf.yaml")  # Default path for Docker
 with open(config_path, "r") as file:
     config = yaml.safe_load(file)
 
