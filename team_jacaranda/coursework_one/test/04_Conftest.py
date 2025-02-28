@@ -14,12 +14,12 @@ import time
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 # --------------------------
-# 全局配置参数
+# Global Configuration Parameters
 # --------------------------
 POSTGRES_TEST_CONFIG = {
     "host": "localhost" if os.getenv("DOCKER_ENV") else "host.docker.internal",
     "port": 5439,
-    "dbname": "fift_test",  # 测试专用数据库
+    "dbname": "fift_test",  # Test-specific database
     "user": "postgres",
     "password": "postgres"
 }
@@ -29,7 +29,7 @@ MINIO_TEST_CONFIG = {
     "access_key": "ift_bigdata",
     "secret_key": "minio_password",
     "secure": False,
-    "bucket": "csreport-test"  # 测试专用桶
+    "bucket": "csreport-test"  # Test-specific bucket
 }
 
 KAFKA_TEST_CONFIG = {
@@ -38,11 +38,11 @@ KAFKA_TEST_CONFIG = {
 }
 
 # --------------------------
-# 数据库 Fixtures
+# Database Fixtures
 # --------------------------
 @pytest.fixture(scope="session")
 def postgres_conn():
-    """全局PostgreSQL连接（测试会话级别）"""
+    """Global PostgreSQL connection (session-level)"""
     max_retries = 5
     for i in range(max_retries):
         try:
@@ -57,7 +57,7 @@ def postgres_conn():
             print(f"PostgreSQL connection failed, retrying... ({i+1}/{max_retries})")
             time.sleep(2)
     
-    # 测试后清理
+    # Cleanup after testing
     with conn.cursor() as cursor:
         cursor.execute("DROP TABLE IF EXISTS csr_reporting.company_reports CASCADE")
         cursor.execute("DROP TABLE IF EXISTS csr_reporting.company_static CASCADE")
@@ -65,9 +65,9 @@ def postgres_conn():
 
 @pytest.fixture(scope="function")
 def db_setup(postgres_conn):
-    """每个测试用例前的数据库初始化"""
+    """Database initialization before each test case"""
     with postgres_conn.cursor() as cursor:
-        # 创建测试表结构
+        # Create test table structure
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS csr_reporting.company_static (
                 security TEXT PRIMARY KEY,
@@ -83,7 +83,7 @@ def db_setup(postgres_conn):
                 minio_path VARCHAR(255)
             )
         """)
-        # 插入基础测试数据
+        # Insert basic test data
         cursor.execute("""
             INSERT INTO csr_reporting.company_static (security, company_name)
             VALUES 
@@ -92,7 +92,7 @@ def db_setup(postgres_conn):
             ON CONFLICT DO NOTHING
         """)
     yield
-    # 测试后清理数据（保留表结构）
+    # Clean up data after testing (keep table structure)
     with postgres_conn.cursor() as cursor:
         cursor.execute("TRUNCATE csr_reporting.company_reports CASCADE")
 
@@ -101,7 +101,7 @@ def db_setup(postgres_conn):
 # --------------------------
 @pytest.fixture(scope="session")
 def minio_client():
-    """全局MinIO客户端"""
+    """Global MinIO client"""
     client = Minio(
         MINIO_TEST_CONFIG["endpoint"],
         access_key=MINIO_TEST_CONFIG["access_key"],
@@ -109,13 +109,13 @@ def minio_client():
         secure=MINIO_TEST_CONFIG["secure"]
     )
     
-    # 确保测试桶存在
+    # Ensure the test bucket exists
     if not client.bucket_exists(MINIO_TEST_CONFIG["bucket"]):
         client.make_bucket(MINIO_TEST_CONFIG["bucket"])
     
     yield client
     
-    # 测试后清理所有测试文件
+    # Clean up all test files after testing
     objects = client.list_objects(MINIO_TEST_CONFIG["bucket"], recursive=True)
     for obj in objects:
         client.remove_object(MINIO_TEST_CONFIG["bucket"], obj.object_name)
@@ -125,7 +125,7 @@ def minio_client():
 # --------------------------
 @pytest.fixture(scope="session")
 def kafka_producer():
-    """Kafka生产者（会话级别）"""
+    """Kafka producer (session-level)"""
     producer = KafkaProducer(
         bootstrap_servers=KAFKA_TEST_CONFIG["bootstrap_servers"],
         value_serializer=lambda v: json.dumps(v).encode('utf-8')
@@ -135,7 +135,7 @@ def kafka_producer():
 
 @pytest.fixture(scope="function")
 def kafka_consumer():
-    """Kafka消费者（函数级别）"""
+    """Kafka consumer (function-level)"""
     consumer = KafkaConsumer(
         KAFKA_TEST_CONFIG["topic"],
         bootstrap_servers=KAFKA_TEST_CONFIG["bootstrap_servers"],
@@ -147,11 +147,11 @@ def kafka_consumer():
     consumer.close()
 
 # --------------------------
-# 其他工具函数
+# Other Utility Functions
 # --------------------------
 @pytest.fixture(scope="session", autouse=True)
 def check_services_available():
-    """全局服务可用性检查"""
+    """Global service availability check"""
     required_services = {
         "PostgreSQL": (POSTGRES_TEST_CONFIG["host"], POSTGRES_TEST_CONFIG["port"]),
         "MinIO": (MINIO_TEST_CONFIG["endpoint"].split(":")[0], int(MINIO_TEST_CONFIG["endpoint"].split(":")[1])),
@@ -172,4 +172,3 @@ def check_services_available():
                     raise RuntimeError(f"{service} service not available at {host}:{port}")
                 print(f"Waiting for {service} service... (attempt {attempt}/{max_attempts})")
                 time
-
