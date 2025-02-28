@@ -23,18 +23,18 @@ def main():
             print("Running all processes...")
 
             # Step 1: Run create_table.py
-            run_script('create_table.py')
+            run_script('modules/create_table.py')
 
             # Step 2: Run website+google.py
-            run_script('website+google.py')
+            run_script('modules/website+google.py')
 
             # Step 3: Run integrate_urls.py
-            run_script('integrate_urls.py')
+            run_script('modules/integrate_urls.py')
 
             # Step 4: Run kafka_minio_integration.py and kafka_producer.py concurrently
             print("Running kafka_minio_integration.py and kafka_producer.py concurrently...")
-            proc1 = subprocess.Popen(['python', 'kafka_minio_integration.py'])
-            proc2 = subprocess.Popen(['python', 'kafka_producer.py'])
+            proc1 = subprocess.Popen(['python', 'modules/kafka_minio_integration.py'])
+            proc2 = subprocess.Popen(['python', 'modules/kafka_producer.py'])
 
             proc1.wait()
             proc2.wait()
