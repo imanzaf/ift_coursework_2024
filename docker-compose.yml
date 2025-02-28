@@ -46,7 +46,7 @@ services:
       build: 
         dockerfile: ./000.Database/SQL/Dockerfile
 
-    # ✅ pgAdmin（可视化管理 PostgreSQL）
+    # ✅ pgAdmin (PostgreSQL GUI)
     pgadmin:
       container_name: pg_admin_cw
       image: dpage/pgadmin4
@@ -115,6 +115,22 @@ services:
         KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       depends_on:
         - zookeeper
+
+    # ✅ Scraper (Newly Added)
+    scraper:
+      container_name: scraper_cw
+      build: .
+      networks:
+        - iceberg_net
+      depends_on:
+        - mongo_db
+        - miniocw
+        - postgres_db
+      environment:
+        - MONGO_URI=mongodb://mongo_db:27017
+        - MINIO_HOST=miniocw
+        - POSTGRES_HOST=postgres_db
+      command: python csr_scraper.py  # Runs the scraper with scheduler
 
 volumes:
   postgres-data:

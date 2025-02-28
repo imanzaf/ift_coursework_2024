@@ -1,0 +1,44 @@
+# ✅ Web Scraping
+selenium
+chromedriver-autoinstaller
+requests
+urllib3
+beautifulsoup4
+
+# ✅ API (FastAPI + Database)
+fastapi
+uvicorn
+pymongo
+psycopg2
+sqlalchemy
+
+# ✅ Cloud Storage (MinIO)
+minio
+
+# ✅ Data Processing
+pandas
+numpy
+python-dotenv
+PyYAML
+
+# ✅ Data Analysis (Sentiment Analysis & Keyword Extraction)
+nltk
+textblob
+yake
+
+# ✅ Data Visualization (Streamlit)
+streamlit
+altair
+matplotlib
+
+# ✅ Task Scheduler
+apscheduler
+
+# ✅ Code Quality (Formatting & Linting)
+black
+flake8
+
+# ✅ Testing
+pytest
+pytest-mock
+requests-mock

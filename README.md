@@ -2,7 +2,7 @@
 
 **Author**: *Magnolia*  
 **Version**: 1.0.0  
-**License**: MIT 
+**License**: MIT (or your choice)
 
 This repository automates the **scraping**, **cleaning**, **storage**, **retrieval**, and **analysis** of Corporate Social Responsibility (CSR) reports. We use **Selenium**, **MongoDB**, **MinIO**, **PostgreSQL**, and **FastAPI** to ensure a robust, maintainable, and highly scalable system.
 

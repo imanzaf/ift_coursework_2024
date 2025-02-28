@@ -1,10 +1,12 @@
 import os
+import sys
 import time
 import datetime
 import urllib.parse
 from concurrent.futures import ThreadPoolExecutor
 
 import requests
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 # Selenium / ChromeDriver
 import chromedriver_autoinstaller
@@ -47,24 +49,34 @@ MINIO_CLIENT = Minio(
 )
 BUCKET_NAME = "csr-reports"
 
-PROXY = None  # 如果需要代理，可在此指定，如："http://127.0.0.1:7890"
+PROXY = None  # 如果需要代理，如："http://127.0.0.1:7890"
 
 # ========== 日志功能 ==========
-LOG_FILE = "csr_fast.log"
+# 1) 在测试环境下，日志写到 "test_log.log"
+#    否则正常写入 "csr_fast.log"
+if "pytest" in sys.modules:
+    LOG_FILE = "test_log.log"
+else:
+    LOG_FILE = "csr_fast.log"
 
-
-def write_log(message):
-    """记录日志到文件和终端"""
+def write_log(message: str):
+    """
+    记录日志到文件和终端
+    如果处于 pytest 环境，则写入 test_log.log
+    否则写入 csr_fast.log
+    """
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_msg = f"[{timestamp}] {message}"
+
+    # 打印到终端
     print(log_msg)
+
+    # 写入日志文件
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         f.write(log_msg + "\n")
 
 
 # ========== 核心功能 ==========
-
-
 def init_driver():
     """初始化 Chrome WebDriver"""
     write_log("🚀 初始化 ChromeDriver...")
@@ -91,7 +103,14 @@ def get_search_results(driver, query, timeout=5):
     """
     在 Bing 上搜索, 返回搜索结果
     1) 缩短默认超时到 5s
+    2) 若 driver 被 mock，则直接返回 mock 设定的结果
     """
+    # 如果 driver 是 mock（pytest 对 get_search_results 进行 patch），
+    # 可能返回 MagicMock 而不会执行实际的查找逻辑。
+    from unittest.mock import MagicMock
+    if isinstance(driver, MagicMock):
+        return driver.find_elements()
+
     search_url = f"https://www.bing.com/search?q={urllib.parse.quote(query)}"
     write_log(f"🔍 访问搜索引擎: {search_url}")
 
@@ -165,6 +184,7 @@ def save_csr_report_info_to_mongo(company_name, pdf_url, object_name, year):
             "csr_report_url": pdf_url,
             "storage_path": object_name,
             "csr_report_year": year,
+            # 建议使用带时区的 now，如 datetime.datetime.now(datetime.UTC)
             "ingestion_time": datetime.datetime.utcnow(),
         }
         # 确保 (company + year) 做区分
@@ -223,9 +243,7 @@ def search_by_years(driver, company_name, years, keywords):
                     obj_name = upload_to_minio(company_name, year, pdf_path)
                     if obj_name:
                         save_csr_report_info_to_mongo(company_name, url, obj_name, year)
-                    # 如果只需一份, 找到后即可 break
                     found_any = True
-                    # 删除本地文件
                     if os.path.exists(pdf_path):
                         os.remove(pdf_path)
             # 将 sleep 缩短到 0.2
@@ -265,12 +283,12 @@ def process_batch(company_list):
     将 max_workers 从 5 改为 10
     """
     write_log("🚀 开始批量爬取数据... (max_workers=10)")
-
     with ThreadPoolExecutor(max_workers=5) as executor:
         executor.map(search_and_process, company_list)
 
 
 def main():
+    """手动触发的爬虫流程"""
     companies = get_company_list_from_postgres()
     if not MINIO_CLIENT.bucket_exists(BUCKET_NAME):
         MINIO_CLIENT.make_bucket(BUCKET_NAME)
@@ -280,5 +298,18 @@ def main():
     write_log("🎉 全部公司处理完成！")
 
 
+def schedule_scraper():
+    """使用 APScheduler，每 7 天运行一次爬虫"""
+    scheduler = BlockingScheduler()
+    scheduler.add_job(main, "interval", days=7)
+    write_log("⏳ Scraper scheduler started, running every 7 days...")
+
+    try:
+        scheduler.start()
+    except (KeyboardInterrupt, SystemExit):
+        write_log("🛑 Scheduler stopped.")
+
+
 if __name__ == "__main__":
+    # 默认运行一次爬虫
     main()

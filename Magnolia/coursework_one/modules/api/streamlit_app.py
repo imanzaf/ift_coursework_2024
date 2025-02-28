@@ -12,7 +12,7 @@ from pymongo import MongoClient
 # -------------------------------
 # 1. FastAPI API Base URL
 # -------------------------------
-API_BASE_URL = "http://localhost:8000"  # FastAPI 地址
+API_BASE_URL = "http://localhost:8000"  # FastAPI address
 
 # -------------------------------
 # 2. Direct MongoDB & MinIO Connection
@@ -32,7 +32,7 @@ minio_client = Minio(
 BUCKET_NAME = "csr-reports"
 
 # -------------------------------
-# 3. Streamlit 页面设置
+# 3. Streamlit Page Configuration
 # -------------------------------
 st.set_page_config(page_title="CSR Dashboard", layout="wide")
 st.title("📊 CSR Reports Dashboard (with Sentiment Analysis & Manual Upload)")
@@ -53,7 +53,7 @@ enable_year = st.sidebar.checkbox("Enable Year Filter")
 
 
 # -------------------------------
-# 5. 搜索功能
+# 5. Search Function
 # -------------------------------
 def search_reports(company, enable_year_filter, year):
     params = {}
@@ -79,7 +79,7 @@ def search_reports(company, enable_year_filter, year):
 
 
 # -------------------------------
-# 6. 搜索按钮
+# 6. Search Button
 # -------------------------------
 if st.sidebar.button("🔍 Search"):
     df = search_reports(company_query, enable_year, year_query)
@@ -89,7 +89,7 @@ if st.sidebar.button("🔍 Search"):
         st.warning("No matching reports found.")
 
 # -------------------------------
-# 7. 显示搜索结果 & 批量下载
+# 7. Display Search Results & Batch Download
 # -------------------------------
 if (
     "search_results" in st.session_state
@@ -99,7 +99,7 @@ if (
     df = st.session_state["search_results"]
     st.dataframe(df)
 
-    # 批量下载
+    # Batch download
     selected_indexes = st.multiselect("Select Rows to Download", df.index)
     if st.button("📥 Download Selected Reports as ZIP") and selected_indexes:
         zip_buf = io.BytesIO()
@@ -120,7 +120,7 @@ if (
         )
 
 # -------------------------------
-# 8. 报告年度分布可视化
+# 8. Report Year Distribution Visualization
 # -------------------------------
 st.header("📊 CSR Reports Overview")
 try:
@@ -155,7 +155,7 @@ except Exception as e:
 
 
 # -------------------------------
-# 10. 手动上传至 MinIO & MongoDB
+# 10. Manual Upload to MinIO & MongoDB
 # -------------------------------
 st.header("📤 Manually Upload CSR Report")
 st.markdown("Use this section to add missing CSR PDF files and insert metadata.")
@@ -174,7 +174,7 @@ if st.button("⬆️ Upload to MinIO & Insert MongoDB"):
         safe_company = company_name_input.replace(" ", "_")
         storage_path = f"{year_input}/{safe_company}.pdf"
 
-        # 上传到 MinIO
+        # Upload to MinIO
         try:
             file_bytes = uploaded_pdf.read()
             minio_client.put_object(
@@ -189,7 +189,7 @@ if st.button("⬆️ Upload to MinIO & Insert MongoDB"):
             st.error(f"❌ Failed to upload PDF: {e}")
             st.stop()
 
-        # 插入 MongoDB
+        # Insert into MongoDB
         doc = {
             "company_name": company_name_input,
             "csr_report_year": int(year_input),

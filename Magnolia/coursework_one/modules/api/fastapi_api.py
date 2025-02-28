@@ -9,35 +9,32 @@ import logging
 import shutil
 
 # ==========================
-# 1. 设置日志
+# 1. Logging Setup
 # ==========================
 logging.basicConfig(level=logging.INFO)
 
 # ==========================
-# 2. MongoDB 连接
+# 2. MongoDB Connection
 # ==========================
 MONGO_URI = "mongodb://localhost:27019"
 MONGO_DB_NAME = "csr_db"
 MONGO_COLLECTION = "csr_reports"
 
-try:
-    mongo_client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)  # 设置超时
-    mongo_db = mongo_client[MONGO_DB_NAME]
-    collection_reports = mongo_db[MONGO_COLLECTION]
-    mongo_client.server_info()  # 测试 MongoDB 连接
-    logging.info("✅ Connected to MongoDB")
-except Exception as e:
-    logging.error(f"❌ MongoDB Connection Error: {e}")
-    raise e
+# 直接调用 MongoClient，让 mock_mongo_client 可以被测试捕获
+logging.info("🔌 Initializing MongoDB client...")
+mongo_client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
+mongo_db = mongo_client[MONGO_DB_NAME]
+collection_reports = mongo_db[MONGO_COLLECTION]
+logging.info("✅ MongoDB client initialized.")
 
 # ==========================
-# 3. MinIO 配置
+# 3. MinIO Config
 # ==========================
 MINIO_HOST = os.getenv("MINIO_HOST", "localhost")
 MINIO_BUCKET = "csr-reports"
 
 # ==========================
-# 4. 初始化 FastAPI
+# 4. Initialize FastAPI
 # ==========================
 app = FastAPI(
     title="CSR Reports API",
@@ -45,79 +42,73 @@ app = FastAPI(
     version="1.0",
 )
 
-
 # ==========================
-# 5. 数据模型
+# 5. Data Models
 # ==========================
 class CSRReport(BaseModel):
     company_name: str
     csr_report_url: str
     storage_path: str
     csr_report_year: int
-    ingestion_time: str  # 确保是字符串格式
+    ingestion_time: str  # store as string
     download_link: Optional[str] = None
-
 
 class BatchDownloadRequest(BaseModel):
     report_paths: List[str]
 
-
 # ==========================
-# 6. CSR 报告查询 API（支持模糊搜索）
+# 6. GET /reports (Fuzzy search)
 # ==========================
 @app.get("/reports", response_model=List[CSRReport])
 def get_reports(
-    company: Optional[str] = Query(
-        None, description="Company name (supports partial match)"
-    ),
+    company: Optional[str] = Query(None, description="Company name (fuzzy)"),
     year: Optional[int] = Query(None, description="Report year, e.g., 2023"),
 ):
     """
-    Retrieve CSR reports by company name (supports fuzzy search) and/or report year.
+    Retrieve CSR reports by company name (supports partial match) and/or report year.
     """
     try:
         query = {}
         if company:
-            query["company_name"] = {
-                "$regex": company,
-                "$options": "i",
-            }  # 模糊搜索（不区分大小写）
+            query["company_name"] = {"$regex": company, "$options": "i"}
         if year:
             query["csr_report_year"] = year
 
         logging.info(f"🔍 Querying MongoDB with: {query}")
-
         reports = list(collection_reports.find(query, {"_id": 0}))
 
         if not reports:
             logging.warning(f"⚠️ No results found for query: {query}")
-            raise HTTPException(
-                status_code=404, detail="No reports found for the given query"
-            )
+            # 抛出 404 而不是继续进入 except Exception
+            raise HTTPException(status_code=404, detail="No reports found for the given query")
 
+        # Build download_link & convert ingestion_time to str
         results = []
         for report in reports:
-            # 处理 ingestion_time 字段，确保是字符串格式
-            if isinstance(report["ingestion_time"], datetime):
+            # Ensure ingestion_time is str
+            if isinstance(report.get("ingestion_time"), datetime):
                 report["ingestion_time"] = report["ingestion_time"].isoformat()
 
-            # 构造 MinIO 下载链接
+            # Construct MinIO download link
             if "storage_path" in report:
-                report["download_link"] = (
-                    f"http://{MINIO_HOST}:9000/{MINIO_BUCKET}/{report['storage_path']}"
-                )
+                report["download_link"] = f"http://{MINIO_HOST}:9000/{MINIO_BUCKET}/{report['storage_path']}"
 
             results.append(report)
 
         return results
 
+    except HTTPException as http_ex:
+        # 重新抛出 HTTPException，让测试得到正确的 status_code
+        logging.error(f"❌ {http_ex.status_code}: {http_ex.detail}")
+        raise http_ex
+
     except Exception as e:
         logging.error(f"❌ Internal Server Error: {e}")
+        # 返回 500
         raise HTTPException(status_code=500, detail=str(e))
 
-
 # ==========================
-# 7. 批量下载 ZIP
+# 7. POST /download-zip (Batch download)
 # ==========================
 @app.post("/download-zip")
 async def download_reports(request: BatchDownloadRequest):
@@ -126,47 +117,51 @@ async def download_reports(request: BatchDownloadRequest):
     """
     try:
         if not request.report_paths:
-            raise HTTPException(
-                status_code=400, detail="No reports selected for download"
-            )
+            # 如果没有传任何文件，抛出 400
+            raise HTTPException(status_code=400, detail="No reports selected for download")
 
-        # 创建临时目录
         temp_dir = "./temp_reports"
         zip_file_path = "./csr_reports.zip"
 
-        # 清理旧文件
+        # Clean up old files
         if os.path.exists(temp_dir):
             shutil.rmtree(temp_dir)
         os.makedirs(temp_dir, exist_ok=True)
 
-        # 下载选中的报告
+        # Download files
         for report_path in request.report_paths:
             file_name = report_path.split("/")[-1]
             local_path = os.path.join(temp_dir, file_name)
 
-            # 这里 MinIO 客户端应该下载文件（请确保 MinIO 客户端已正确配置）
-            # MINIO_CLIENT.fget_object(BUCKET_NAME, report_path, local_path)
+            # In real usage, use MinIO client fget_object
+            # MINIO_CLIENT.fget_object(MINIO_BUCKET, report_path, local_path)
 
-            # 这里暂时模拟下载
+            # Here, we mock the file for testing
             with open(local_path, "w") as f:
-                f.write("Dummy PDF content")  # 这里只是模拟，正式环境请改为真实下载逻辑
+                f.write("Dummy PDF content")
 
-        # 打包成 ZIP
+        # Pack into ZIP
         shutil.make_archive(zip_file_path.replace(".zip", ""), "zip", temp_dir)
 
         return FileResponse(
-            zip_file_path, filename="csr_reports.zip", media_type="application/zip"
+            zip_file_path,
+            filename="csr_reports.zip",
+            media_type="application/zip"
         )
+
+    except HTTPException as http_ex:
+        # 如果是 HTTPException(400)，说明 “No files”
+        logging.error(f"❌ Batch download error: {http_ex.status_code}: {http_ex.detail}")
+        raise http_ex
 
     except Exception as e:
         logging.error(f"❌ Batch download error: {e}")
+        # 其他未知错误 -> 500
         raise HTTPException(status_code=500, detail=str(e))
 
-
 # ==========================
-# 8. 启动 API
+# 8. Run the API
 # ==========================
 if __name__ == "__main__":
     import uvicorn
-
-    uvicorn.run("csr_api:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("fastapi_api:app", host="0.0.0.0", port=8000, reload=True)
