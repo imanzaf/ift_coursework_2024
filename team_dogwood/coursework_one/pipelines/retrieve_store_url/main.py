@@ -24,7 +24,7 @@ def get_all_companies(db: PostgreSQLDB) -> list[Company]:
         exit()
 
     companies_list = []
-    for company_data in companies:  # Limit to 1 company for testing
+    for company_data in companies:
         logger.info(f"Processing company: {company_data['security']}")
         company = Company(**company_data)
         companies_list.append(company)
