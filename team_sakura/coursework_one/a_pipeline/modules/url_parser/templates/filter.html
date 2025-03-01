@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSR Reports</title>
+    <script>
+        async function loadCompanies() {
+            const response = await fetch("/get_companies");
+            const companies = await response.json();
+
+            const companySelect = document.getElementById("company");
+            companySelect.innerHTML = "<option value=''>Select a company</option>";
+
+            companies.forEach(company => {
+                let option = document.createElement("option");
+                option.value = company;
+                option.textContent = company;
+                companySelect.appendChild(option);
+            });
+        }
+
+        async function fetchReports() {
+            const companyName = document.getElementById("company").value;
+            const year = document.getElementById("year").value;
+
+            let url = "/csr_reports?";
+            if (companyName) url += `company_name=${encodeURIComponent(companyName)}&`;
+            if (year) url += `year=${encodeURIComponent(year)}`;
+
+            const response = await fetch(url);
+            const data = await response.json();
+
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = "<h3>CSR Reports:</h3>";
+
+            if (data.length === 0) {
+                resultsDiv.innerHTML += "<p>No reports found.</p>";
+                return;
+            }
+
+            data.forEach(report => {
+                resultsDiv.innerHTML += `<p><strong>Company:</strong> ${report.company_name} <br>
+                                         <strong>Year:</strong> ${report.report_year} <br>
+                                         <strong>PDF URL:</strong> <a href="${report.pdf_link}" target="_blank">View PDF</a> <br>
+                                         <strong>MinIO URL:</strong> <a href="${report.minio_url}" target="_blank">Download from MinIO</a>
+                                         </p><hr>`;
+            });
+        }
+
+        window.onload = loadCompanies;
+    </script>
+</head>
+<body>
+    <h1>Search CSR Reports</h1>
+    <label for="company">Company Name:</label>
+    <select id="company" name="company"></select>
+    <br>
+    <label for="year">Year:</label>
+    <input type="text" id="year" name="year">
+    <br>
+    <button onclick="fetchReports()">Search</button>
+    <hr>
+    <div id="results"></div>
+</body>
+</html>

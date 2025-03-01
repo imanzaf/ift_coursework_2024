@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "coursework-one"
+version = "0.1.0"
+description = ""
+authors = ["TeamOak"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.32.3"
+pymongo = "^4.11.1"
+python-dotenv = "^1.0.1"
+minio = "^7.2.15"
+pyyaml = "^6.0.2"
+flask = "^3.1.0"
+beautifulsoup4 = "^4.13.3"
+fastapi = "^0.115.8"
+uvicorn = "^0.34.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+flake8 = "^7.1.2"
+black = "^25.1.0"
+bandit = "^1.8.3"
+safety = "^3.3.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,28 @@
+google_api:
+  key: "${GOOGLE_API_KEY}"
+  search_engine_id: "${GOOGLE_SEARCH_ENGINE_ID}"
+
+databasedocker:
+  sqlite_path: "000.Database/SQL/Equity.db"
+  mongo_uri: "mongo_db_cw:27017"
+  mongo_db: "csr_reports_db2"
+  mongo_collection: "reports"
+
+miniodocker:
+  endpoint: "miniocw:9000"
+  access_key: "ift_bigdata"
+  secret_key: "minio_password"
+  bucket_name: "csr-reports1"
+
+
+databaselocal:
+  sqlite_path: "add the absolute path to your Equity.db"
+  mongo_uri: "localhost:27017"
+  mongo_db: "csr_reports_db2"
+  mongo_collection: "reports"
+
+miniolocal:
+  endpoint: "localhost:9000"
+  access_key: "ift_bigdata"
+  secret_key: "minio_password"
+  bucket_name: "csr-reports1"
