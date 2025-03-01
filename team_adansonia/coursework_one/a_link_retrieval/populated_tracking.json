@@ -1,0 +1,361 @@
+[
+    {
+        "symbol": "ABT",
+        "security": "Abbott Laboratories",
+        "date_init": "2025-02-28 05:26:59.317098",
+        "missing_reports": [],
+        "earliest_report": "2012",
+        "latest_report": "2024",
+        "status": "processed"
+    },
+    {
+        "symbol": "ABBV",
+        "security": "AbbVie Inc.",
+        "date_init": "2025-02-28 05:26:59.318216",
+        "missing_reports": [
+            2023
+        ],
+        "earliest_report": "2018",
+        "latest_report": "2024",
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "ABMD",
+        "security": "ABIOMED Inc",
+        "date_init": "2025-02-28 05:27:16.300478",
+        "missing_reports": [
+            2022,
+            2023
+        ],
+        "earliest_report": "2021",
+        "latest_report": "2024",
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "ACN",
+        "security": "Accenture plc",
+        "date_init": "2025-02-28 05:27:55.075144",
+        "missing_reports": [
+            2012,
+            2015,
+            2021,
+            2022
+        ],
+        "earliest_report": "2011",
+        "latest_report": "2024",
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "ATVI",
+        "security": "Activision Blizzard",
+        "date_init": "2025-02-28 05:28:51.490920",
+        "missing_reports": [
+            2022,
+            2023
+        ],
+        "earliest_report": "2020",
+        "latest_report": 2024,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "ADBE",
+        "security": "Adobe Systems Inc",
+        "date_init": "2025-02-28 05:29:54.393100",
+        "missing_reports": [],
+        "earliest_report": "2013",
+        "latest_report": 2024,
+        "status": "processed"
+    },
+    {
+        "symbol": "AMD",
+        "security": "Advanced Micro Devices Inc",
+        "date_init": "2025-02-28 05:30:19.497833",
+        "missing_reports": [
+            2016,
+            2018
+        ],
+        "earliest_report": "2010",
+        "latest_report": 2024,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "AAP",
+        "security": "Advance Auto Parts",
+        "date_init": "2025-02-28 05:32:30.791096",
+        "missing_reports": [
+            2024
+        ],
+        "earliest_report": "2018",
+        "latest_report": 2023,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "AES",
+        "security": "AES Corp",
+        "date_init": "2025-02-28 05:33:57.119748",
+        "missing_reports": [
+            2016,
+            2017,
+            2020,
+            2021,
+            2022
+        ],
+        "earliest_report": "2012",
+        "latest_report": 2024,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "AMG",
+        "security": "Affiliated Managers Group Inc",
+        "date_init": "2025-02-28 05:37:24.757196",
+        "missing_reports": [
+            2020,
+            2021,
+            2022,
+            2023,
+            2024
+        ],
+        "earliest_report": "2019",
+        "latest_report": 2019,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "AFL",
+        "security": "AFLAC Inc",
+        "date_init": "2025-02-28 06:03:45.958108",
+        "missing_reports": [
+            2023
+        ],
+        "earliest_report": "2012",
+        "latest_report": 2024,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "A",
+        "security": "Agilent Technologies Inc",
+        "date_init": "2025-02-28 06:04:27.282808",
+        "missing_reports": [],
+        "earliest_report": "2000",
+        "latest_report": 2024,
+        "status": "processed"
+    },
+    {
+        "symbol": "APD",
+        "security": "Air Products & Chemicals Inc",
+        "date_init": "2025-02-28 06:04:44.586057",
+        "missing_reports": [],
+        "earliest_report": "2019",
+        "latest_report": 2024,
+        "status": "processed"
+    },
+    {
+        "symbol": "AKAM",
+        "security": "Akamai Technologies Inc",
+        "date_init": "2025-02-28 06:05:11.253522",
+        "missing_reports": [],
+        "earliest_report": "2019",
+        "latest_report": 2024,
+        "status": "processed"
+    },
+    {
+        "symbol": "ALK",
+        "security": "Alaska Air Group Inc",
+        "date_init": "2025-02-28 06:06:02.483611",
+        "missing_reports": [
+            2010,
+            2011,
+            2014,
+            2015,
+            2016
+        ],
+        "earliest_report": "2009",
+        "latest_report": 2024,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "ALB",
+        "security": "Albemarle Corp",
+        "date_init": "2025-02-28 06:07:04.577607",
+        "missing_reports": [
+            2023
+        ],
+        "earliest_report": "2007",
+        "latest_report": 2024,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "ARE",
+        "security": "Alexandria Real Estate Equities",
+        "date_init": "2025-02-28 06:07:44.419282",
+        "missing_reports": [],
+        "earliest_report": "2017",
+        "latest_report": 2024,
+        "status": "processed"
+    },
+    {
+        "symbol": "ALXN",
+        "security": "Alexion Pharmaceuticals",
+        "date_init": "2025-02-28 06:08:01.047621",
+        "missing_reports": [
+            2021,
+            2022,
+            2023
+        ],
+        "earliest_report": "2019",
+        "latest_report": 2024,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "ALGN",
+        "security": "Align Technology",
+        "date_init": "2025-02-28 06:09:32.228686",
+        "missing_reports": [
+            2023
+        ],
+        "earliest_report": "2023",
+        "latest_report": 2024,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "ALLE",
+        "security": "Allegion",
+        "date_init": "2025-02-28 06:10:14.929648",
+        "missing_reports": [
+            2021,
+            2022
+        ],
+        "earliest_report": "2020",
+        "latest_report": 2024,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "MMM",
+        "security": "3M Company",
+        "date_init": "2025-02-28 06:22:24.249600",
+        "missing_reports": [],
+        "earliest_report": "2019",
+        "latest_report": 2024,
+        "status": "processed"
+    },
+    {
+        "symbol": "AGN",
+        "security": "Allergan, Plc",
+        "date_init": "2025-02-28 07:21:11.203191",
+        "missing_reports": [
+            2017,
+            2019,
+            2020,
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+        ],
+        "earliest_report": "2016",
+        "latest_report": 2018,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "ADS",
+        "security": "Alliance Data Systems",
+        "date_init": "2025-02-28 07:22:58.869821",
+        "missing_reports": [],
+        "earliest_report": "2022",
+        "latest_report": 2025,
+        "status": "processed"
+    },
+    {
+        "symbol": "LNT",
+        "security": "Alliant Energy Corp",
+        "date_init": "2025-02-28 07:23:57.961809",
+        "missing_reports": [],
+        "earliest_report": "2023",
+        "latest_report": 2025,
+        "status": "processed"
+    },
+    {
+        "symbol": "ALL",
+        "security": "Allstate Corp",
+        "date_init": "2025-02-28 07:24:20.360552",
+        "missing_reports": [
+            2008
+        ],
+        "earliest_report": "2003",
+        "latest_report": "2025"
+    },
+    {
+        "symbol": "GOOGL",
+        "security": "Alphabet Inc Class A",
+        "date_init": "2025-02-28 07:27:27.940772",
+        "missing_reports": [
+            2024
+        ],
+        "earliest_report": "2016",
+        "latest_report": 2025,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "GOOG",
+        "security": "Alphabet Inc Class C",
+        "date_init": "2025-02-28 07:51:04.474247",
+        "missing_reports": [
+            2024
+        ],
+        "earliest_report": "2016",
+        "latest_report": 2023,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "MO",
+        "security": "Altria Group Inc",
+        "date_init": "2025-02-28 07:51:46.891753",
+        "missing_reports": [
+            2022,
+            2023,
+            2024
+        ],
+        "earliest_report": "2010",
+        "latest_report": 2021,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "AMZN",
+        "security": "Amazon.com Inc.",
+        "date_init": "2025-02-28 07:54:34.608737",
+        "missing_reports": [
+            2024
+        ],
+        "earliest_report": "2019",
+        "latest_report": 2023,
+        "status": "processed with some missing reports"
+    },
+    {
+        "symbol": "AEE",
+        "security": "Ameren Corp",
+        "date_init": "2025-02-28 11:12:11.019878",
+        "missing_reports": [],
+        "earliest_report": "2020",
+        "latest_report": 2024,
+        "status": "processed"
+    },
+    {
+        "symbol": "AAL",
+        "security": "American Airlines Group",
+        "date_init": "2025-02-28 11:12:37.362530",
+        "missing_reports": [],
+        "earliest_report": "2007",
+        "latest_report": 2024,
+        "status": "processed"
+    },
+    {
+        "symbol": "AEP",
+        "security": "American Electric Power",
+        "date_init": "2025-02-28 11:13:07.869182",
+        "missing_reports": [
+            2007
+        ],
+        "earliest_report": "2006",
+        "latest_report": 2024,
+        "status": "processed with some missing reports"
+    }
+]

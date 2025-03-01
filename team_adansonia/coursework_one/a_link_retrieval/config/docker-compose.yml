@@ -1,0 +1,98 @@
+version: '3.5'
+
+services:
+    mongo_db:
+      container_name: mongo_db_cw
+      image: mongo:latest
+      volumes:
+        - ./team_adansonia/coursework_one/mongo-seed:/docker-entrypoint-initdb.d
+      ports:
+        - 27019:27017
+    postgres_db:
+        container_name: postgres_db_cw
+        image: postgres:10.5        
+        environment: 
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+          - PGUSER=postgres
+        logging:
+          options:
+            max-size: 10m
+            max-file: "3"
+        ports:
+          - '5439:5432'
+        volumes:
+          - ./postgres-data:/var/lib/postgresql/data
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready"]
+          interval: 10s
+          timeout: 5s
+          retries: 5
+    postgres_seed:
+      container_name: postgres_seed_cw
+      restart: on-failure
+      environment:
+        POSTGRES_DATABASE: postgres_feeder
+        POSTGRES_HOST: postgres_feeder
+        POSTGRES_PORT: 5439
+        POSTGRES_USER: postgres_feeder
+        POSTGRES_PASSWORD: postgres_feeder
+      depends_on:
+        postgres_db:
+          condition: service_healthy
+      build:
+        dockerfile: ./000.Database/SQL/Dockerfile
+
+    pgadmin:
+      container_name: pg_admin_cw
+      image: dpage/pgadmin4
+      restart: always
+      environment:
+        PGADMIN_DEFAULT_EMAIL: admin@admin.com
+        PGADMIN_DEFAULT_PASSWORD: root
+      ports:
+        - "5051:80"
+    miniocw:
+      image: minio/minio
+      container_name: miniocw
+      environment:
+        - MINIO_ROOT_USER=ift_bigdata
+        - MINIO_ROOT_PASSWORD=minio_password
+        - MINIO_DOMAIN=miniocw
+      ports:
+        - 9001:9001
+        - 9000:9000
+      command: ["server", "/data", "--console-address", ":9001"]
+    minio_client_cw:
+      container_name: minio_client_cw
+      depends_on:
+        - miniocw
+      image: minio/mc
+      environment:
+        - AWS_ACCESS_KEY_ID=ift_bigdata
+        - AWS_SECRET_ACCESS_KEY=minio_password
+        - AWS_REGION=us-east-1
+      entrypoint: >
+        /bin/bash -c "
+        until (/usr/bin/mc config host add minio http://miniocw:9000 ift_bigdata minio_password) do echo '...waiting...' && sleep 1; done;
+        sleep 10 && /usr/bin/mc rm -r --force minio/csreport;
+        sleep 10 && /usr/bin/mc mb minio/csreport;
+        mc anonymous set public minio/csreport;
+        tail -f /dev/null
+        "
+    jenkins:
+      container_name: r_jenkins
+      build: 
+        context: ./
+        additional_contexts:
+          assets_jenkins: ./team_adansonia/coursework_one/scheduler/jenkins
+        dockerfile: ./team_adansonia/coursework_one/Dockerfile
+      user: root
+      command: java -Xms512m -Xmx2g -DJENKINS_HOME=/home/.jenkins -jar /home/jenkins/jenkins.jar --httpPort=9899
+      volumes:
+        - type: bind
+          source: ./
+          target: /opt/apps/ift_bigdata
+      ports:
+        - 9999:9899
+  
