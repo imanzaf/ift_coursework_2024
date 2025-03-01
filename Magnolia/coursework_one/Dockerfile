@@ -16,3 +16,6 @@ EXPOSE 8501  # Streamlit
 
 # Default command: Run FastAPI + Streamlit
 CMD ["uvicorn", "modules.api.fastapi_api:app", "--host", "0.0.0.0", "--port", "8000"]
+
+WORKDIR /app
+COPY Magnolia/coursework_one/modules/scraper /app/
