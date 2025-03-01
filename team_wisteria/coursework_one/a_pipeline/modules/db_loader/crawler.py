@@ -97,7 +97,7 @@ class PDFScraper:
         project_root = os.path.abspath(os.path.join(current_dir, "..", "..", "..", "..", ".."))
         sys.path.append(project_root)
 
-        from team_oak.coursework_one.a_pipeline.modules.url_parser.database import PostgresManager
+        from team_wisteria.coursework_one.a_pipeline.modules.url_parser.database import PostgresManager
         self.pg_manager = PostgresManager(host="localhost", port="5439")
         self.minio_client = Minio(
             Config.MINIO_ENDPOINT,
@@ -440,7 +440,7 @@ class PDFScraper:
             companies = df["Name"].dropna().unique().tolist()
             logger.info(f"Loaded {len(companies)} companies")
             with ThreadPoolExecutor(max_workers=Config.MAX_WORKERS) as executor:
-                futures = {executor.submit(self.process_company, co): co for co in companies}
+                futures = {executor.submit(self.process_company, co): co for co in companies[1:2]}
                 for future in as_completed(futures):
                     company = futures[future]
                     try:
