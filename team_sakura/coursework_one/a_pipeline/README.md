@@ -3,7 +3,8 @@
 How to run the code
 
 1. Clone the github 
-2. Set up your GOOGLE_API_KEY and GOOGLE_SEARCH_ENGINE_ID keys by duplicating the .env.template in the same folder and naming it .env.
+2. copy file docker-compose.yaml from team_sakura/coursework_one/a_pipeline/config to the root of the project
+2. Set up your GOOGLE_API_KEY and GOOGLE_SEARCH_ENGINE_ID keys by duplicating the .env.template from team_sakura/coursework_one/a_pipeline/config, naming it .env and adding it to the root of the project.
 3. Add your absolute local path to Equity.db in conf.yaml
 4. Open Docker Desktop 
 5. In your project go to terminal and run
