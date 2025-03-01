@@ -1,32 +1,46 @@
-'''
-This module provides a FastAPI server to query CSR reports from the database.
-Example usage:
-    - Query CSR report by company name: http://
-    - Query CSR report by stock symbol: http://
-    
-To start the server, run:
-    $ python api.py
+"""
+web_search.api module
 
-'''
+This module defines the FastAPI application and endpoints for querying CSR reports.
+
+Author: Your Name
+Version: 1.0.0
+License: MIT License
+"""
+
 from fastapi import FastAPI, HTTPException
 import psycopg2
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from config import DB_CONFIG
+
 app = FastAPI()
 
-# Connect to the database
 def get_db_connection():
+    """
+    Establish a connection to the PostgreSQL database using the configuration provided in DB_CONFIG.
+
+    Returns:
+        psycopg2.extensions.connection: A connection object to the database.
+    """
     return psycopg2.connect(**DB_CONFIG)
 
-# Query CSR report
 @app.get("/report")
 def get_csr_report(query: str, year: int):
     """
-    Query CSR report
-    - query: Company name (company_name) or Stock symbol (symbol)
-    - year: Report year
+    Query CSR report based on the provided company name or stock symbol and year.
+
+    Args:
+        query (str): Company name (company_name) or Stock symbol (symbol).
+        year (int): Report year.
+
+    Returns:
+        list: A list of dictionaries containing the company name, symbol, report URL, and MinIO path.
+        dict: A dictionary with a message if no CSR report is found.
+
+    Raises:
+        HTTPException: If an error occurs during the database operation.
     """
     try:
         conn = get_db_connection()
@@ -60,7 +74,12 @@ def get_csr_report(query: str, year: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# Start API server
 if __name__ == "__main__":
+    """
+    Main entry point to start the FastAPI server.
+
+    This script uses the `uvicorn` module to run the FastAPI application
+    on host `0.0.0.0` and port `8000`.
+    """
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
