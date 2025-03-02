@@ -1,0 +1,113 @@
+[project]
+name = "team-salix"
+version = "0.1.0"
+description = "CSR Report Collection System"
+authors = [
+    {name = "Team Salix",email = "team.salix@example.com"}
+]
+requires-python = ">=3.9"
+package-mode = false  # Allow direct script execution
+
+[tool.poetry]
+name = "team-salix"
+version = "0.1.0"
+description = "CSR Report Collection System"
+authors = ["Team Salix <team.salix@example.com>"]
+packages = [
+    { include = "a_pipeline" },
+    { include = "b_pipeline" },
+    { include = "upload_to_minio.py" },
+    { include = "scheduler.py" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+pandas = ">=2.2.0,<3.0.0"
+requests = ">=2.31.0,<3.0.0"
+urllib3 = ">=1.26.0,<2.0.0"
+selenium = ">=4.17.0,<5.0.0"
+psycopg2-binary = ">=2.9.0,<3.0.0"
+boto3 = ">=1.34.0,<2.0.0"
+tqdm = ">=4.66.0,<5.0.0"
+aiohttp = ">=3.9.0,<4.0.0"
+nest-asyncio = ">=1.6.0,<2.0.0"
+pypdf2 = ">=3.0.0,<4.0.0"
+apscheduler = ">=3.10.0,<4.0.0"
+sphinx-rtd-theme = "2.0.0"
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest = ">=8.0.0,<9.0.0"
+pytest-cov = ">=4.1.0,<5.0.0"
+pytest-asyncio = ">=0.23.0,<1.0.0"
+pytest-mock = ">=3.12.0,<4.0.0"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+sphinx = ">=7.1.0,<8.0.0"
+sphinx-rtd-theme = ">=2.0.0,<3.0.0"
+myst-parser = ">=2.0.0,<3.0.0"
+sphinx-autodoc-typehints = ">=2.0.0,<3.0.0"
+sphinxcontrib-applehelp = ">=1.0.0,<2.0.0"
+sphinxcontrib-devhelp = ">=1.0.0,<2.0.0"
+sphinxcontrib-htmlhelp = ">=2.0.0,<3.0.0"
+sphinxcontrib-qthelp = ">=1.0.0,<2.0.0"
+sphinxcontrib-serializinghtml = ">=1.0.0,<2.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+source = ["."]
+omit = [
+    "tests/*",
+    "docs/*",
+    "setup.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "pass",
+    "raise ImportError"
+]
+
+[tool.sphinx]
+project = "Team Salix CSR Report Pipeline"
+copyright = "2024, Team Salix"
+author = "Team Salix"
+release = "0.1.0"
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.githubpages",
+    "sphinx_rtd_theme",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.todo",
+    "sphinx.ext.coverage",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.ifconfig",
+    "sphinx.ext.autosummary",
+    "sphinx_autodoc_typehints"
+]
+templates_path = ["_templates"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+html_theme = "sphinx_rtd_theme"
+html_static_path = ["_static"]
