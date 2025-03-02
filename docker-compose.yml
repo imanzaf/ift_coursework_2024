@@ -49,7 +49,6 @@ services:
         PGADMIN_DEFAULT_PASSWORD: root
       ports:
         - "5051:80"
-
     miniocw:
       image: minio/minio
       container_name: miniocw
