@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/login.css" rel="stylesheet">
+    <title>Login</title>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Login</h2>
+
+    <form action="/" method="POST">
+        <input type="text" name="username" placeholder="用户名" required>
+        <input type="password" name="password" placeholder="密码" required>
+        <button type="submit">Login</button>
+        <a href="/register">Not a user yet? Click to register</a>
+    </form>
+</div>
+
+<script>
+    {% if error_message %}
+        alert("{{ error_message }}");
+    {% endif %}
+</script>
+</body>
+</html>
