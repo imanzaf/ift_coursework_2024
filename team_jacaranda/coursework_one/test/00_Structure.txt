@@ -1,0 +1,6 @@
+tests/
+├── 00 Structure.txt
+├── 01 Unit.py            # Unit tests
+├── 02 Integration.py     # Integration tests
+├── 03 e2e.py             # End-to-end tests
+└── conftest.py           # Global configuration
