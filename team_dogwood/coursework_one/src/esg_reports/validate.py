@@ -103,7 +103,7 @@ class SearchResultValidator(BaseModel):
             result_year = self._year_in_result(result)
             if result_year is not None and self._company_name_in_result(result):
                 valid_results.append(ESGReport(url=result.link, year=result_year))
-            elif all(
+            elif any(
                 [self._company_name_in_result(result), self._keywords_in_result(result)]
             ):
                 valid_results.append(ESGReport(url=result.link, year=None))
