@@ -70,6 +70,8 @@ class PostgreSQLDB:
             return []
         except Exception as e:
             logger.error(f"Database error: {e}")
+            # Rollback on error
+            self.conn.rollback()
             return []
 
     def fetch(self, query, params=None):
@@ -85,6 +87,8 @@ class PostgreSQLDB:
             return rows
         except Exception as e:
             logger.error(f"Database error: {e}")
+            # Rollback on error
+            self.conn.rollback()
             return []
 
     def get_csr_reports_by_company(self, company_name):
