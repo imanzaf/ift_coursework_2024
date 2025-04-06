@@ -1,3 +1,5 @@
+# TODO - redo result year function. use regex to get the year from the url. (instead of searching for specific year in title)
+
 import os
 import sys
 from datetime import datetime
