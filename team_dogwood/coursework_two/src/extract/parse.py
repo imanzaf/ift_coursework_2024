@@ -1,8 +1,11 @@
 """
 Methods for text extraction from PDF documents.
 
-# TODO - implement vector store for querying (targeted searches of specific figures)
-# TODO - implement async calls (for extracting from multiple documents at once)
+# TODO - switch to sphinx-style docstrings
+# Priority - Sardor - TODO - implement vector store for querying (targeted searches of specific figures)
+# Iman - TODO - implement async calls (for extracting from multiple documents at once)
+# Siyu - TODO - dump document objects as dict (read document objects instead of pdf where possible) - maybe use mongo?
+        https://docs.cloud.llamaindex.ai/llamacloud/integrations/data_sinks/mongodb
 
 # TODO - maybe configure data source (minio) with llama client?
 # TODO - maybe configure data sink (postgres) to automate upload of extracted text?
