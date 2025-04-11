@@ -1,0 +1,33 @@
+repos:
+  -   repo: https://github.com/python-poetry/poetry
+      rev: '2.0.1'  # add version here
+      hooks:
+      -   id: poetry-check
+          args: ["-C", "./team_dogwood/coursework_one"]
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        entry: bash -c "cd team_dogwood/coursework_one && poetry run black ."
+        language: system
+        types: [python]
+      - id: flake8
+        name: flake8
+        entry: bash -c "cd team_dogwood/coursework_one && poetry run flake8 ."
+        language: system
+        types: [python]
+      - id: isort
+        name: isort
+        entry: bash -c "cd team_dogwood/coursework_one && poetry run isort ."
+        language: system
+        types: [python]
+      - id: bandit
+        name: bandit
+        entry: bash -c "cd team_dogwood/coursework_one && poetry run bandit ."
+        language: system
+        types: [python]
+      - id: safety
+        name: safety
+        entry: bash -c "cd team_dogwood/coursework_one && poetry run safety check"
+        language: system
+        types: [python]
