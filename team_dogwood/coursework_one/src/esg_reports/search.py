@@ -120,8 +120,8 @@ class Search(BaseModel):
             # format search results
             search_results = self._format_google_results(search_results)
         except HTTPError as e:
-            logger.error(f"Failed to fetch search results: {e}. Returning None.")
-            return None
+            logger.error(f"Failed to fetch search results: {e}. Exiting.")
+            exit()
 
         return search_results
 
