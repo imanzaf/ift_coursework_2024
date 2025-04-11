@@ -1,6 +1,9 @@
-# TODO - redo result year function. use regex to get the year from the url. (instead of searching for specific year in title)
+"""
+Validates search results from Google for ESG reports.
+"""
 
 import os
+import re
 import sys
 from datetime import datetime
 from typing import List, Union
@@ -38,11 +41,11 @@ class SearchResultValidator(BaseModel):
     if (
         datetime.now().month < 4
     ):  # If the current month is less than April, the previous year's report is more likely to be available
-        _current_year: str = PrivateAttr(str(datetime.now().year - 1))
-        _previous_year: str = PrivateAttr(str(datetime.now().year - 2))
+        _current_year: int = PrivateAttr((datetime.now().year - 1))
+        _previous_year: int = PrivateAttr((datetime.now().year - 2))
     else:
-        _current_year: str = PrivateAttr(str(datetime.now().year))
-        _previous_year: str = PrivateAttr(str(datetime.now().year - 1))
+        _current_year: int = PrivateAttr((datetime.now().year))
+        _previous_year: int = PrivateAttr((datetime.now().year - 1))
 
     # ESG keywords
     _esg_keywords: List[str] = PrivateAttr(
@@ -132,21 +135,19 @@ class SearchResultValidator(BaseModel):
             >>> print(year)
             "2023"
         """
-        if any(
-            [
-                self._current_year in text
-                for text in [result.title, result.snippet, result.link]
-            ]
-        ):
-            return self._current_year
-        elif any(
-            [
-                self._previous_year in text
-                for text in [result.title, result.snippet, result.link]
-            ]
-        ):
-            return self._previous_year
-        return None
+        # find year in title, snippet, or link
+        title_year = self._find_year_in_text(result.title)
+        snippet_year = self._find_year_in_text(result.snippet)
+        link_year = self._find_year_in_text(result.link)
+
+        if title_year:
+            return title_year
+        elif snippet_year:
+            return snippet_year
+        elif link_year:
+            return link_year
+        else:
+            return None
 
     def _company_name_in_result(self, result: SearchResult) -> bool:
         """Checks if the company name is in the author field, title, snippet, or link.
@@ -213,6 +214,54 @@ class SearchResultValidator(BaseModel):
             return True
         return False
 
+    def _find_year_in_text(self, text: str) -> Union[str, None]:
+        """Finds the most recent year in the given text.
+
+        Args:
+            text (str): The text to search for years.
+
+        Returns:
+            Union[str, None]: The year found (between 2000 and current year), or None if no year is found.
+
+        Example:
+            >>> text = "Apple ESG Report 2023"
+            >>> validator = SearchResultValidator(company=Company(symbol="AAPL", security="Apple Inc."), search_results=[])
+            >>> year = validator._find_year_in_text(text)
+            >>> print(year)
+            "2023"
+        """
+
+        # Pattern to match full years 2000–2099
+        full_year_pattern = r"""
+            (?<!\d)                       # Not preceded by digit
+            (20[0-9]{2})                  # Capture 2000–2099
+            (?!\d)                        # Not followed by digit
+        """
+
+        # Pattern to match 2-digit abbreviations 00–99 with optional quote, but don't capture the quote
+        abbrev_year_pattern = r"""
+            (?<!\d)                       # Not part of a larger number
+            '?(0[0-9]|[1-9][0-9])         # Optional quote + 00–99, only capture the digits
+            (?!\d)
+        """
+
+        # Try full year match first
+        # Use re.VERBOSE to allow multi-line regex patterns with comments
+        full_years = re.findall(full_year_pattern, text, re.VERBOSE)
+        if full_years:
+            return full_years[0]
+
+        # Fall back to abbreviated years
+        abbrev_years = re.findall(abbrev_year_pattern, text, re.VERBOSE)
+        if abbrev_years:
+            # Convert to full year format (e.g., 25 -> 2025)
+            full_year = f"20{abbrev_years[0]}"
+            return full_year
+
+        else:
+            # If no match found, return None
+            return None
+
 
 if __name__ == "__main__":
     company = Company(
@@ -236,3 +285,4 @@ if __name__ == "__main__":
 
     validator = SearchResultValidator(company=company, search_results=results)
     logger.info(f"Cleaned Company Name: {validator.clean_company_name}")
+    logger.info(f"Validated Results: {validator.validated_results}")
